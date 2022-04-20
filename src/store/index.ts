@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-
+import NavigationReducer from "./reducers/ViewNavigationSlice";
+import SeedBedsReducer from "./reducers/SeedBedsSlice";
 
 
 const store = configureStore({
     reducer: {
-
+        navigation: NavigationReducer,
+        seedBeds: SeedBedsReducer
     }
 })
 

@@ -1,10 +1,9 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx } from '@emotion/react';
-import { css } from '@emotion/react'
+import { jsx, css } from '@emotion/react';
 import { useState } from 'react';
 
-const Menu: React.FC<{}> = () => {
+const SideBar: React.FC<{}> = () => {
     const plants = [
         "ASD", "FGHJ"
     ]
@@ -17,15 +16,15 @@ const Menu: React.FC<{}> = () => {
 
     return (
         <div css={css`
-            /*position: absolute;*/
             height: 100%;
             width: 250px;
             background-color: #393946;
             padding: 32px;
+            z-index: 100;
         `}>
 
             <div>
-                <input value={inputSearch} onKeyUp={searchPlant} onChange={(e)=>setInputSearch((e.target as HTMLInputElement).value)} placeholder={"Hledaná rostlina"} css={css`                
+                <input value={inputSearch} onKeyUp={searchPlant} onChange={(e)=>setInputSearch((e.target as HTMLInputElement).value)} placeholder={"..."} css={css`                
                     width: 100%;
                     height: 30px;
                     border-radius: 5px;
@@ -44,4 +43,4 @@ const Menu: React.FC<{}> = () => {
 }
 
 
-export default Menu;
+export default SideBar;
