@@ -1,7 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setIsMovingAppViewAction } from '../../store/reducers/ViewNavigationSlice';
 
@@ -9,19 +8,6 @@ import { setIsMovingAppViewAction } from '../../store/reducers/ViewNavigationSli
 const Header: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
     const isMovingAppView = useAppSelector(selector => selector.navigation.isMovingAppView)
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key == "Escape") {
-                dispatch(setIsMovingAppViewAction(false));
-            }
-        }
-        document.addEventListener('keydown', handleKeyDown);
-
-        // Don't forget to clean up
-        return function cleanup() {
-            document.removeEventListener('keydown', handleKeyDown);
-        }
-    }, []);
 
     return (
         <div css={css`

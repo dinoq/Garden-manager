@@ -5,8 +5,7 @@ import { dragPointSize } from ".";
 import { useAppSelector } from "../../hooks";
 
 interface IDragPointProps {
-    width: number,
-    height: number,
+    id: number,
     dragHandler: React.DragEventHandler<HTMLDivElement>,
     dragStartHandler: React.DragEventHandler<HTMLDivElement>,
 }
@@ -14,7 +13,9 @@ interface IDragPointProps {
 const DragPoint: React.FC<IDragPointProps> = (props) => {
     const zoomAmount = useAppSelector(selector => selector.navigation.zoom);
 
-    const dragCursorPos = { x: ((props.width * (zoomAmount / 100)) - dragPointSize) / 2, y: ((props.height * (zoomAmount / 100)) - dragPointSize) / 2 };
+    const seedBed = useAppSelector(state => state.seedBeds[props.id]);
+
+    const dragCursorPos = { x: ((seedBed.width * (zoomAmount / 100)) - dragPointSize) / 2, y: ((seedBed.height * (zoomAmount / 100)) - dragPointSize) / 2 };
 
     return (
 

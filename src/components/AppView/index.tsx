@@ -1,9 +1,11 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { DragEventHandler, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { zoomAction } from "../../store/reducers/ViewNavigationSlice";
+import { createNewSeedBedAction } from "../../store/reducers/SeedBedsSlice";
+import { moveWorldByMouseAction, setIsPuttingSeedBedOfTypeAction, zoomAction } from "../../store/reducers/ViewNavigationSlice";
+import Field from "../Field";
 import SeedBed from "../SeedBed";
 
 
@@ -16,11 +18,14 @@ const AppView: React.FC<IAppViewProps> = (props) => {
 
     const viewElement = useRef<HTMLDivElement>(null);
 
-    const zoomAmount = useAppSelector(state => state.navigation.zoom);
+    const worldZoom = useAppSelector(state => state.navigation.zoom);
+    const worldPosition = useAppSelector(state => state.navigation.position);
     const isMovingAppView = useAppSelector(state => state.navigation.isMovingAppView);
+    const isPuttingSeedBedOfType = useAppSelector(selector => selector.navigation.isPuttingSeedBedOfType)
+    
+    const seedBeds = useAppSelector(state => state.seedBeds);
 
     const [mouseStartDiffPosition, setMouseStartDiffPosition] = useState({ diffX: 0, diffY: 0 })
-    const [panelPosition, setPanelPosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 })
     const [isMouseDown, setIsMouseDown] = useState(false);
 
     const zoom = (e: any) => {
@@ -29,23 +34,30 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     }
 
     const mouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-        setMouseStartDiffPosition({ diffX: e.clientX - panelPosition.x, diffY: e.clientY - panelPosition.y })
+        setMouseStartDiffPosition({ diffX: e.clientX - worldPosition.x, diffY: e.clientY - worldPosition.y })
         setIsMouseDown(true);
+
+        if(isPuttingSeedBedOfType){
+            dispatch(setIsPuttingSeedBedOfTypeAction(undefined));
+            var rect = (e.target as HTMLDivElement).getBoundingClientRect();
+
+            let x = e.clientX - rect.left;
+            let y = e.clientY - rect.top;
+            dispatch(createNewSeedBedAction({position: {x, y}, plant: isPuttingSeedBedOfType}))
+            console.log('{x, y}: ', {x, y});
+        }
     }
 
     const mouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (isMouseDown && isMovingAppView) {
-            setPanelPosition((prevPos) => {
-                let newX = e.clientX - mouseStartDiffPosition.diffX;
-                newX = newX < 0 ? newX : 0;
-                newX = newX + (viewElement.current?.clientWidth || 0) > window.innerWidth ? newX : prevPos.x;
+            let newX = e.clientX - mouseStartDiffPosition.diffX;
+            newX = newX < 0 ? newX : 0;
+            newX = newX + (viewElement.current?.clientWidth || 0) > window.innerWidth ? newX : worldPosition.x;
 
-                let newY = e.clientY - mouseStartDiffPosition.diffY;
-                newY = newY < 0 ? newY : 0;
-                newY = newY + (viewElement.current?.clientHeight || 0) > window.innerHeight ? newY : prevPos.y;
-
-                return { x: newX, y: newY }
-            })
+            let newY = e.clientY - mouseStartDiffPosition.diffY;
+            newY = newY < 0 ? newY : 0;
+            newY = newY + (viewElement.current?.clientHeight || 0) > window.innerHeight ? newY : worldPosition.y;
+            dispatch(moveWorldByMouseAction({x: newX,y: newY}));
         }
     }
 
@@ -55,7 +67,6 @@ const AppView: React.FC<IAppViewProps> = (props) => {
 
     const cursor = isMovingAppView ? (isMouseDown ? "grabbing" : "grab") : "default";
 
-
     return (
         <div css={css`
             background-color: #777b17;
@@ -63,18 +74,20 @@ const AppView: React.FC<IAppViewProps> = (props) => {
             height: 100%;
             width: 100%;
         `}>
-            <div ref={viewElement} onWheel={zoom} onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} css={css`
+            <div ref={viewElement} onDragOver={e => e.preventDefault()} onWheel={zoom} onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} css={css`
                 background-color: #777b77;
                 border: 1px solid green;
                 position: relative;
-                height: ${zoomAmount}%;
-                width: ${zoomAmount}%;
-                left: ${panelPosition.x}px;
-                top: ${panelPosition.y}px;
-                cursor: ${cursor}
+                height: ${worldZoom}%;
+                width: ${worldZoom}%;
+                left: ${worldPosition.x}px;
+                top: ${worldPosition.y}px;
+                cursor: ${cursor};
             `}>
-                <SeedBed id={0} width={100} height={100} />
-                <SeedBed id={1} width={80} height={200} />
+                {seedBeds.map((seedBed, i)=>{
+                    return <SeedBed key={"seed-bed-" + i} {...seedBed} />
+                })}
+                <Field x={400} y={200} width={400} height={500} />
             </div>
         </div>
     )
