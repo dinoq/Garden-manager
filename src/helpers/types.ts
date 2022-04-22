@@ -17,3 +17,8 @@ export interface ISeedBed extends IDimensions, IPosition{
 }
 
 export type IRect = IDimensions & IPosition;
+
+export enum Direction {
+    HORIZONTAL,
+    VERTICAL
+}

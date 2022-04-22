@@ -1,3 +1,4 @@
+import PlantsDB from "../../database/plants";
 import { IPlant, PlantFamily, PlantSunRequirements, PlantTrack } from "../../helpers/plant-types";
 
 
@@ -20,42 +21,3 @@ export const getPlantsByPartName = (partName: string): Array<IPlant> => {
     })
     return plants;
 }
-
-const PlantsDB: Array<IPlant> = [
-    {
-        name: "Česnek 2",
-        family: PlantFamily.Amaryllidaceae,
-        sun: PlantSunRequirements.UNKNOWN,
-        track: PlantTrack.UNKNOWN,
-        inRowSpacing: 10,
-        betweenRowSpacing: 20,
-        icon: "a.png",
-    },
-    {
-        name: "Česnek",
-        family: PlantFamily.Amaryllidaceae,
-        sun: PlantSunRequirements.UNKNOWN,
-        track: PlantTrack.UNKNOWN,
-        inRowSpacing: 10,
-        betweenRowSpacing: 20,
-        icon: "",
-    },
-    {
-        name: "Z Česnek",
-        family: PlantFamily.Amaryllidaceae,
-        sun: PlantSunRequirements.UNKNOWN,
-        track: PlantTrack.UNKNOWN,
-        inRowSpacing: 10,
-        betweenRowSpacing: 20,
-        icon: "",
-    },
-    {
-        name: "Česnek 5",
-        family: PlantFamily.Amaryllidaceae,
-        sun: PlantSunRequirements.UNKNOWN,
-        track: PlantTrack.UNKNOWN,
-        inRowSpacing: 10,
-        betweenRowSpacing: 20,
-        icon: "",
-    }
-]
