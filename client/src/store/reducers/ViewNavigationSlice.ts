@@ -10,7 +10,7 @@ interface IViewNavigationSlice {
 }
 
 const initialState: IViewNavigationSlice = {
-    zoom: 100,
+    zoom: 1,
     position: {
         x: -1000,
         y: -1000
@@ -25,10 +25,15 @@ const ViewNavigationSlice = createSlice(
         initialState,
         reducers: {
             zoomAction: (state: IViewNavigationSlice, action: PayloadAction<number>) => {
-                if (action.payload > 0 && state.zoom > 100) {
-                    state.zoom -= 10;
-                } else if (action.payload < 0 && state.zoom < 200) {
-                    state.zoom += 10;
+                let a = 160;
+                if (action.payload > 0 && state.zoom > 1) {
+                    state.zoom -= 0.1;
+                    state.position.x += a;
+                    state.position.y += a;
+                } else if (action.payload < 0 && state.zoom < 5) {
+                    state.zoom += 0.1;
+                    state.position.x -= a;
+                    state.position.y -= a;
                 }
             },
             moveWorldByMouseAction: (state: IViewNavigationSlice, action: PayloadAction<IPosition>) => {

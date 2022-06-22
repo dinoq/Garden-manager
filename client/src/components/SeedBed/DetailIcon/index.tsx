@@ -18,9 +18,10 @@ const DetailIcon: React.FC<IDetailIconProps> = (props) => {
                 padding: 0 4px;
                 background-color: #ffffffce;
                 border-radius: 7px;
-                position: relative;
+                position: absolute;
                 font-weight: bold;
                 left: ${props.seedBedWidth - 15}px;
+                
                 cursor: pointer;
             `}><div
                 css={css`

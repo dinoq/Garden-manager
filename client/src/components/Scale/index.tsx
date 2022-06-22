@@ -10,7 +10,6 @@ const Scale: React.FC<{}> = () => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
 
     const zoom = useAppSelector(state => state.navigation.zoom);
-    console.log('zoom: ', zoom);
 
     return (
         <div css={css`
@@ -58,7 +57,7 @@ const Scale: React.FC<{}> = () => {
             padding: 0;
             margin: 0;
         
-        `}>{(100 / zoom).toFixed(2)}m</span>
+        `}>{(1 / zoom).toFixed(2)}m</span>
 
         </div>
     )

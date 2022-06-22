@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import NavigationReducer from "./reducers/ViewNavigationSlice";
 import SeedBedsReducer from "./reducers/SeedBedsSlice";
+import CalendarReducer from "./reducers/CalendarSlice";
 
 
 const store = configureStore({
     reducer: {
         navigation: NavigationReducer,
-        seedBeds: SeedBedsReducer
+        seedBeds: SeedBedsReducer,
+        calendar: CalendarReducer
     }
 })
 

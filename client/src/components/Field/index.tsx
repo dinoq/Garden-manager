@@ -10,11 +10,11 @@ interface IFIeldProps extends IRect {
 }
 
 const Field: React.FC<IFIeldProps> = (props) => {
-    const zoomAmount = useAppSelector(selector => selector.navigation.zoom);
-    const width = props.width * (zoomAmount / 100);
-    const height = props.height * (zoomAmount / 100);
-    const x = props.x * (zoomAmount / 100);
-    const y = props.y * (zoomAmount / 100);
+    const zoom = useAppSelector(selector => selector.navigation.zoom);
+    const width = props.width * (zoom);
+    const height = props.height * (zoom);
+    const x = props.x * (zoom);
+    const y = props.y * (zoom);
 
     return (
         <div>

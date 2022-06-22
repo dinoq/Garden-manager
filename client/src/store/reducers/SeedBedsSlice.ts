@@ -2,8 +2,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IPlant } from "../../helpers/plant-types";
 import { IPosition, ISeedBed } from "../../helpers/types";
 
+interface ISeedBedSlice extends ISeedBed{
 
-const initialState: Array<ISeedBed> = [
+}
+
+const initialState: Array<ISeedBedSlice> = [
 ]
 
 const SeedBedsSlice = createSlice({

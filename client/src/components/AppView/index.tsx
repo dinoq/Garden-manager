@@ -2,6 +2,7 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import { useRef, useState } from "react";
+import { IPosition } from "../../helpers/types";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { createNewSeedBedAction } from "../../store/reducers/SeedBedsSlice";
 import { moveWorldByMouseAction, setIsPuttingSeedBedOfTypeAction, zoomAction } from "../../store/reducers/ViewNavigationSlice";
@@ -28,6 +29,10 @@ const AppView: React.FC<IAppViewProps> = (props) => {
 
     const [mouseStartDiffPosition, setMouseStartDiffPosition] = useState({ diffX: 0, diffY: 0 })
     const [isMouseDown, setIsMouseDown] = useState(false);
+    const [isMiddleMouseDown, setIsMiddleMouseDown] = useState(false);
+    const [localWorldPosDiff, setLocalWorldPosDiff] = useState<IPosition>({x: 0, y: 0})
+
+    const movingByWorld = (isMouseDown && isMovingAppView) || isMiddleMouseDown;
 
     const zoom = (e: any) => {
         let delta = e.deltaY || 0;
@@ -37,33 +42,33 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     const mouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         setMouseStartDiffPosition({ diffX: e.clientX - worldPosition.x, diffY: e.clientY - worldPosition.y })
         setIsMouseDown(true);
+        setIsMiddleMouseDown(e.button == 1);
 
         if(isPuttingSeedBedOfType){
             dispatch(setIsPuttingSeedBedOfTypeAction(undefined));
             var rect = (e.target as HTMLDivElement).getBoundingClientRect();
 
-            let x = e.clientX - rect.left;
-            let y = e.clientY - rect.top;
+            let x = (e.clientX - rect.left) / worldZoom;
+            let y = (e.clientY - rect.top) / worldZoom;
             dispatch(createNewSeedBedAction({position: {x, y}, plant: isPuttingSeedBedOfType}))
-            console.log('{x, y}: ', {x, y});
         }
     }
 
     const mouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (isMouseDown && isMovingAppView) {
-            let newX = e.clientX - mouseStartDiffPosition.diffX;
-            newX = newX < 0 ? newX : 0;
-            newX = newX + (viewElement.current?.clientWidth || 0) > window.innerWidth ? newX : worldPosition.x;
-
-            let newY = e.clientY - mouseStartDiffPosition.diffY;
-            newY = newY < 0 ? newY : 0;
-            newY = newY + (viewElement.current?.clientHeight || 0) > window.innerHeight ? newY : worldPosition.y;
-            dispatch(moveWorldByMouseAction({x: newX,y: newY}));
+        if (movingByWorld) {
+            let newLocalPosDiffX = (e.clientX - worldPosition.x) - mouseStartDiffPosition.diffX;
+            let newLocalPosDiffY = (e.clientY - worldPosition.y) - mouseStartDiffPosition.diffY;
+            setLocalWorldPosDiff({x: newLocalPosDiffX, y:newLocalPosDiffY})
         }
     }
 
-    const mouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
+    const mouseUp = (e: React.MouseEvent<HTMLDivElement>) => {                
+        if(movingByWorld){
+            dispatch(moveWorldByMouseAction({x: e.clientX - mouseStartDiffPosition.diffX,y: e.clientY - mouseStartDiffPosition.diffY}));
+            setLocalWorldPosDiff({x: 0, y: 0})
+        }
         setIsMouseDown(false);
+        setIsMiddleMouseDown(false);
     }
 
     const cursor = isMovingAppView ? (isMouseDown ? "grabbing" : "grab") : "default";
@@ -79,10 +84,10 @@ const AppView: React.FC<IAppViewProps> = (props) => {
                 background-color: #777b77;
                 border: 1px solid green;
                 position: relative;
-                height: ${worldZoom*3}%;
-                width: ${worldZoom*3}%;
-                left: ${worldPosition.x}px;
-                top: ${worldPosition.y}px;
+                height: ${2000}%;
+                width: ${2000}%;
+                left: ${worldPosition.x + localWorldPosDiff.x}px;
+                top: ${worldPosition.y + localWorldPosDiff.y}px;
                 cursor: ${cursor};
             `}>
                 {seedBeds.map((seedBed, i)=>{
