@@ -73,27 +73,29 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
         let monthStr = (((Math.floor(i / 4)) % 12) + 1).toString();
         monthStr = monthStr == "0" ? "12" : monthStr;
         monthStr += i >= 48? "/"+(year+1) : "";
-        lines.push(<div aria-label={lineIsMonth ? monthStr : ""} key={"line-" + i} css={css`
-            :before {
-                content: attr(aria-label);
-                font-size: 0.7rem;
+        if(i < 48){
+            lines.push(<div aria-label={lineIsMonth ? monthStr : ""} key={"line-" + i} css={css`
+                :before {
+                    content: attr(aria-label);
+                    font-size: 0.7rem;
+                    position: absolute;
+                    top: -18px;
+                    background-color: #f8f8f8;
+                    padding: ${lineIsMonth ? "1px 3px" : 0};
+                    border-radius: 5px;
+                    left: -5px;
+                };    
+    
+                width: 2px;
+                height: ${lineIsMonth ? 15 : 6}px;
+                background-color: red;
+                top: ${lineIsMonth ? -4 : 0}px;
+                left: ${(timelineWidth / linesCount) * i}px;
                 position: absolute;
-                top: -18px;
-                background-color: #f8f8f8;
-                padding: ${lineIsMonth ? "1px 3px" : 0};
-                border-radius: 5px;
-                left: -5px;
-            };    
-
-            width: 2px;
-            height: ${lineIsMonth ? 15 : 6}px;
-            background-color: red;
-            top: ${lineIsMonth ? -4 : 0}px;
-            left: ${(timelineWidth / linesCount) * i}px;
-            position: absolute;
-        `}>
-
-        </div>);
+            `}>
+    
+            </div>);
+        }
     }
     return (
         <div aria-label="Calendar" css={css` 

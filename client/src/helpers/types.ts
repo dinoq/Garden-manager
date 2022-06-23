@@ -13,7 +13,8 @@ export interface IPosition{
 
 export interface ISeedBed extends IDimensions, IPosition{
     id: number, 
-    plant: IPlant
+    plant: IPlant,
+    isPlaced: boolean
 }
 
 export type IRect = IDimensions & IPosition;

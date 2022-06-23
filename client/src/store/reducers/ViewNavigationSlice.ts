@@ -6,7 +6,8 @@ interface IViewNavigationSlice {
     zoom: number,
     position: IPosition,
     isMovingAppView: boolean,
-    isPuttingSeedBedOfType: IPlant | undefined
+    isPuttingSeedBedOfType: IPlant | undefined,
+    mouseDownPosition: IPosition
 }
 
 const initialState: IViewNavigationSlice = {
@@ -16,7 +17,8 @@ const initialState: IViewNavigationSlice = {
         y: -1000
     },
     isMovingAppView: false,
-    isPuttingSeedBedOfType: undefined
+    isPuttingSeedBedOfType: undefined,
+    mouseDownPosition: {x: 0, y: 0}
 }
 
 const ViewNavigationSlice = createSlice(
@@ -46,11 +48,14 @@ const ViewNavigationSlice = createSlice(
 
             setIsPuttingSeedBedOfTypeAction: (state: IViewNavigationSlice, action: PayloadAction<IPlant | undefined>) => {
                 state.isPuttingSeedBedOfType = action.payload;
-            }
+            },
+            setMouseDownPosition: (state: IViewNavigationSlice, action: PayloadAction<IPosition>) => {
+                state.mouseDownPosition = action.payload;
+            },
 
         }
     }
 )
 
-export const { zoomAction, moveWorldByMouseAction, setIsMovingAppViewAction, setIsPuttingSeedBedOfTypeAction } = ViewNavigationSlice.actions;
+export const { zoomAction, moveWorldByMouseAction, setIsMovingAppViewAction, setIsPuttingSeedBedOfTypeAction, setMouseDownPosition } = ViewNavigationSlice.actions;
 export default ViewNavigationSlice.reducer;

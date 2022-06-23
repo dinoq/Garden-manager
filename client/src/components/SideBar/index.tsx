@@ -3,15 +3,19 @@
 import { jsx, css } from '@emotion/react';
 import React, { MouseEventHandler, useEffect, useState } from 'react';
 import { IPlant } from '../../helpers/plant-types';
-import { useAppDispatch } from '../../hooks';
-import { setIsPuttingSeedBedOfTypeAction } from '../../store/reducers/ViewNavigationSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { createNewSeedBedAction } from '../../store/reducers/SeedBedsSlice';
+import { setIsPuttingSeedBedOfTypeAction, setMouseDownPosition } from '../../store/reducers/ViewNavigationSlice';
 import { getPlantByName, getPlantsByPartName } from './plants';
 
 const SideBar: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
 
+    const menuWidth = useAppSelector(state => state.gui.menubarWidth);
     const [inputSearch, setInputSearch] = useState("")
     const [plants, setPlants] = useState<Array<IPlant>>([])
+    const worldPos = useAppSelector(selector => selector.navigation.position);
+    
     useEffect(() => {
         getPlantsByPartName(inputSearch).then(plants => {
             setPlants(plants);
@@ -29,13 +33,17 @@ const SideBar: React.FC<{}> = () => {
         if (plantName != undefined && plantName.length > 0)
             getPlantByName(plantName).then(plant => {
                 dispatch(setIsPuttingSeedBedOfTypeAction(plant));
-
+                dispatch(setMouseDownPosition({x: e.clientX, y: e.clientY}));
+                if(plant){
+                    dispatch(createNewSeedBedAction({position: {x:  e.clientX - worldPos.x, y:  - worldPos.y}, plant}))
+                    console.log('worldPos.x: ', worldPos.x);
+                }
             })
     }
     return (
         <div css={css`
             height: 100%;
-            width: 250px;
+            width: ${menuWidth}px;
             background-color: #393946;
             padding: 32px;
             z-index: 100;
