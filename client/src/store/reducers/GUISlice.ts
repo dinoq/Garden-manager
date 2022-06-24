@@ -2,12 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
 interface IGUISlice{
-    menubarWidth: number,
-    toolbarHeight: number
+    menuWidth: number,
+    toolbarHeight: number,
 }
 const initialState: IGUISlice = {
-    menubarWidth: 250,
-    toolbarHeight: 150
+    menuWidth: 250,
+    toolbarHeight: 150,
 }
 
 const GUISlice = createSlice({

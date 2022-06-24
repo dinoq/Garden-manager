@@ -4,12 +4,14 @@ import { css, jsx } from "@emotion/react";
 import { useRef, useState } from "react";
 import { IPosition } from "../../helpers/types";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { createNewSeedBedAction } from "../../store/reducers/SeedBedsSlice";
-import { moveWorldByMouseAction, setIsPuttingSeedBedOfTypeAction, zoomAction } from "../../store/reducers/ViewNavigationSlice";
+import { createNewSeedBedAction, placeSeedBedAction } from "../../store/reducers/SeedBedsSlice";
+import { moveWorldByMouseAction, zoomAction } from "../../store/reducers/ViewNavigationSlice";
 import Field from "../Field";
 import Scale from "./Scale";
 import SeedBed from "../SeedBed";
 import MessageBar from "./MesageBar";
+import { DEPTH } from "../../helpers/constants";
+import useWindowDimensions from "../../hooks/useWindowDimensions";
 
 
 interface IAppViewProps {
@@ -24,15 +26,14 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     const worldZoom = useAppSelector(state => state.navigation.zoom);
     const worldPosition = useAppSelector(state => state.navigation.position);
     const isMovingAppView = useAppSelector(state => state.navigation.isMovingAppView);
-    const isPuttingSeedBedOfType = useAppSelector(selector => selector.navigation.isPuttingSeedBedOfType)
 
     const seedBeds = useAppSelector(state => state.seedBeds);
 
-    const mouseDownPosition = useAppSelector(selector => selector.navigation.mouseDownPosition);
+    const mouseDownPosition = useAppSelector(selector => selector.navigation.mouseDownStartPosition);
 
-    const menuWidth = useAppSelector(state => state.gui.menubarWidth);
+    const menuWidth = useAppSelector(state => state.gui.menuWidth);
     const toolbarHeight = useAppSelector(state => state.gui.toolbarHeight);
-    
+
     const [mouseStartDiffPosition, setMouseStartDiffPosition] = useState({ diffX: 0, diffY: 0 })
     const [isMouseDown, setIsMouseDown] = useState(false);
     const [isMiddleMouseDown, setIsMiddleMouseDown] = useState(false);
@@ -41,9 +42,15 @@ const AppView: React.FC<IAppViewProps> = (props) => {
 
     const movingByWorld = (isMouseDown && isMovingAppView) || isMiddleMouseDown;
 
+    const worldX = worldPosition.x + localWorldPosDiff.x;
+    const worldY = worldPosition.y + localWorldPosDiff.y;
+    const worldWidth = useAppSelector(state => state.navigation.worldWidth) * worldZoom;
+    const worldHeight = useAppSelector(state => state.navigation.worldHeight) * worldZoom;
+    const unplacedBed = seedBeds.find(seedBed => !seedBed.isPlaced);
+
     const zoom = (e: any) => {
         let delta = e.deltaY || 0;
-        dispatch(zoomAction(delta))
+        dispatch(zoomAction({zoomDirection : delta, menuWidth}))
     }
 
     const mouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -51,31 +58,63 @@ const AppView: React.FC<IAppViewProps> = (props) => {
         setIsMouseDown(true);
         setIsMiddleMouseDown(e.button == 1);
 
-        if (isPuttingSeedBedOfType) {
-            dispatch(setIsPuttingSeedBedOfTypeAction(undefined));
+        if (unplacedBed) {
             var rect = (e.target as HTMLDivElement).getBoundingClientRect();
 
             let x = (e.clientX - rect.left) / worldZoom;
             let y = (e.clientY - rect.top) / worldZoom;
-            dispatch(createNewSeedBedAction({ position: { x, y }, plant: isPuttingSeedBedOfType }))
+
+
+            let position: IPosition = { x: unplacedBed.x, y: unplacedBed.y };
+            position = { x: (mousePosition.x - worldPosition.x) / worldZoom - unplacedBed.width / 2, y: (mousePosition.y - worldPosition.y) / worldZoom - unplacedBed.height / 2 };
+
+
+            dispatch(placeSeedBedAction({ id: unplacedBed.id, position }));
+
         }
     }
 
+    const { browserHeight, browserWidth } = useWindowDimensions();
     const mouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (movingByWorld) {
             let newLocalPosDiffX = (e.clientX - worldPosition.x) - mouseStartDiffPosition.diffX;
             let newLocalPosDiffY = (e.clientY - worldPosition.y) - mouseStartDiffPosition.diffY;
+
+            //Check boundaries
+            if (worldX > 0 && newLocalPosDiffX > 0)
+                newLocalPosDiffX = localWorldPosDiff.x;
+            if (worldY > 0 && newLocalPosDiffY > 0)
+                newLocalPosDiffY = localWorldPosDiff.y;
+
+            if (browserWidth - worldWidth > worldX)
+                newLocalPosDiffX = localWorldPosDiff.x;
+            if (browserHeight - worldHeight > worldY)
+                newLocalPosDiffY = localWorldPosDiff.y;
+
+
             setLocalWorldPosDiff({ x: newLocalPosDiffX, y: newLocalPosDiffY })
         }
 
-        if (isPuttingSeedBedOfType) {
+        if (unplacedBed) {
             setMousePosition({ x: e.clientX, y: e.clientY });
         }
     }
 
     const mouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
         if (movingByWorld) {
-            dispatch(moveWorldByMouseAction({ x: e.clientX - mouseStartDiffPosition.diffX, y: e.clientY - mouseStartDiffPosition.diffY }));
+            let newX = e.clientX - mouseStartDiffPosition.diffX;
+            let newY = e.clientY - mouseStartDiffPosition.diffY;
+            if (newX > 0)
+                newX = 0;
+            if (newY > 0)
+                newY = 0;
+
+            if (browserWidth - worldWidth > newX)
+                newX = browserWidth - worldWidth;
+
+            if (browserHeight - worldHeight > newY)
+                newY = browserHeight - worldHeight;
+            dispatch(moveWorldByMouseAction({ x: newX, y: newY }));
             setLocalWorldPosDiff({ x: 0, y: 0 })
         }
         setIsMouseDown(false);
@@ -88,27 +127,33 @@ const AppView: React.FC<IAppViewProps> = (props) => {
         <div css={css`
             background-color: #777b17;
             overflow: hidden;
-            height: 100%;
             width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: ${DEPTH.APP_VIEW};
         `}>
             <div ref={viewElement} onDragOver={e => e.preventDefault()} onWheel={zoom} onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} css={css`
                 background-color: #777b77;
                 border: 1px solid green;
                 position: relative;
-                height: ${2000}%;
-                width: ${2000}%;
-                left: ${worldPosition.x + localWorldPosDiff.x}px;
-                top: ${worldPosition.y + localWorldPosDiff.y}px;
+                width: ${worldWidth}px;
+                height: ${worldHeight}px;
+                left: ${worldX}px;
+                top: ${worldY}px;
                 cursor: ${cursor};
             `}>
                 {seedBeds.map((seedBed, i) => {
                     let position: IPosition = { x: seedBed.x, y: seedBed.y };
                     if (!seedBed.isPlaced) {
-                        position = { x: mousePosition.x-worldPosition.x-menuWidth, y:mousePosition.y-worldPosition.y-toolbarHeight};
+                        position = { x: (mousePosition.x - worldPosition.x) / worldZoom - seedBed.width / 2, y: (mousePosition.y - worldPosition.y) / worldZoom - seedBed.height / 2 };
                     }
                     return <SeedBed key={"seed-bed-" + i} {...seedBed} {...position} />
                 })}
-                <Field x={1400} y={1000} width={400} height={500} />
+                <Field x={(browserWidth-menuWidth)/2 - 200 + menuWidth} y={(browserHeight-toolbarHeight)/2 - 250 + toolbarHeight} width={400} height={500} />
                 <Scale />
                 <MessageBar />
             </div>

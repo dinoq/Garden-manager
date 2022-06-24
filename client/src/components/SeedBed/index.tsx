@@ -30,13 +30,16 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
 
     const zoom = useAppSelector(selector => selector.navigation.zoom);
     const worldPos = useAppSelector(selector => selector.navigation.position);
+    const mouseDownStartPosition = useAppSelector(selector => selector.navigation.mouseDownStartPosition);
 
     const seedBedWidth = (localSeedBedSize.width > 0) ? localSeedBedSize.width * (zoom) : props.width * (zoom);
     const seedBedHeight = (localSeedBedSize.height > 0) ? localSeedBedSize.height * (zoom) : props.height * (zoom);
-    const seedBedX = (props.x + localSeedBedPosDiff.x) * (zoom);
-    const seedBedY = (props.y + localSeedBedPosDiff.y) * (zoom);
+
+    let seedBedX = (props.x + localSeedBedPosDiff.x) * (zoom);
+    let seedBedY = (props.y + localSeedBedPosDiff.y) * (zoom);
 
     const direction: Direction = Direction.HORIZONTAL;
+
 
     let plants;
 

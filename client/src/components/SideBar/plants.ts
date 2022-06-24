@@ -3,14 +3,15 @@ import { IPlant, PlantFamily, PlantSunRequirements, PlantYear } from "../../help
 
 let plantsDB: Array<IPlant>;
 const getPlantsDB = async (): Promise<Array<IPlant>> => {
-    if (!plantsDB)
+    if (!plantsDB) {
         plantsDB = await (await fetch("http://localhost:3001/vegetable")).json();
-    if(plantsDB){
-        plantsDB.forEach(plant => {
-            plant.betweenRowSpacing = (plant as any)["between-row-spacing"];
-            plant.growingPeriod = (plant as any)["growing-period"];
-            plant.inRowSpacing = (plant as any)["in-row-spacing"];
-        })
+        if (plantsDB) {
+            plantsDB.forEach(plant => {
+                plant.betweenRowSpacing = (plant as any)["between-row-spacing"];
+                plant.growingPeriod = (plant as any)["growing-period"];
+                plant.inRowSpacing = (plant as any)["in-row-spacing"];
+            })
+        }
     }
     return plantsDB;
 }

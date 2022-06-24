@@ -1,6 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
+import { DEPTH } from '../../helpers/constants';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setIsMovingAppViewAction } from '../../store/reducers/ViewNavigationSlice';
 import Calendar from './Calendar';
@@ -16,6 +17,7 @@ const Header: React.FC<{}> = () => {
             height: ${toolbarHeight}px;
             background-color: #a6a6a6;
             display: flex;
+            z-index: ${DEPTH.HEADER};
         `}>
 
             <ManipulationTools />
