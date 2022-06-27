@@ -20,7 +20,7 @@ const Field: React.FC<IFIeldProps> = (props) => {
         <div>
             <div css={css`
                 background-color: #434e43;
-                position: absolute;
+                position: relative;
                 width: ${width}px;
                 height: ${height}px;
                 left: ${x}px;

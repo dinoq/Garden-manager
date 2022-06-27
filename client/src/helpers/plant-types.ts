@@ -28,5 +28,5 @@ export interface IPlant {
     inRowSpacing: number,
     betweenRowSpacing: number,
     icon: string,
-    growing_season: number
+    growingPeriod: number
 }

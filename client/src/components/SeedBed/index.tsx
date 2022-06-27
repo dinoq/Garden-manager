@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { cmToPX } from '../../helpers/functions';
 import { IPlant } from '../../helpers/plant-types';
 import { Direction, IPosition, ISeedBed } from '../../helpers/types';
@@ -29,15 +29,27 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
     const [localSeedBedSize, setLocalSeedBedSize] = useState({ width: 0, height: 0 });
 
     const zoom = useAppSelector(selector => selector.navigation.zoom);
+    const worldPos = useAppSelector(selector => selector.navigation.position);
+    const mouseDownStartPosition = useAppSelector(selector => selector.navigation.mouseDownStartPosition);
 
     const seedBedWidth = (localSeedBedSize.width > 0) ? localSeedBedSize.width * (zoom) : props.width * (zoom);
     const seedBedHeight = (localSeedBedSize.height > 0) ? localSeedBedSize.height * (zoom) : props.height * (zoom);
-    const seedBedX = (props.x + localSeedBedPosDiff.x) * (zoom);
-    const seedBedY = (props.y + localSeedBedPosDiff.y) * (zoom);
+
+    let seedBedX = (props.x + localSeedBedPosDiff.x) * (zoom);
+    let seedBedY = (props.y + localSeedBedPosDiff.y) * (zoom);
 
     const direction: Direction = Direction.HORIZONTAL;
 
+
     let plants;
+
+    let initialSet = useRef(false);
+    useEffect(() => {
+        if (!props.isPlaced) {
+            
+        }
+
+    }, [])
 
     // HANDLERS
     const moveStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
@@ -56,7 +68,7 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
         dispatch(setIsMovingAppViewAction(false));
     }
 
-    const resizeHandler = (e: React.DragEvent<HTMLDivElement>, newWidth: number, newHeight: number) => {        
+    const resizeHandler = (e: React.DragEvent<HTMLDivElement>, newWidth: number, newHeight: number) => {
         setLocalSeedBedSize({ width: newWidth, height: newHeight });
     }
 
@@ -64,6 +76,17 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
         setLocalSeedBedSize({ width: 0, height: 0 });
         dispatch(updateWidthAction({ id: props.id, newWidth }))
         dispatch(updateHeightAction({ id: props.id, newHeight }))
+    }
+
+    const moveSeedBedIfNotPlaced = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!props.isPlaced) {
+
+        }
+
+    }
+
+    const stopMoveSeedBed = (e: React.MouseEvent<HTMLDivElement>) => {
+
     }
 
 
@@ -83,10 +106,10 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
 
     let inRowCount = Math.floor(seedBedWidth / (cmToPX(props.plant.inRowSpacing, zoom) + cmToPX(1, zoom)));
     let RowsCount = Math.floor(seedBedHeight / (cmToPX(props.plant.betweenRowSpacing, zoom) + cmToPX(1, zoom)));
-    const plantCount = RowsCount*inRowCount;
+    const plantCount = RowsCount * inRowCount;
 
     let seeds: Array<any> = Array();
-    for (let i = 0; i < (RowsCount*inRowCount) && i < 10; i++) {
+    for (let i = 0; i < (RowsCount * inRowCount) && i < 10; i++) {
         seeds.push(<SeedCircle {...props} key={"sees-bed-" + i} />)
     }
     return (
@@ -108,8 +131,8 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
             {seeds}
             <div css={css`
                 background-color: #dddddd;
-                left: ${(seedBedWidth-25)/2}px;
-                top: ${(seedBedHeight-70)/2}px;
+                left: ${(seedBedWidth - 25) / 2}px;
+                top: ${(seedBedHeight - 70) / 2}px;
                 position: absolute;
             `}>
                 ({plantCount})

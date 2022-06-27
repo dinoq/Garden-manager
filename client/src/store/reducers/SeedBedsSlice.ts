@@ -28,10 +28,16 @@ const SeedBedsSlice = createSlice({
         },
         createNewSeedBedAction: (state: Array<ISeedBed>, action: PayloadAction<{position: IPosition, plant: IPlant}>) => {
             const id = state.length;
-            state.push({id, width: 50, height: 50, plant: action.payload.plant, ...action.payload.position})
+            state.push({id, width: 50, height: 50, plant: action.payload.plant, ...action.payload.position, isPlaced: false})
+        },
+        placeSeedBedAction: (state: Array<ISeedBed>, action: PayloadAction<{id: number, position: IPosition}>) => {
+            const seedBedID = action.payload.id;
+            state[seedBedID].isPlaced = true;
+            state[seedBedID].x = action.payload.position.x;
+            state[seedBedID].y = action.payload.position.y;
         }
     }
 })
 
-export const { updateWidthAction, updateHeightAction, updatePositionAction, createNewSeedBedAction } = SeedBedsSlice.actions;
+export const { updateWidthAction, updateHeightAction, updatePositionAction, createNewSeedBedAction, placeSeedBedAction } = SeedBedsSlice.actions;
 export default SeedBedsSlice.reducer;
