@@ -54,11 +54,9 @@ const ViewNavigationSlice = createSlice(
                         state.position.y = 0
                 } else if (zoomDirection < 0 && state.zoom < 10) { // zoom in
                     state.zoom += 0.1;
-                    let newStred = centerOfAppViewX + (state.worldWidth * 0.1 * (centerOfAppViewX / state.worldWidth));
-                    console.log('newStred: ', newStred);
-                    console.log('state.position.x: ', state.position.x);
-                    state.position.x = -(centerOfAppViewX - newStred) *1;
-                    console.log('state.position.x: ', state.position.x);
+                    /*let newStred = centerOfAppViewX + (state.worldWidth * 0.1 * (centerOfAppViewX / state.worldWidth));
+                    state.position.x = -(centerOfAppViewX - newStred) *1;*/
+                    
                 } else {
                     console.log('ERR state.zoom: ', state.zoom);
                     console.log('ERR zoomDirection: ', zoomDirection);
@@ -100,4 +98,46 @@ střed:
 500,500=550,550
 
 initX += initSize*zoomBy*(initX/initSize)
+################################
+
+
+Rect({x: -500, y: -500, w: 1000, h: 1000})
+*2
+
+relativeX = w/x= -1/2
+
+newW = 2000
+
+newX = newW * relativeX = -1000;
+
+################################
+
+Rect({x: -400, y: -400, w: 1000, h: 1000})
+*2
+
+relativeX = w/x= -0,4
+
+newW = 2000
+
+newX = newW * relativeX = -800;
+
+
+################################
+
+Rect({x: -400, y: -400, w: 1000, h: 1000})
+*1,2
+
+relativeX = w/x= -0,4
+
+newW = 1200
+
+newX = newW * relativeX = -480;
+
+
+
+
+
+
+
+
 */
