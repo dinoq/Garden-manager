@@ -32,11 +32,12 @@ const SideBar: React.FC<{}> = () => {
         let plantName = (e.target as HTMLLIElement)?.textContent;
         if (plantName != undefined && plantName.length > 0)
             getPlantByName(plantName).then(plant => {
-                dispatch(setMouseDownPosition({ x: e.clientX, y: e.clientY }));
+                console.log('plant: ', plant);
+                /*dispatch(setMouseDownPosition({ x: e.clientX, y: e.clientY }));
                 if (plant) {
                     dispatch(createNewSeedBedAction({ position: { x: e.clientX - worldPos.x, y: - worldPos.y }, plant }))
                     console.log('worldPos.x: ', worldPos.x);
-                }
+                }*/
             })
     }
     return (
@@ -80,7 +81,7 @@ const SideBar: React.FC<{}> = () => {
                                 text-align: center;
                                 border-radius: 10px;
                                 user-select: none;
-                            `}>{plant.name}</li>
+                            `}>{plant.name/*.substring(0,1)*/}</li>
                             })}
                         </ul>
                     }
