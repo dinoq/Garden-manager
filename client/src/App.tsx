@@ -17,7 +17,15 @@ function App() {
                 dispatch(setIsMovingAppViewAction(false));
             }
         }
+
+        const preventMiddleButtonEventHandler = (e: MouseEvent) => {
+            if(e.button == 1){
+                e.preventDefault();
+            }
+        }
+
         document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('mousedown', preventMiddleButtonEventHandler);
 
         return function cleanup() {
             document.removeEventListener('keydown', handleKeyDown);
