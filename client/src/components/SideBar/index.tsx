@@ -71,6 +71,8 @@ const SideBar: React.FC<{}> = () => {
                         <ul css={css`
                             list-style-type: none;
                             padding-left: 0;
+                            height: 700px;
+                            overflow-y: scroll;
                     `}>
                             {plants.map((plant, i) => {
                                 return <li key={"plant-" + i} draggable="true" onClick={setNewUplacedSeedBed} css={css`

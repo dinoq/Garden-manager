@@ -10,11 +10,18 @@ export interface IPosition{
     y: number
 }
 
+export interface IAppObject extends IDimensions, IPosition{
+    id: number
+}
 
-export interface ISeedBed extends IDimensions, IPosition{
+export interface ISeedBed extends IAppObject{
     id: number, 
     plant: IPlant,
     isPlaced: boolean
+}
+
+export interface IField extends IAppObject{
+    id: number, 
 }
 
 export type IRect = IDimensions & IPosition;

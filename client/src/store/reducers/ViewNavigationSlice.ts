@@ -37,8 +37,10 @@ const ViewNavigationSlice = createSlice(
                 let centerOfAppViewX = state.position.x - halfOfVisibleAppViewX;
                 console.log('CenterOfAppViewX: ', centerOfAppViewX);
 
-                if (zoomDirection > 0 && state.zoom >= 0.0000001) { // zoom out
-                    state.zoom *= 0.5;
+                console.log('state.zoom: ', state.zoom);
+                if (zoomDirection > 0 && state.zoom >= 0.5) { // zoom out
+                    state.zoom -= 0.1;
+                    /*state.zoom *= 0.5;
                     let a = 1600 * state.zoom;
                     let newX = state.position.x + a;
 
@@ -51,11 +53,15 @@ const ViewNavigationSlice = createSlice(
                     if (newY < 0)
                         state.position.y = newY;
                     else
+                        state.position.y = 0*/
+                        state.position.x = 0
                         state.position.y = 0
-                } else if (zoomDirection < 0 && state.zoom < 10) { // zoom in
+                } else if (zoomDirection < 0 && state.zoom < 1.5) { // zoom in
                     state.zoom += 0.1;
                     /*let newStred = centerOfAppViewX + (state.worldWidth * 0.1 * (centerOfAppViewX / state.worldWidth));
                     state.position.x = -(centerOfAppViewX - newStred) *1;*/
+                        state.position.x = 0
+                        state.position.y = 0
                     
                 } else {
                     console.log('ERR state.zoom: ', state.zoom);

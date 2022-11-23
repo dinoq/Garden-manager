@@ -37,7 +37,8 @@ function App() {
         <div className="App" css={css`
             display: flex;
             flex-direction: column;
-            height: 100%;
+            height: 100vh;
+            width: 100vw;
         `}>
             <Header />
             <div css={css`               
