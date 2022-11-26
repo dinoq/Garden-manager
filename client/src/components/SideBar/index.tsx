@@ -6,6 +6,7 @@ import { IPlant } from '../../helpers/plant-types';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { createNewSeedBedAction } from '../../store/reducers/SeedBedsSlice';
 import { setMouseDownPosition } from '../../store/reducers/ViewNavigationSlice';
+import SearchFilter from './SearchFilter';
 import { getPlantByName, getPlantsByPartName } from './plants';
 
 const SideBar: React.FC<{}> = () => {
@@ -13,6 +14,7 @@ const SideBar: React.FC<{}> = () => {
 
     const menuWidth = useAppSelector(state => state.gui.menuWidth);
     const [inputSearch, setInputSearch] = useState("")
+    const [showFilter, setShowFilter] = useState(true);
     const [plants, setPlants] = useState<Array<IPlant>>([])
     const worldPos = useAppSelector(selector => selector.navigation.position);
 
@@ -22,10 +24,29 @@ const SideBar: React.FC<{}> = () => {
         })
     }, [])
 
+    useEffect(()=>{
+        if(showFilter){
+
+        }else{
+
+        }
+    }, [showFilter])
+
     const searchPlant = () => {
         getPlantsByPartName(inputSearch).then(plants => {
             setPlants(plants);
         })
+    }
+
+    const getFilterToggleBtn = (label: string)=>{
+        console.log("AAAAAAAA");
+        return (
+            <div onClick={()=>{setShowFilter((prevState)=>{return !prevState;})}} css={css`
+                background-color: red;
+                `}>
+                {label}
+            </div>
+        )
     }
 
     const setNewUplacedSeedBed = (e: React.MouseEvent<HTMLLIElement>) => {
@@ -59,19 +80,22 @@ const SideBar: React.FC<{}> = () => {
                     height: 30px;
                     border-radius: 5px;
                 `} type="search" name="search-plant" id="search-plant" />
-                    <button css={css`                
+                    {/* <button css={css`                
                     width: 100%;
                     height: 30px;
                     border-radius: 5px;
                 `}
-                        type="submit" onClick={searchPlant}>Vyhledat</button>
+                        type="submit" onClick={searchPlant}>Vyhledat</button> */}
+                        {showFilter && getFilterToggleBtn("Zrušit a skrýt filtr")}
+                        {!showFilter && getFilterToggleBtn("Zobrazit filtr")}
+                        {showFilter && <SearchFilter />}
                 </div>
                 <div>
                     {plants !== undefined && plants.length > 0 &&
                         <ul css={css`
                             list-style-type: none;
                             padding-left: 0;
-                            height: 700px;
+                            height: 600px;
                             overflow-y: scroll;
                     `}>
                             {plants.map((plant, i) => {
