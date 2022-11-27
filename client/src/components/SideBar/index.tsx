@@ -8,14 +8,22 @@ import { createNewSeedBedAction } from '../../store/reducers/SeedBedsSlice';
 import { setMouseDownPosition } from '../../store/reducers/ViewNavigationSlice';
 import SearchFilter from './SearchFilter';
 import { getPlantByName, getPlantsByPartName } from './plants';
+import SearchList from './SearchList';
+import { IAppObject } from '../../helpers/types';
 
+enum SEARCH_TYPE{
+    PLANTS,
+    OBJECTS,
+}
 const SideBar: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
 
     const menuWidth = useAppSelector(state => state.gui.menuWidth);
     const [inputSearch, setInputSearch] = useState("")
     const [showFilter, setShowFilter] = useState(true);
+    const [searchType, setSearchType] = useState<SEARCH_TYPE>(SEARCH_TYPE.PLANTS);
     const [plants, setPlants] = useState<Array<IPlant>>([])
+    const [objects, setObject] = useState<Array<IAppObject>>([])
     const worldPos = useAppSelector(selector => selector.navigation.position);
 
     useEffect(() => {
@@ -24,10 +32,10 @@ const SideBar: React.FC<{}> = () => {
         })
     }, [])
 
-    useEffect(()=>{
-        if(showFilter){
+    useEffect(() => {
+        if (showFilter) {
 
-        }else{
+        } else {
 
         }
     }, [showFilter])
@@ -38,10 +46,10 @@ const SideBar: React.FC<{}> = () => {
         })
     }
 
-    const getFilterToggleBtn = (label: string)=>{
+    const getFilterToggleBtn = (label: string) => {
         console.log("AAAAAAAA");
         return (
-            <div onClick={()=>{setShowFilter((prevState)=>{return !prevState;})}} css={css`
+            <div onClick={() => { setShowFilter((prevState) => { return !prevState; }) }} css={css`
                 background-color: red;
                 `}>
                 {label}
@@ -61,6 +69,8 @@ const SideBar: React.FC<{}> = () => {
                 }
             })
     }
+
+
     return (
         <div css={css`
         z-index: 100;
@@ -80,37 +90,13 @@ const SideBar: React.FC<{}> = () => {
                     height: 30px;
                     border-radius: 5px;
                 `} type="search" name="search-plant" id="search-plant" />
-                    {/* <button css={css`                
-                    width: 100%;
-                    height: 30px;
-                    border-radius: 5px;
-                `}
-                        type="submit" onClick={searchPlant}>Vyhledat</button> */}
-                        {showFilter && getFilterToggleBtn("Zrušit a skrýt filtr")}
-                        {!showFilter && getFilterToggleBtn("Zobrazit filtr")}
-                        {showFilter && <SearchFilter />}
+                    {showFilter && getFilterToggleBtn("Zrušit a skrýt filtr")}
+                    {!showFilter && getFilterToggleBtn("Zobrazit filtr")}
+                    {showFilter && <SearchFilter selectionChanged={(index: number)=>{setSearchType(index)}} />}
                 </div>
                 <div>
-                    {plants !== undefined && plants.length > 0 &&
-                        <ul css={css`
-                            list-style-type: none;
-                            padding-left: 0;
-                            height: 600px;
-                            overflow-y: scroll;
-                    `}>
-                            {plants.map((plant, i) => {
-                                return <li key={"plant-" + i} draggable="true" onClick={setNewUplacedSeedBed} css={css`
-                                cursor: pointer;
-                                padding: 15px;
-                                background-color: #626262;
-                                //color: white;
-                                color: rgba(255, 255, 255, 0.041);
-                                text-align: center;
-                                border-radius: 10px;
-                                user-select: none;
-                            `}>{plant.name/*.substring(0,1)*/}</li>
-                            })}
-                        </ul>
+                    {searchType === SEARCH_TYPE.PLANTS && plants !== undefined && plants.length > 0 &&
+                        <SearchList items={searchType === SEARCH_TYPE.PLANTS? plants : objects} setNewUplacedSeedBed={setNewUplacedSeedBed} />
                     }
                 </div>
             </div>

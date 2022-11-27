@@ -17,7 +17,7 @@ const FieldSlice = createSlice({
             const id = state.length;
             let { position: pos, dimensions: dim }= action.payload;
             
-            state.push({id, width: dim.width, height: dim.height, x: pos.x, y: pos.y})
+            state.push({id, width: dim.width, height: dim.height, x: pos.x, y: pos.y, name: id.toString()})
         },
         /*updateWidthAction: (state: Array<IAppObject>, action: PayloadAction<{ id: number, newWidth: number }>) => {
             const index = state.findIndex(seedBed => seedBed.id === action.payload.id);

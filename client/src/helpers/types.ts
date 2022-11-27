@@ -11,7 +11,8 @@ export interface IPosition{
 }
 
 export interface IAppObject extends IDimensions, IPosition{
-    id: number
+    id: number,
+    name: string
 }
 
 export interface ISeedBed extends IAppObject{
