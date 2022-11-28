@@ -3,7 +3,7 @@
 import { jsx } from '@emotion/react';
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import { useAppSelector } from '../../../hooks';
+import { useAppSelector } from '../../../hooks/useAppSelector';
 import MovePoint from '../../MovePoint';
 
 const Scale: React.FC<{}> = () => {

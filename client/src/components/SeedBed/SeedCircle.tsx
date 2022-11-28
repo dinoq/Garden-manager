@@ -4,7 +4,7 @@ import { jsx } from '@emotion/react';
 import { css } from '@emotion/react';
 import { ISeedBedProps } from '.';
 import { cmToPX } from '../../helpers/functions';
-import { useAppSelector } from '../../hooks';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 interface ISeedCircle extends ISeedBedProps{
 

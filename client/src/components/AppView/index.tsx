@@ -3,7 +3,7 @@
 import { css, jsx } from "@emotion/react";
 import { useRef, useState } from "react";
 import { IPosition } from "../../helpers/types";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/useAppSelector";
 import { createNewSeedBedAction, placeSeedBedAction } from "../../store/reducers/SeedBedsSlice";
 import { moveWorldByMouseAction, zoomAction } from "../../store/reducers/ViewNavigationSlice";
 import Field from "../Field";

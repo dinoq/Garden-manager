@@ -3,13 +3,14 @@
 import { jsx, css } from '@emotion/react';
 import React, { MouseEventHandler, useEffect, useState } from 'react';
 import { IPlant } from '../../helpers/plant-types';
-import { useAppDispatch, useAppSelector } from '../../hooks';
 import { createNewSeedBedAction } from '../../store/reducers/SeedBedsSlice';
 import { setMouseDownPosition } from '../../store/reducers/ViewNavigationSlice';
 import SearchFilter from './SearchFilter';
-import { getPlantByName, getPlantsByPartName } from './plants';
 import SearchList from './SearchList';
 import { IAppObject } from '../../helpers/types';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import useDB from '../../hooks/useDB';
 
 enum SEARCH_TYPE{
     PLANTS,
@@ -22,15 +23,16 @@ const SideBar: React.FC<{}> = () => {
     const [inputSearch, setInputSearch] = useState("")
     const [showFilter, setShowFilter] = useState(true);
     const [searchType, setSearchType] = useState<SEARCH_TYPE>(SEARCH_TYPE.PLANTS);
-    const [plants, setPlants] = useState<Array<IPlant>>([])
+    //const [plants, setPlants] = useState<Array<IPlant>>([])
     const [objects, setObject] = useState<Array<IAppObject>>([])
     const worldPos = useAppSelector(selector => selector.navigation.position);
-
+    const plants = useDB("vegetable");
+    /*
     useEffect(() => {
         getPlantsByPartName(inputSearch).then(plants => {
             setPlants(plants);
         })
-    }, [])
+    }, [])*/
 
     useEffect(() => {
         if (showFilter) {
@@ -40,10 +42,30 @@ const SideBar: React.FC<{}> = () => {
         }
     }, [showFilter])
 
-    const searchPlant = () => {
-        getPlantsByPartName(inputSearch).then(plants => {
-            setPlants(plants);
+    const getPlantByName = async (name: string): Promise<IPlant | undefined> => {
+        return plants? plants.find((plant:any) => plant.name == name) : undefined;
+    }
+    
+    
+    const getPlantsByPartName = async (partName: string): Promise<Array<IPlant>> => {
+        if (partName === undefined || partName.length === 0)
+            return plants.sort((a: any, b: any) => (a.name > b.name ? -1 : 1))
+    
+        partName = partName.toLocaleLowerCase();
+        const searchedPlants: Array<IPlant> = plants.filter((plant: any) => { return plant.name.toLocaleLowerCase().includes(partName) }); //"exact" match first
+        plants.forEach((plant: any) => {
+            let chars = [...new Set(partName)];
+            if (chars.every(char => plant.name.toLocaleLowerCase().includes(char)) && !searchedPlants.includes(plant)) {
+                searchedPlants.push(plant);
+            }
         })
+        return searchedPlants;
+    }
+    
+    const searchPlant = () => {
+        /*getPlantsByPartName(inputSearch).then(plants => {
+            setPlants(plants);
+        })*/
     }
 
     const getFilterToggleBtn = (label: string) => {

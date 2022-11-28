@@ -4,7 +4,7 @@ import { jsx, css } from '@emotion/react';
 import Header from "./components/Header";
 import SideBar from "./components/SideBar";
 import AppView from "./components/AppView";
-import { useAppDispatch } from './hooks';
+import { useAppDispatch } from './hooks/useAppSelector';
 import { useEffect } from 'react';
 import { setIsMovingAppViewAction } from './store/reducers/ViewNavigationSlice';
 

@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/react';
 import { css } from '@emotion/react';
-import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/useAppSelector";
 import { setIsMovingAppViewAction } from '../../../store/reducers/ViewNavigationSlice';
 
 

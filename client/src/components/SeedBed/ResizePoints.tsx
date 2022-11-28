@@ -3,7 +3,7 @@
 import { jsx, css } from '@emotion/react';
 import React, { useState } from 'react';
 import { dragPointSize } from '.';
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/useAppSelector";
 import { updateHeightAction, updateWidthAction } from '../../store/reducers/SeedBedsSlice';
 
 interface IResizePointsProps {

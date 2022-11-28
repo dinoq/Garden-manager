@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { cmToPX } from '../../helpers/functions';
 import { IPlant } from '../../helpers/plant-types';
 import { Direction, IPosition, ISeedBed } from '../../helpers/types';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/useAppSelector';
 import { updateHeightAction, updatePositionAction, updateWidthAction } from '../../store/reducers/SeedBedsSlice';
 import { setIsMovingAppViewAction } from '../../store/reducers/ViewNavigationSlice';
 import DetailIcon from './DetailIcon';

@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import { IRect } from "../../helpers/types";
-import { useAppSelector } from "../../hooks";
+import { useAppSelector } from "../../hooks/useAppSelector";
 
 
 interface IFIeldProps extends IRect {

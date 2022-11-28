@@ -1,5 +1,5 @@
 
-import { IPlant, PlantFamily, PlantSunRequirements, PlantYear } from "../../helpers/plant-types";
+import { IPlant, PlantFamily, PlantSunRequirements, PlantYear } from "./plant-types";
 
 let plantsDB: Array<IPlant>;
 const getPlantsDB = async (): Promise<Array<IPlant>> => {
