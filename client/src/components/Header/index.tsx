@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { DEPTH } from '../../helpers/constants';
-import { useAppDispatch, useAppSelector } from '../../hooks/useAppSelector';
+import { useAppSelector } from '../../hooks/useAppSelector';
 import { setIsMovingAppViewAction } from '../../store/reducers/ViewNavigationSlice';
 import Calendar from './Calendar';
 import ManipulationTools from './ManipulationTools';
@@ -11,6 +11,8 @@ import ManipulationTools from './ManipulationTools';
 const Header: React.FC<{}> = () => {
 
     const toolbarHeight = useAppSelector(state => state.gui.toolbarHeight);
+    const hideGUI = useAppSelector(state=> state.gui.hideGUI);
+
     return (
         <div css={css`
             width: 100%;
@@ -20,8 +22,8 @@ const Header: React.FC<{}> = () => {
             z-index: ${DEPTH.HEADER};
         `}>
 
-            <ManipulationTools />
-            <Calendar />
+            {!hideGUI && <ManipulationTools />}
+            {!hideGUI && <Calendar />}
 
         </div>
     )

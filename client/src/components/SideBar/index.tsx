@@ -102,7 +102,9 @@ const SideBar: React.FC<{}> = () => {
             height: 100%;
             width: ${menuWidth}px;
             background-color: #393946;
-            padding: 32px;
+            //padding: 32px;
+            display: flex;
+            flex-direction: column;
             z-index: 100;
         `}>
 

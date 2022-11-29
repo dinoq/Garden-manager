@@ -3,7 +3,7 @@
 import { css, jsx } from "@emotion/react";
 import { useRef, useState } from "react";
 import { IPosition } from "../../helpers/types";
-import { useAppDispatch, useAppSelector } from "../../hooks/useAppSelector";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { createNewSeedBedAction, placeSeedBedAction } from "../../store/reducers/SeedBedsSlice";
 import { moveWorldByMouseAction, zoomAction } from "../../store/reducers/ViewNavigationSlice";
 import Field from "../Field";
@@ -12,6 +12,7 @@ import SeedBed from "../SeedBed";
 import MessageBar from "./MesageBar";
 import { DEPTH } from "../../helpers/constants";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
+import { useAppSelector } from "../../hooks/useAppSelector";
 
 
 interface IAppViewProps {
@@ -129,11 +130,11 @@ const AppView: React.FC<IAppViewProps> = (props) => {
             overflow: hidden;
             width: 100%;
             height: 100%;
-            position: absolute;
+            /* position: absolute;
             left: 0;
             right: 0;
             top: 0;
-            bottom: 0;
+            bottom: 0; */
             z-index: ${DEPTH.APP_VIEW};
         `}>
             <div ref={viewElement} onDragOver={e => e.preventDefault()} onWheel={zoom} onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} css={css`

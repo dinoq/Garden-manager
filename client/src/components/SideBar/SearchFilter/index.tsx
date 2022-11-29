@@ -1,6 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
+import { useAppSelector } from '../../../hooks/useAppSelector';
 import FilterSwitch from '../FilterSwitch';
 
 interface ISearchFilterProps {
@@ -8,10 +9,10 @@ interface ISearchFilterProps {
 }
 
 const SearchFilter: React.FC<ISearchFilterProps> = (props) => {
-
+    const hideGUI = useAppSelector(state=> state.gui.hideGUI);
     return (
         <div>
-            <FilterSwitch options={["plants.png", "objects.png"]} optionType={'imgSrc'} selectionChanged={props.selectionChanged}/>
+            {<FilterSwitch options={["plants.png", "objects.png"]} optionType={'imgSrc'} selectionChanged={props.selectionChanged}/>}
         </div>
     )
 }

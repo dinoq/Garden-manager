@@ -4,7 +4,7 @@ import { jsx, css } from '@emotion/react';
 import Header from "./components/Header";
 import SideBar from "./components/SideBar";
 import AppView from "./components/AppView";
-import { useAppDispatch } from './hooks/useAppSelector';
+import { useAppDispatch } from './hooks/useAppDispatch';
 import { useEffect } from 'react';
 import { setIsMovingAppViewAction } from './store/reducers/ViewNavigationSlice';
 
@@ -39,12 +39,14 @@ function App() {
             flex-direction: column;
             height: 100vh;
             width: 100vw;
+            overflow: hidden;
         `}>
             <Header />
             <div css={css`               
                 flex-grow: 1;
                 display: flex;
                 flex-direction: row;
+                overflow: hidden;
             `}>
                 <SideBar />
                 <AppView />
