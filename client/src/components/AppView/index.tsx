@@ -9,7 +9,7 @@ import { moveWorldByMouseAction, zoomAction } from "../../store/reducers/ViewNav
 import Field from "../Field";
 import Scale from "./Scale";
 import SeedBed from "../SeedBed";
-import MessageBar from "./MesageBar";
+import MessageBar from "../MesageBar";
 import { DEPTH } from "../../helpers/constants";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { useAppSelector } from "../../hooks/useAppSelector";
