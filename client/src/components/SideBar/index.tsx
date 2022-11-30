@@ -96,11 +96,13 @@ const SideBar: React.FC<{}> = () => {
     return (
         <div css={css`
         z-index: 100;
+        height: 100%;
     `}>
 
             <div css={css`
             height: 100%;
-            width: ${menuWidth}px;
+            //width: ${menuWidth}px;
+            padding: 10px;
             background-color: #393946;
             //padding: 32px;
             display: flex;
@@ -118,7 +120,9 @@ const SideBar: React.FC<{}> = () => {
                     {!showFilter && getFilterToggleBtn("Zobrazit filtr")}
                     {showFilter && <SearchFilter selectionChanged={(index: number)=>{setSearchType(index)}} />}
                 </div>
-                <div>
+                <div css={css`
+                    overflow: hidden;
+                    `}>
                     {searchType === SEARCH_TYPE.PLANTS && plants !== undefined && plants.length > 0 &&
                         <SearchList items={searchType === SEARCH_TYPE.PLANTS? plants : objects} setNewUplacedSeedBed={setNewUplacedSeedBed} />
                     }

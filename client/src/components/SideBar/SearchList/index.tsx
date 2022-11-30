@@ -16,7 +16,7 @@ const SearchList: React.FC<ICategory> = (props) => {
         <ul css={css`
             list-style-type: none;
             padding-left: 0;
-            //height: 600px;
+            height: 100%;
             overflow-y: scroll;
     `}>
             {props.items.map((item, i) => {

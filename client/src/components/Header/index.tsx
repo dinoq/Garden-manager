@@ -16,7 +16,7 @@ const Header: React.FC<{}> = () => {
     return (
         <div css={css`
             width: 100%;
-            height: ${toolbarHeight}px;
+            height: 100%;
             background-color: #a6a6a6;
             display: flex;
             z-index: ${DEPTH.HEADER};
