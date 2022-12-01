@@ -69,7 +69,6 @@ const SideBar: React.FC<{}> = () => {
     }
 
     const getFilterToggleBtn = (label: string) => {
-        console.log("AAAAAAAA");
         return (
             <div onClick={() => { setShowFilter((prevState) => { return !prevState; }) }} css={css`
                 background-color: red;

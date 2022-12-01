@@ -7,9 +7,12 @@ import AppView from "../AppView";
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useEffect } from 'react';
 import { setIsMovingAppViewAction } from '../../store/reducers/ViewNavigationSlice';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 function AppLayout() {
     const dispatch = useAppDispatch();
+    const menuWidth = useAppSelector(state => state.gui.menuWidth);
+    const toolbarHeight = useAppSelector(state => state.gui.toolbarHeight);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -32,28 +35,6 @@ function AppLayout() {
         }
     }, []);
 
-    /**
-     * 
-     
-            <div className="App" css={css`
-                display: flex;
-                flex-direction: column;
-                height: 100vh;
-                width: 100vw;
-                overflow: hidden;
-            `}>
-                <Header />
-                <div css={css`               
-                    flex-grow: 1;
-                    display: flex;
-                    flex-direction: row;
-                    overflow: hidden;
-                `}>
-                    <SideBar />
-                    <AppView />
-                </div>
-            </div>
-     */
     return (
         <div css={css`
             display: flex;
@@ -63,7 +44,7 @@ function AppLayout() {
             overflow: hidden;
         `}>
             <div css={css`
-                height: 20vh;
+                height: ${toolbarHeight}px;
                 width: 100vw;
                 background-color: #00182e;
             `}>
@@ -72,23 +53,23 @@ function AppLayout() {
             <div css={css`
                 display: flex;
                 flex-direction: row;
-                height: 80vh;
+                height: calc(100vh - ${toolbarHeight}px);
                 width: 100vw;
             `}>
                 <div css={css`
                     height: 100%;
-                    width: 20vw;
+                    width: ${menuWidth}px;
                     background-color: #002b0e;
                 `}>
                     <SideBar />
-                    
+
                 </div>
                 <div css={css`
                     height: 100%;
-                    width: 80vw;
+                    width: calc(100vw - ${menuWidth}px);
                     background-color: #0a0030;
                 `}>
-                    RS
+                    <AppView />
                 </div>
 
             </div>

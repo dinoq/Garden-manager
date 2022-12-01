@@ -7,7 +7,7 @@ interface IGUISlice{
     hideGUI: boolean
 }
 const initialState: IGUISlice = {
-    menuWidth: 250,
+    menuWidth: 300,
     toolbarHeight: 150,
     hideGUI: true
 }

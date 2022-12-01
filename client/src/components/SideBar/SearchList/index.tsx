@@ -20,7 +20,7 @@ const SearchList: React.FC<ICategory> = (props) => {
             overflow-y: scroll;
     `}>
             {props.items.map((item, i) => {
-                return <ListItem index={i} item={item} setNewUplacedSeedBed={props.setNewUplacedSeedBed} />
+                return <ListItem key={"search-list-item-" + i} index={i} item={item} setNewUplacedSeedBed={props.setNewUplacedSeedBed} />
             })}
         </ul>
     )
