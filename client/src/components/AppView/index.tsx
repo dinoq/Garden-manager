@@ -28,38 +28,25 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     const worldZoom = useAppSelector(state => state.navigation.zoom);
     const worldPosition = useAppSelector(state => state.navigation.position);
     const isMovingAppView = useAppSelector(state => state.navigation.isMovingAppView);
-
     const seedBeds = useAppSelector(state => state.seedBeds);
-
-    const mouseDownPosition = useAppSelector(selector => selector.navigation.mouseDownStartPosition);
-
     const menuWidth = useAppSelector(state => state.gui.menuWidth);
     const toolbarHeight = useAppSelector(state => state.gui.toolbarHeight);
-
-    const [mouseStartDiffPosition, setMouseStartDiffPosition] = useState({ diffX: 0, diffY: 0 })
-    const [isMouseDown, setIsMouseDown] = useState(false);
-    const [isMiddleMouseDown, setIsMiddleMouseDown] = useState(false);
-    const [localWorldPosDiff, setLocalWorldPosDiff] = useState<IPosition>({ x: 0, y: 0 })
-    const [mousePosition, setMousePosition] = useState<IPosition>({ x: 0, y: 0 })
-
-    //const locWP = useLocalCoordinates(0, (state)=>{state.navigation.position.x});
-
-    const movingByWorld = (isMouseDown && isMovingAppView) || isMiddleMouseDown;
-
-    /*const worldPos.x = worldPosition.x + localWorldPosDiff.x;
-    const worldPos.y = worldPosition.y + localWorldPosDiff.y;*/
-
-    const { pos: worldPos, updateLocal, updateGlobal } = useLocalCoordinates(state => state.navigation.position);
-    console.log('worldPos: ', worldPos);
-
     const worldWidth = useAppSelector(state => state.navigation.worldWidth) * worldZoom;
     const worldHeight = useAppSelector(state => state.navigation.worldHeight) * worldZoom;
+
+    const [isMouseDown, setIsMouseDown] = useState(false);
+    const [isMiddleMouseDown, setIsMiddleMouseDown] = useState(false);
+    const [mouseAppViewPosition, setMouseAppViewPosition] = useState<IPosition>({ x: 0, y: 0 })
+
+    
+    const { pos: worldPos, updateLocal, updateGlobal, setMouseStartDiffPosition } = useLocalCoordinates(state => state.navigation.position);
+
+    const movingByWorld = (isMouseDown && isMovingAppView) || isMiddleMouseDown;
+    const cursor = isMovingAppView ? (isMouseDown ? "grabbing" : "grab") : "default";
     const unplacedBed = seedBeds.find(seedBed => !seedBed.isPlaced);
 
-    const zoom = (e: any) => {
-        let delta = e.deltaY || 0;
-        dispatch(zoomAction({ zoomDirection: delta, menuWidth }))
-    }
+    const zoom = (e: any) => dispatch(zoomAction({ zoomDirection: e.deltaY || 0, menuWidth }))
+    
 
     const mouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         setMouseStartDiffPosition({ diffX: e.clientX - worldPosition.x, diffY: e.clientY - worldPosition.y })
@@ -67,82 +54,37 @@ const AppView: React.FC<IAppViewProps> = (props) => {
         setIsMiddleMouseDown(e.button == 1);
 
         if (unplacedBed) {
-            var rect = (e.target as HTMLDivElement).getBoundingClientRect();
-
-            let x = (e.clientX - rect.left) / worldZoom;
-            let y = (e.clientY - rect.top) / worldZoom;
-
-
             let position: IPosition = { x: unplacedBed.x, y: unplacedBed.y };
-            position = { x: (mousePosition.x - worldPosition.x) / worldZoom - unplacedBed.width / 2, y: (mousePosition.y - worldPosition.y) / worldZoom - unplacedBed.height / 2 };
-
+            position = { x: mouseAppViewPosition.x - unplacedBed.width / 2, y: mouseAppViewPosition.y - unplacedBed.height / 2 };
 
             dispatch(placeSeedBedAction({ id: unplacedBed.id, position }));
 
         }
     }
 
-    const { browserHeight, browserWidth } = useWindowDimensions();
     const mouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (movingByWorld) {
-            updateLocal(e, mouseStartDiffPosition)
-            /*let newLocalPosDiffX = (e.clientX - worldPosition.x) - mouseStartDiffPosition.diffX;
-            let newLocalPosDiffY = (e.clientY - worldPosition.y) - mouseStartDiffPosition.diffY;
-
-            //Check boundaries
-            if (worldPos.x > 0 && newLocalPosDiffX > 0)
-                newLocalPosDiffX = localWorldPosDiff.x;
-            if (worldPos.y > 0 && newLocalPosDiffY > 0)
-                newLocalPosDiffY = localWorldPosDiff.y;
-
-            if (browserWidth - worldWidth > worldPos.x)
-                newLocalPosDiffX = localWorldPosDiff.x;
-            if (browserHeight - worldHeight > worldPos.y)
-                newLocalPosDiffY = localWorldPosDiff.y;
-
-
-            setLocalWorldPosDiff({ x: newLocalPosDiffX, y: newLocalPosDiffY })*/
+            updateLocal(e)
         }
 
         if (unplacedBed) {
-            setMousePosition({ x: e.clientX, y: e.clientY });
+            setMouseAppViewPosition({ x: ((e.clientX - worldPosition.x) / worldZoom) -  menuWidth, y: ((e.clientY - worldPosition.y) / worldZoom) - toolbarHeight });
         }
     }
 
     const mouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
         if (movingByWorld) {
-            updateGlobal(e, mouseStartDiffPosition)
-            /*let newX = e.clientX - mouseStartDiffPosition.diffX;
-            let newY = e.clientY - mouseStartDiffPosition.diffY;
-            if (newX > 0)
-                newX = 0;
-            if (newY > 0)
-                newY = 0;
-
-            if (browserWidth - worldWidth > newX)
-                newX = browserWidth - worldWidth;
-
-            if (browserHeight - worldHeight > newY)
-                newY = browserHeight - worldHeight;
-            dispatch(moveWorldByMouseAction({ x: newX, y: newY }));
-            setLocalWorldPosDiff({ x: 0, y: 0 })*/
+            updateGlobal(e)
         }
         setIsMouseDown(false);
         setIsMiddleMouseDown(false);
     }
-
-    const cursor = isMovingAppView ? (isMouseDown ? "grabbing" : "grab") : "default";
 
     return (
         <div css={css`
             overflow: hidden;
             width: 100%;
             height: 100%;
-            /* position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0; */
             z-index: ${DEPTH.APP_VIEW};
         `}>
             <div ref={viewElement} onDragOver={e => e.preventDefault()} onWheel={zoom} onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} css={css`
@@ -155,14 +97,14 @@ const AppView: React.FC<IAppViewProps> = (props) => {
                 top: ${worldPos.y}px;
                 cursor: ${cursor};
             `}>
-                {/*seedBeds.map((seedBed, i) => {
+                {seedBeds.map((seedBed, i) => {
                     let position: IPosition = { x: seedBed.x, y: seedBed.y };
                     if (!seedBed.isPlaced) {
-                        position = { x: (mousePosition.x - worldPosition.x) / worldZoom - seedBed.width / 2, y: (mousePosition.y - worldPosition.y) / worldZoom - seedBed.height / 2 };
+                        position = { x: mouseAppViewPosition.x - seedBed.width / 2, y: mouseAppViewPosition.y - seedBed.height / 2 };
                     }
                     return <SeedBed key={"seed-bed-" + i} {...seedBed} {...position} />
-                })*/}
-                <Field x={10/*(browserWidth-menuWidth)/2 - 200 + menuWidth*/} y={10/*(browserHeight-toolbarHeight)/2 - 250 + toolbarHeight*/} width={10} height={10} />
+                })}
+                <Field x={10/*(browserWidth-menuWidth)/2 - 200 + menuWidth*/} y={10/*(browserHeight-toolbarHeight)/2 - 250 + toolbarHeight*/} width={100} height={100} />
                 <Scale />
                 <MessageBar />
             </div>

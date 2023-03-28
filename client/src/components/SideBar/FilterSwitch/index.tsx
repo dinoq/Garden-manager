@@ -71,7 +71,7 @@ const FilterSwitch: React.FC<IFilterSwitchProps> = (props) => {
                 `}>
                 {props.options.map((opt, index) => {
                     return (
-                        <div id={"option" + index} onClick={setOptionSelected.bind(this, index)} css={css`
+                        <div id={"option" + index} key={"option" + index} onClick={setOptionSelected.bind(this, index)} css={css`
                                 background-image: url("./imgs/${opt}");
                                 background-repeat: no-repeat;
                                 background-position-x: ${getBgPosX(index)};

@@ -28,7 +28,8 @@ const SeedBedsSlice = createSlice({
         },
         createNewSeedBedAction: (state: Array<ISeedBed>, action: PayloadAction<{position: IPosition, plant: IPlant}>) => {
             const id = state.length;
-            state.push({id, width: 50, height: 50, plant: action.payload.plant, ...action.payload.position, isPlaced: false, name: id.toString()})
+            const plant = action.payload.plant;
+            state.push({id, width: plant.inRowSpacing? plant.inRowSpacing*2 : 50, height: plant.betweenRowSpacing? plant.betweenRowSpacing*2 : 50, plant, ...action.payload.position, isPlaced: false, name: id.toString()})
         },
         placeSeedBedAction: (state: Array<ISeedBed>, action: PayloadAction<{id: number, position: IPosition}>) => {
             const seedBedID = action.payload.id;

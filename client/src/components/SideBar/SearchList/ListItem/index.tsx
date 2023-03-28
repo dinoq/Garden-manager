@@ -19,7 +19,7 @@ const ListItem: React.FC<IListItem> = (props) => {
     padding: 15px;
     background-color: #626262;
     //color: white;
-    color: rgba(255, 255, 255, 0.041);
+    color: rgba(255, 255, 255, 0.1);
     text-align: center;
     border-radius: 10px;
     user-select: none;

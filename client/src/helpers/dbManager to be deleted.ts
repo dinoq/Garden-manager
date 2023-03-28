@@ -7,9 +7,22 @@ const getPlantsDB = async (): Promise<Array<IPlant>> => {
         plantsDB = await (await fetch("http://localhost:3001/vegetable")).json();
         if (plantsDB) {
             plantsDB.forEach(plant => {
-                plant.betweenRowSpacing = (plant as any)["between-row-spacing"];
                 plant.growingPeriod = (plant as any)["growing-period"];
-                plant.inRowSpacing = (plant as any)["in-row-spacing"];
+
+                const getFirstPart = (str: string, character: string): number =>{
+                    if(str.includes(character)){
+                        return parseInt(str.substring(str.indexOf(character)));
+                    }else{
+                        return parseInt(str);
+                    }
+                }
+                const betweenRowSpacingWithoutDash = getFirstPart(<string>(plant as any)["between-row-spacing"], "-").toString();
+                const inRowSpacingWithoutDash = getFirstPart(<string>(plant as any)["in-row-spacing"], "-").toString();
+                plant.betweenRowSpacing = getFirstPart(betweenRowSpacingWithoutDash, "/");
+                console.log('plant.betweenRowSpacing: ', plant.betweenRowSpacing);
+                plant.inRowSpacing = getFirstPart(inRowSpacingWithoutDash, "/");
+                console.log('plant.inRowSpacing: ', plant.inRowSpacing);
+                
             })
         }
     }

@@ -85,7 +85,7 @@ const SideBar: React.FC<{}> = () => {
                 console.log('plant: ', plant);
                 dispatch(setMouseDownPosition({ x: e.clientX, y: e.clientY }));
                 if (plant) {
-                    dispatch(createNewSeedBedAction({ position: { x: e.clientX - worldPos.x, y: - worldPos.y }, plant }))
+                    dispatch(createNewSeedBedAction({ position: { x: e.clientX - worldPos.x+menuWidth, y: - worldPos.y }, plant }))
                     console.log('worldPos.x: ', worldPos.x);
                 }
             })

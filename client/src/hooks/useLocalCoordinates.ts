@@ -5,9 +5,10 @@ import { moveWorldByMouseAction } from "../store/reducers/ViewNavigationSlice";
 import { useAppDispatch } from "./useAppDispatch";
 import { useAppSelector } from "./useAppSelector";
 
-const useLocalCoordinates = (/*coord: IPosition,*/ reduxLocation: (state: RootState)=>IPosition): {pos: IPosition, updateLocal: any, updateGlobal: any} => {
+const useLocalCoordinates = (/*coord: IPosition,*/ reduxLocation: (state: RootState)=>IPosition): {pos: IPosition, updateLocal: any, updateGlobal: any, setMouseStartDiffPosition: any} => {
     const dispatch = useAppDispatch();
     const [localPosDiff, setLocalPosDiff] = useState<IPosition>({x: 0, y: 0});
+    const [mouseStartDiffPosition, setMouseStartDiffPosition] = useState({ diffX: 0, diffY: 0 })
     const reduxPosition: IPosition = useAppSelector(state => reduxLocation(state))
     
     const posX = reduxPosition.x + localPosDiff.x;
@@ -16,14 +17,12 @@ const useLocalCoordinates = (/*coord: IPosition,*/ reduxLocation: (state: RootSt
         x: posX,
         y: posY
     }
-    console.log('pos: ', pos);
     
-    const updateLocal = (e: React.MouseEvent<HTMLDivElement>, mouseStartDiffPosition: any)=>{
+    const updateLocal = (e: React.MouseEvent<HTMLDivElement>)=>{
         let newLocalPosDiffX = (e.clientX - reduxPosition.x) - mouseStartDiffPosition.diffX;
         let newLocalPosDiffY = (e.clientY - reduxPosition.y) - mouseStartDiffPosition.diffY;
 
         //Check boundaries
-        console.warn("Check boundaries!");
         if (pos.x > 0 && newLocalPosDiffX > 0)
             newLocalPosDiffX = localPosDiff.x;
         if (pos.y > 0 && newLocalPosDiffY > 0)
@@ -39,7 +38,7 @@ const useLocalCoordinates = (/*coord: IPosition,*/ reduxLocation: (state: RootSt
 
     }
 
-    const updateGlobal = (e: React.MouseEvent<HTMLDivElement>, mouseStartDiffPosition: any) =>{
+    const updateGlobal = (e: React.MouseEvent<HTMLDivElement>) =>{
 
         let newX = e.clientX - mouseStartDiffPosition.diffX;
         let newY = e.clientY - mouseStartDiffPosition.diffY;
@@ -62,7 +61,8 @@ const useLocalCoordinates = (/*coord: IPosition,*/ reduxLocation: (state: RootSt
     return {
         pos,
         updateLocal,
-        updateGlobal
+        updateGlobal,
+        setMouseStartDiffPosition
     };
 }
 
