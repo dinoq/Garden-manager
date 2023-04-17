@@ -7,10 +7,10 @@ import GUIReducer from "./reducers/GUISlice";
 
 const store = configureStore({
     reducer: {
-        navigation: NavigationReducer,
-        seedBeds: SeedBedsReducer,
-        calendar: CalendarReducer,
-        gui: GUIReducer,
+        navigationReducer: NavigationReducer,
+        seedBedsReducer: SeedBedsReducer,
+        calendarReducer: CalendarReducer,
+        guiReducer: GUIReducer,
     }
 })
 

@@ -10,8 +10,8 @@ import ManipulationTools from './ManipulationTools';
 
 const Header: React.FC<{}> = () => {
 
-    const toolbarHeight = useAppSelector(state => state.gui.toolbarHeight);
-    const hideGUI = useAppSelector(state=> state.gui.hideGUI);
+    const toolbarHeight = useAppSelector(state => state.guiReducer.toolbarHeight);
+    const hideGUI = useAppSelector(state=> state.guiReducer.hideGUI);
 
     return (
         <div css={css`

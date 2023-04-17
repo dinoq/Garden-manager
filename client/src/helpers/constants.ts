@@ -1,13 +1,19 @@
-export enum DEPTH { // Depth of elements. From top...
-    SEEDBED = 100000,
+export enum DEPTH {
+    APP_VIEW,
+    FIELD,
+    SEEDBED,
+    SIDEBAR,
+    UNPLACED_SEEDBED,
+    
+    MESSAGE_BAR,
+    SCALE,
+    FIELD_EDITS,
 
     SEARCH_FILTER_SWITCH_SELECTOR,
     SEARCH_FILTER_SWITCH_OPTION,
-    
 
 
-    APP_VIEW= 10,
     HEADER,
-
+    CALENDAR
 }
 

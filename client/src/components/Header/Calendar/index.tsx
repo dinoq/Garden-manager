@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { setMonth, setQuarter, setYear } from '../../../store/reducers/CalendarSlice';
+import { DEPTH } from '../../../helpers/constants';
 
 
 
@@ -16,9 +17,9 @@ interface ICalendarProps {
 
 const Calendar: React.FC<ICalendarProps> = (props) => {
     const dispatch = useAppDispatch();
-    const year = useAppSelector(state => state.calendar.actualYear)
-    const month = useAppSelector(state => state.calendar.actualMonth)
-    const quarter = useAppSelector(state => state.calendar.actualQuarter)
+    const year = useAppSelector(state => state.calendarReducer.actualYear)
+    const month = useAppSelector(state => state.calendarReducer.actualMonth)
+    const quarter = useAppSelector(state => state.calendarReducer.actualQuarter)
 
     const calendarWidth = 150;
     const initialTimelineX = (calendarWidth / 2) + 5;
@@ -192,7 +193,7 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
                 bottom: 0;
                 left: 0;
                 right: 0;
-                z-index: 100000;
+                z-index: ${DEPTH.CALENDAR};
                 opacity: 0;
             `} onMouseMove={mouseMove} onMouseUp={mouseUp}>
 

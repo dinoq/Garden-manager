@@ -19,14 +19,28 @@ export enum PlantYear{
     UNKNOWN
 }
 
-export interface IPlant {
+export enum GrowthType{
+    REGULAR_THIRD,
+    FIRST_TWO_THIRD,
+    LAST_THIRD,
+    UNKNOWN
+}
+
+export interface IPlantDB{
+    ["growth-type"]: string
+}
+
+export interface IPlant extends IPlantDB{
     id: number,
     name: string,
     family: PlantFamily,
     position: PlantSunRequirements,
     year: PlantYear,
-    inRowSpacing: number,
-    betweenRowSpacing: number,
+    inRowSpacing: string,
+    inRowSpacingMin: number,
+    betweenRowSpacing: string,
+    betweenRowSpacingMin: number,
     icon: string,
-    growingPeriod: number
+    growingPeriod: number,
+    growthType: GrowthType
 }

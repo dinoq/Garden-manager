@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { dragPointSize } from ".";
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from "../../hooks/useAppSelector";
-import { updatePositionAction } from '../../store/reducers/SeedBedsSlice';
+import { updatePositionAction, updateSelectedSeedBed } from '../../store/reducers/SeedBedsSlice';
 
 interface IDragPointProps {
     id: number,
@@ -27,7 +27,7 @@ const DragPoint: React.FC<IDragPointProps> = (props) => {
     const [initialSeedBedPos, setInitialSeedBedPos] = useState({ x: 0, y: 0 })
     const [isMoving, setIsMoving] = useState(false);
     
-    const zoom = useAppSelector(selector => selector.navigation.zoom);
+    const zoom = useAppSelector(selector => selector.navigationReducer.zoom);
 
     const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) =>{
         setIsMoving(true);
@@ -54,9 +54,10 @@ const DragPoint: React.FC<IDragPointProps> = (props) => {
 
     return (
 
-        <div draggable="true" onDrag={dragHandler} onDragStart={dragStartHandler} onDragEnd={dragEndHandler}
-            css={css`
-        background: #3e3e3e;
+        <div draggable="true" onDrag={dragHandler} onDragStart={dragStartHandler} onDragEnd={dragEndHandler} onMouseDown={()=>{dispatch(updateSelectedSeedBed(props.id))}}
+            css={css`    
+        background: #3e3e3e54;
+        border: 1px solid #303030;
         width: ${dragPointSize}px;
         height: ${dragPointSize}px;
         position: absolute;

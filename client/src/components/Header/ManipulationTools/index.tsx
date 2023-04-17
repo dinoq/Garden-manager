@@ -13,7 +13,7 @@ interface IManipulationToolsProps{
 
 const ManipulationTools: React.FC<IManipulationToolsProps> = (props) => {
     const dispatch = useAppDispatch();
-    const isMovingAppView = useAppSelector(selector => selector.navigation.isMovingAppView)
+    const isMovingAppView = useAppSelector(selector => selector.navigationReducer.isMovingAppView)
     return (
         <div aria-label="Manipulation tools" css={css`
                 :before {

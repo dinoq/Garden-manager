@@ -9,7 +9,7 @@ interface ISearchFilterProps {
 }
 
 const SearchFilter: React.FC<ISearchFilterProps> = (props) => {
-    const hideGUI = useAppSelector(state=> state.gui.hideGUI);
+    const hideGUI = useAppSelector(state=> state.guiReducer.hideGUI);
     return (
         <div>
             {!hideGUI&& <FilterSwitch options={["plants.png", "objects.png"]} optionType={'imgSrc'} selectionChanged={props.selectionChanged}/>}

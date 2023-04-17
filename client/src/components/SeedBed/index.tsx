@@ -2,18 +2,20 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import React, { useEffect, useRef, useState } from "react";
-import { cmToPX } from '../../helpers/functions';
+import { zoomedFactory } from '../../helpers/functions';
 import { IPlant } from '../../helpers/plant-types';
 import { Direction, IPosition, ISeedBed } from '../../helpers/types';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import { updateHeightAction, updatePositionAction, updateWidthAction } from '../../store/reducers/SeedBedsSlice';
+import { changeRowsDirectionAction, updateHeightAction, updatePositionAction, updateSelectedSeedBed, updateWidthAction } from '../../store/reducers/SeedBedsSlice';
 import { setIsMovingAppViewAction } from '../../store/reducers/ViewNavigationSlice';
 import DetailIcon from './DetailIcon';
 import DragPoint from './DragPoint';
 import PlantDialog from './PlantDialog';
 import ResizePoints from './ResizePoints';
-import SeedCircle from './SeedCircle';
+import Plant, { ROWDIRECTIONS } from './Plant';
+import { DEPTH } from '../../helpers/constants';
+import RotateRowDirectionIcon from './RotateRowDirectionIcon';
 
 export interface ISeedBedProps extends ISeedBed {
 }
@@ -24,20 +26,24 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
     const dispatch = useAppDispatch();
 
     const resizable = true, draggable = true;
-    const [showDetailIcon, setShowDetailIcon] = useState(false);
+    const [showOnHoverIcon, setShowDetailIcon] = useState(false);
     const [showPlantDialog, setShowPlantDialog] = useState(false);
     const [localSeedBedPosDiff, setLocalSeedBedPosDiff] = useState<IPosition>({ x: 0, y: 0 })
     const [localSeedBedSize, setLocalSeedBedSize] = useState({ width: 0, height: 0 });
 
-    const zoom = useAppSelector(selector => selector.navigation.zoom);
-    const worldPos = useAppSelector(selector => selector.navigation.position);
-    const mouseDownStartPosition = useAppSelector(selector => selector.navigation.mouseDownStartPosition);
 
-    const seedBedWidth = (localSeedBedSize.width > 0) ? localSeedBedSize.width * (zoom) : props.width * (zoom);
-    const seedBedHeight = (localSeedBedSize.height > 0) ? localSeedBedSize.height * (zoom) : props.height * (zoom);
+    const zoom = useAppSelector(selector => selector.navigationReducer.zoom);
+    const zoomed = zoomedFactory(zoom);
+    const worldPos = useAppSelector(selector => selector.navigationReducer.position);
+    const mouseDownStartPosition = useAppSelector(selector => selector.navigationReducer.mouseDownStartPosition);
+    
+    const isSelected = useAppSelector((selector)=>selector.seedBedsReducer.selectedSeedBed==props.id);
 
-    let seedBedX = (props.x + localSeedBedPosDiff.x) * (zoom);
-    let seedBedY = (props.y + localSeedBedPosDiff.y) * (zoom);
+    const seedBedWidth = zoomed((localSeedBedSize.width > 0) ? localSeedBedSize.width : props.width);
+    const seedBedHeight = zoomed((localSeedBedSize.height > 0) ? localSeedBedSize.height : props.height);
+
+    let seedBedX = zoomed((props.x + localSeedBedPosDiff.x));
+    let seedBedY = zoomed((props.y + localSeedBedPosDiff.y));
 
     const direction: Direction = Direction.HORIZONTAL;
 
@@ -47,7 +53,7 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
     let initialSet = useRef(false);
     useEffect(() => {
         if (!props.isPlaced) {
-            
+
         }
 
     }, [])
@@ -105,31 +111,53 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
         setShowPlantDialog(true);
     }
 
-    let inRowCount = Math.floor(seedBedWidth / (cmToPX(props.plant.inRowSpacing, zoom) + cmToPX(1, zoom)));
-    let RowsCount = Math.floor(seedBedHeight / (cmToPX(props.plant.betweenRowSpacing, zoom) + cmToPX(1, zoom)));
-    const plantCount = RowsCount * inRowCount;
+    const seedBedWidthForCalculation = props.rowsDirection == ROWDIRECTIONS.LEFT_TO_RIGHT ? seedBedWidth : seedBedHeight;
+    let inRowCountDecimal = seedBedWidthForCalculation / (zoomed(props.plant.inRowSpacingMin));
+    let inRowCount = Math.floor(inRowCountDecimal);
+    console.log('inRowCount: ', inRowCount);
+    let inRowCountDecimalPart = inRowCountDecimal - inRowCount;
+    const inRowSeedShift = (zoomed(props.plant.inRowSpacingMin) * inRowCountDecimalPart) / 2;
+
+    const seedBedHeightForCalculation = props.rowsDirection == ROWDIRECTIONS.LEFT_TO_RIGHT ? seedBedHeight : seedBedWidth;
+    let rowsCountDecimal = seedBedHeightForCalculation / (zoomed(props.plant.betweenRowSpacingMin));
+    let rowsCount = Math.floor(rowsCountDecimal);
+    console.log('rowsCount: ', rowsCount);
+    let rowCountDecimalPart = rowsCountDecimal - rowsCount;
+    const rowSeedShift = (zoomed(props.plant.betweenRowSpacingMin) * rowCountDecimalPart) / 2;
+
+    const plantCount = rowsCount * inRowCount;
+
 
     let seeds: Array<any> = Array();
-    for (let i = 0; i < (RowsCount * inRowCount) && i < 10; i++) {
-        seeds.push(<SeedCircle {...props} key={"sees-bed-" + i} />)
+    for (let i = 0; i < plantCount; i++) {
+        seeds.push(<Plant {...props} key={"sees-bed-" + i} rowDirection={props.rowsDirection} />)
     }
     return (
         <div onMouseEnter={mouseEnterHandler} onMouseLeave={mouseLeaveHandler} css={css`
                 /*background: #686868;*/
                 /*background: url("imgs/${props.plant.icon}");*/
-                border: 1px solid green;
+                border: 1px solid ${isSelected? "#17ff00": "green"};
                 width: ${seedBedWidth}px;
                 height: ${seedBedHeight}px;
                 position: absolute;
                 left: ${seedBedX}px;
                 top: ${seedBedY}px;
-                z-index: 2000;
-                flex-wrap: wrap;
-                display: flex;
-                align-content: flex-start;
+                z-index: ${props.isPlaced ? DEPTH.SEEDBED : DEPTH.UNPLACED_SEEDBED};
+                box-sizing: content-box; 
             `}>
+            {(showOnHoverIcon || false) && <RotateRowDirectionIcon seedBedWidth={seedBedWidth} IconClicked={() => { dispatch(changeRowsDirectionAction(props.id)) }} />}
+            <div css={css`
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: row;
+                align-content: flex-start;
+                padding-left: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? rowSeedShift : inRowSeedShift)}px;
+                padding-top: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? inRowSeedShift : rowSeedShift)}px;
+                `}>
+                {seeds}
 
-            {seeds}
+                {/*showOnHoverIcon && <DetailIcon seedBedWidth={seedBedWidth} IconClicked={detailClickedHandler} />*/}
+            </div>
             <div css={css`
                 background-color: #dddddd;
                 left: ${(seedBedWidth - 25) / 2}px;
@@ -140,22 +168,10 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
             </div>
             {draggable && <DragPoint seedBedX={seedBedX} seedBedY={seedBedY} seedBedWidth={seedBedWidth} seedBedHeight={seedBedHeight} id={props.id} dragHandler={moveHandler} dragStartHandler={moveStartHandler} dragEndHandler={moveEndHandler} />}
             {resizable && <ResizePoints id={props.id} seedBedWidth={seedBedWidth} seedBedHeight={seedBedHeight} dragHandler={resizeHandler} dragStartHandler={resizeStartHandler} dragEndHandler={resizeEndHandler} />}
-            {showDetailIcon && <DetailIcon seedBedWidth={seedBedWidth} detailClickedHandler={detailClickedHandler} />}
             {showPlantDialog && <PlantDialog closePlantDialogHandler={setShowPlantDialog.bind(this, false)} />}
         </div>
     )
 
-}
-
-const Plant: React.FC<any> = (props) => {
-    return (
-        <div css={css`
-        background: url("imgs/${props.plant.icon}");
-        border: 1px solid blue;
-        `}>
-
-        </div>
-    )
 }
 
 export default SeedBed;

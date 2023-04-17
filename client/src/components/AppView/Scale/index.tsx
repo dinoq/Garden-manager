@@ -5,11 +5,12 @@ import { css } from '@emotion/react';
 import { useState } from 'react';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import MovePoint from '../../MovePoint';
+import { DEPTH } from '../../../helpers/constants';
 
 const Scale: React.FC<{}> = () => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
 
-    const zoom = useAppSelector(state => state.navigation.zoom);
+    const zoom = useAppSelector(state => state.navigationReducer.zoom);
 
     return (
         <div css={css`
@@ -21,7 +22,7 @@ const Scale: React.FC<{}> = () => {
             bottom: ${50 - position.y}px;
             padding: 0;
             margin: 0;
-            z-index: 10000;
+            z-index: ${DEPTH.SCALE};
         
         `}>
             <MovePoint setPosition={setPosition} />

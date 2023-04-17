@@ -10,13 +10,16 @@ interface IListItem{
     index: number,
     item: IPlant | IAppObject,
     setNewUplacedSeedBed: MouseEventHandler<HTMLLIElement>,
+    isLastItem: boolean
 }
 const ListItem: React.FC<IListItem> = (props) => {
 
     return (<
-        li key={"plant-" + props.index} draggable="true" onClick={props.setNewUplacedSeedBed} css={css`
+        li key={"plant-" + props.index} draggable="false" onClick={props.setNewUplacedSeedBed} css={css`
     cursor: pointer;
     padding: 15px;
+    margin: 5px 0;
+    margin-bottom: ${props.isLastItem? "17px" : "5px"};
     background-color: #626262;
     //color: white;
     color: rgba(255, 255, 255, 0.1);

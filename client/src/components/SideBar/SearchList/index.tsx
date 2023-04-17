@@ -11,6 +11,7 @@ interface ICategory{
     setNewUplacedSeedBed: MouseEventHandler<HTMLLIElement>,
 }
 const SearchList: React.FC<ICategory> = (props) => {
+    console.log('props.items: ', props.items);
     
     return (
         <ul css={css`
@@ -20,7 +21,7 @@ const SearchList: React.FC<ICategory> = (props) => {
             overflow-y: scroll;
     `}>
             {props.items.map((item, i) => {
-                return <ListItem key={"search-list-item-" + i} index={i} item={item} setNewUplacedSeedBed={props.setNewUplacedSeedBed} />
+                return <ListItem key={"search-list-item-" + i} index={i} isLastItem={i==props.items.length-1} item={item} setNewUplacedSeedBed={props.setNewUplacedSeedBed} />
             })}
         </ul>
     )

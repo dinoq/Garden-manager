@@ -11,6 +11,9 @@ import { IAppObject } from '../../helpers/types';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import useDB from '../../hooks/useDB';
+import { DEPTH } from "../../helpers/constants";
+import { processPlants } from '../../helpers/functions';
+import InputField from '../GUI/InputField';
 
 enum SEARCH_TYPE{
     PLANTS,
@@ -19,20 +22,14 @@ enum SEARCH_TYPE{
 const SideBar: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
 
-    const menuWidth = useAppSelector(state => state.gui.menuWidth);
+    const menuWidth = useAppSelector(state => state.guiReducer.menuWidth);
+    const toolbarHeight = useAppSelector(state => state.guiReducer.toolbarHeight);
     const [inputSearch, setInputSearch] = useState("")
     const [showFilter, setShowFilter] = useState(true);
     const [searchType, setSearchType] = useState<SEARCH_TYPE>(SEARCH_TYPE.PLANTS);
     //const [plants, setPlants] = useState<Array<IPlant>>([])
     const [objects, setObject] = useState<Array<IAppObject>>([])
-    const worldPos = useAppSelector(selector => selector.navigation.position);
-    const plants = useDB("vegetable");
-    /*
-    useEffect(() => {
-        getPlantsByPartName(inputSearch).then(plants => {
-            setPlants(plants);
-        })
-    }, [])*/
+    const worldPos = useAppSelector(selector => selector.navigationReducer.position);
 
     useEffect(() => {
         if (showFilter) {
@@ -41,6 +38,11 @@ const SideBar: React.FC<{}> = () => {
 
         }
     }, [showFilter])
+    
+
+    const plantsFromDB = processPlants(useDB("vegetable"));
+    let plants = [...plantsFromDB];
+    
 
     const getPlantByName = async (name: string): Promise<IPlant | undefined> => {
         return plants? plants.find((plant:any) => plant.name == name) : undefined;
@@ -49,11 +51,11 @@ const SideBar: React.FC<{}> = () => {
     
     const getPlantsByPartName = async (partName: string): Promise<Array<IPlant>> => {
         if (partName === undefined || partName.length === 0)
-            return plants.sort((a: any, b: any) => (a.name > b.name ? -1 : 1))
+            return plantsFromDB.sort((a: any, b: any) => (a.name > b.name ? -1 : 1))
     
         partName = partName.toLocaleLowerCase();
-        const searchedPlants: Array<IPlant> = plants.filter((plant: any) => { return plant.name.toLocaleLowerCase().includes(partName) }); //"exact" match first
-        plants.forEach((plant: any) => {
+        const searchedPlants: Array<IPlant> = plantsFromDB.filter((plant: any) => { return plant.name.toLocaleLowerCase().includes(partName) }); //"exact" match first
+        plantsFromDB.forEach((plant: any) => {
             let chars = [...new Set(partName)];
             if (chars.every(char => plant.name.toLocaleLowerCase().includes(char)) && !searchedPlants.includes(plant)) {
                 searchedPlants.push(plant);
@@ -63,10 +65,14 @@ const SideBar: React.FC<{}> = () => {
     }
     
     const searchPlant = () => {
-        /*getPlantsByPartName(inputSearch).then(plants => {
-            setPlants(plants);
-        })*/
+        getPlantsByPartName(inputSearch).then(pl => {
+            console.log('plants11: ', plants);
+            plants = pl;
+            console.log('plants22: ', plants);
+            //setPlants(plants);
+        })
     }
+    console.log('plants33: ', plants);
 
     const getFilterToggleBtn = (label: string) => {
         return (
@@ -85,8 +91,7 @@ const SideBar: React.FC<{}> = () => {
                 console.log('plant: ', plant);
                 dispatch(setMouseDownPosition({ x: e.clientX, y: e.clientY }));
                 if (plant) {
-                    dispatch(createNewSeedBedAction({ position: { x: e.clientX - worldPos.x+menuWidth, y: - worldPos.y }, plant }))
-                    console.log('worldPos.x: ', worldPos.x);
+                    dispatch(createNewSeedBedAction({ position: { x: e.clientX - worldPos.x, y: e.clientY - toolbarHeight }, plant }))
                 }
             })
     }
@@ -94,27 +99,25 @@ const SideBar: React.FC<{}> = () => {
 
     return (
         <div css={css`
-        z-index: 100;
-        height: 100%;
+        z-index: ${DEPTH.SIDEBAR};
+        height: calc(100vh - ${toolbarHeight}px);
+        width: ${menuWidth}px;
+        position: absolute;
+        left: 0;
     `}>
 
             <div css={css`
-            height: 100%;
             //width: ${menuWidth}px;
+            height: 100%;
             padding: 10px;
             background-color: #393946;
             //padding: 32px;
             display: flex;
             flex-direction: column;
-            z-index: 100;
         `}>
 
                 <div>
-                    <input value={inputSearch} onKeyUp={searchPlant} onChange={(e) => setInputSearch((e.target as HTMLInputElement).value)} placeholder={"..."} css={css`                
-                    width: 100%;
-                    height: 30px;
-                    border-radius: 5px;
-                `} type="search" name="search-plant" id="search-plant" />
+                <InputField value={inputSearch} onKeyUp={searchPlant} onChange={(e:any) => setInputSearch((e.target as HTMLInputElement).value)} placeholder={"..."} type="search" name="search-plant" id="search-plant"/>
                     {showFilter && getFilterToggleBtn("Zrušit a skrýt filtr")}
                     {!showFilter && getFilterToggleBtn("Zobrazit filtr")}
                     {showFilter && <SearchFilter selectionChanged={(index: number)=>{setSearchType(index)}} />}

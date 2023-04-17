@@ -11,10 +11,10 @@ const useDB = (query: string) => {
             consoleWarn("todo");
         }
         const getDBData = async () => {
+            console.log('______________________________getDBData______________________________');
             const dbData = await (await fetch("http://localhost:3001/" + query)).json();
             if (dbData) {
                 dbData.forEach((dbEntry: any) => {
-                    console.log('dbEntry: ', dbEntry);
                     consoleWarn("edit dbEntry type to interface");
                     Object.entries(dbEntry).forEach(([key, val])=>{
                         if(key.includes("-")){

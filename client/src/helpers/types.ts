@@ -1,3 +1,4 @@
+import { ROWDIRECTIONS } from "../components/SeedBed/Plant";
 import { IPlant } from "./plant-types";
 
 export interface IDimensions{
@@ -18,7 +19,8 @@ export interface IAppObject extends IDimensions, IPosition{
 export interface ISeedBed extends IAppObject{
     id: number, 
     plant: IPlant,
-    isPlaced: boolean
+    isPlaced: boolean,
+    rowsDirection: ROWDIRECTIONS;
 }
 
 export interface IField extends IAppObject{

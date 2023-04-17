@@ -11,8 +11,8 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 
 function AppLayout() {
     const dispatch = useAppDispatch();
-    const menuWidth = useAppSelector(state => state.gui.menuWidth);
-    const toolbarHeight = useAppSelector(state => state.gui.toolbarHeight);
+    const menuWidth = useAppSelector(state => state.guiReducer.menuWidth);
+    const toolbarHeight = useAppSelector(state => state.guiReducer.toolbarHeight);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -51,26 +51,11 @@ function AppLayout() {
                 <Header />
             </div>
             <div css={css`
-                display: flex;
-                flex-direction: row;
                 height: calc(100vh - ${toolbarHeight}px);
                 width: 100vw;
             `}>
-                <div css={css`
-                    height: 100%;
-                    width: ${menuWidth}px;
-                    background-color: #002b0e;
-                `}>
                     <SideBar />
-
-                </div>
-                <div css={css`
-                    height: 100%;
-                    width: calc(100vw - ${menuWidth}px);
-                    background-color: #0a0030;
-                `}>
                     <AppView />
-                </div>
 
             </div>
 
