@@ -10,9 +10,7 @@ interface ICategory{
     items: Array<IPlant|IAppObject> ,
     setNewUplacedSeedBed: MouseEventHandler<HTMLLIElement>,
 }
-const SearchList: React.FC<ICategory> = (props) => {
-    console.log('props.items: ', props.items);
-    
+const SearchList: React.FC<ICategory> = (props) => {    
     return (
         <ul css={css`
             list-style-type: none;

@@ -123,7 +123,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
                 <Field x={500/*(browserWidth-menuWidth)/2 - 200 + menuWidth*/} y={500/*(browserHeight-toolbarHeight)/2 - 250 + toolbarHeight*/} width={100} height={100} />
                 <Scale />
                 <MessageBar />
-                {seedBedsReducer.selectedSeedBed != -1 && <FieldEditDialog />}
+                {seedBedsReducer.selectedSeedBed != -1 && <FieldEditDialog id={seedBedsReducer.selectedSeedBed}/>}
             </div>
         </div>
     )

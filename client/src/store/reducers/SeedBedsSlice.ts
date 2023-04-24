@@ -57,5 +57,5 @@ const SeedBedsSlice = createSlice({
     }
 })
 
-export const { updateWidthAction, updateHeightAction, updatePositionAction, updateSelectedSeedBed, createNewSeedBedAction, placeSeedBedAction, changeRowsDirectionAction } = SeedBedsSlice.actions;
+export const { updateWidthAction, updateHeightAction, updatePositionAction, updateSelectedSeedBed , createNewSeedBedAction, placeSeedBedAction, changeRowsDirectionAction } = SeedBedsSlice.actions;
 export default SeedBedsSlice.reducer;

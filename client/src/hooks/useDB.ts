@@ -7,6 +7,7 @@ const useDB = (query: string) => {
     consoleWarn("edit cache type to interface");
     
     useEffect(() => {
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         if(cache.current[query] !== undefined){
             consoleWarn("todo");
         }

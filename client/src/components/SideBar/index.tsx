@@ -14,6 +14,7 @@ import useDB from '../../hooks/useDB';
 import { DEPTH } from "../../helpers/constants";
 import { processPlants } from '../../helpers/functions';
 import InputField from '../GUI/InputField';
+import usePlantsFromDB from '../../hooks/usePlantsFromDB';
 
 enum SEARCH_TYPE{
     PLANTS,
@@ -30,6 +31,8 @@ const SideBar: React.FC<{}> = () => {
     //const [plants, setPlants] = useState<Array<IPlant>>([])
     const [objects, setObject] = useState<Array<IAppObject>>([])
     const worldPos = useAppSelector(selector => selector.navigationReducer.position);
+    //const [plantsFromDB, setPlantsFromDB] = useState<IPlant[]>([]);
+    const [actualPlantList, setActualPlantList] = useState<IPlant[]>([]);
 
     useEffect(() => {
         if (showFilter) {
@@ -39,17 +42,23 @@ const SideBar: React.FC<{}> = () => {
         }
     }, [showFilter])
     
-
-    const plantsFromDB = processPlants(useDB("vegetable"));
-    let plants = [...plantsFromDB];
+    const plantsFromDB = usePlantsFromDB();
+    useEffect(()=>{
+        if(!plantsFromDB)
+            return;
+        //setPlantsFromDB([...plantsFromDB]);
+        console.log('processedPlantsFromDB____ NOT IT: ', plantsFromDB);
+        setActualPlantList([...plantsFromDB]);
+        console.log('plantList: ', actualPlantList);
+    }, [plantsFromDB])
     
 
     const getPlantByName = async (name: string): Promise<IPlant | undefined> => {
-        return plants? plants.find((plant:any) => plant.name == name) : undefined;
+        return actualPlantList? actualPlantList.find((plant:any) => plant.name == name) : undefined;
     }
     
     
-    const getPlantsByPartName = async (partName: string): Promise<Array<IPlant>> => {
+    const getPlantsByPartName = (partName: string): Array<IPlant> => {
         if (partName === undefined || partName.length === 0)
             return plantsFromDB.sort((a: any, b: any) => (a.name > b.name ? -1 : 1))
     
@@ -65,14 +74,10 @@ const SideBar: React.FC<{}> = () => {
     }
     
     const searchPlant = () => {
-        getPlantsByPartName(inputSearch).then(pl => {
-            console.log('plants11: ', plants);
-            plants = pl;
-            console.log('plants22: ', plants);
-            //setPlants(plants);
-        })
+        let plants =  getPlantsByPartName(inputSearch);        
+        setActualPlantList([...plants]);
     }
-    console.log('plants33: ', plants);
+    console.log('plants33: ', actualPlantList);
 
     const getFilterToggleBtn = (label: string) => {
         return (
@@ -117,7 +122,7 @@ const SideBar: React.FC<{}> = () => {
         `}>
 
                 <div>
-                <InputField value={inputSearch} onKeyUp={searchPlant} onChange={(e:any) => setInputSearch((e.target as HTMLInputElement).value)} placeholder={"..."} type="search" name="search-plant" id="search-plant"/>
+                <InputField value={inputSearch} onKeyUpHandler={searchPlant} onChangeHandler={(e:any) => setInputSearch((e.target as HTMLInputElement).value)} placeholder={"..."} type="search" name="search-plant" id="search-plant"/>
                     {showFilter && getFilterToggleBtn("Zrušit a skrýt filtr")}
                     {!showFilter && getFilterToggleBtn("Zobrazit filtr")}
                     {showFilter && <SearchFilter selectionChanged={(index: number)=>{setSearchType(index)}} />}
@@ -125,8 +130,8 @@ const SideBar: React.FC<{}> = () => {
                 <div css={css`
                     overflow: hidden;
                     `}>
-                    {searchType === SEARCH_TYPE.PLANTS && plants !== undefined && plants.length > 0 &&
-                        <SearchList items={searchType === SEARCH_TYPE.PLANTS? plants : objects} setNewUplacedSeedBed={setNewUplacedSeedBed} />
+                    {searchType === SEARCH_TYPE.PLANTS && actualPlantList !== undefined && actualPlantList.length > 0 &&
+                        <SearchList items={searchType === SEARCH_TYPE.PLANTS? actualPlantList : objects} setNewUplacedSeedBed={setNewUplacedSeedBed} />
                     }
                 </div>
             </div>
