@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IPlant } from "../../helpers/plant-types";
-import { IAppObject, IDimensions, IField, IPosition, ISeedBed } from "../../helpers/types";
-
+import { IField, IPosition, IDimensions } from "../../../helpers/types";
 interface IFIeldSlice extends IField{
 
 }

@@ -14,7 +14,7 @@ Basic:
 Plant Info - název fieldu, volba rostliny, odruda, radiobutton defaultní/manuální spon (a kdyžtak volba), orientace řádků,umístění fieldu od-do (měsíc)/sow out+harvest time=>vypočítaná doba fieldu?, vypočítané info o cca množství celkových rostlin, množství potřebného osiva (v gramech), příp. orientačně očekávané množství úrody 
 interplant aligner - interplant, target field
 succesion ? Pokud by se vůbec neměnila velikost fieldu, tak možná bude jednodušší... Jen se nastaví od kterého měsíce bude změna a zbytek Fieldu se přenastaví v tomto období na danou rostlinu??
-možnost zadání šířky/výšky fieldu (+ tlačítko pro otočení), stejně tak možnost zadaní množství rostlin v řádku/počtu řádků (+ tlačítko pro otočení)
+možnost zadání šířky/výšky fieldu (+ tlačítko pro otočení), stejně tak možnost zadaní množství rostlin v řádku/počtu řádků (+ tlačítko pro otočení), podobně tlačítko pro nastavení velikosti dle jiného fieldu (výběr ze seznamu, kde bude u každého název, plodina, odrůda, měsíce na poli, součadnice)
 
 
 Do uživatelského nastavení:
