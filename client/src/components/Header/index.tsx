@@ -6,6 +6,7 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 import { setIsMovingAppViewAction } from '../../store/reducers/ViewNavigationSlice';
 import Calendar from './Calendar';
 import ManipulationTools from './ManipulationTools';
+import EditingTools from './EditingTools';
 
 
 const Header: React.FC<{}> = () => {
@@ -22,6 +23,7 @@ const Header: React.FC<{}> = () => {
             z-index: ${DEPTH.HEADER};
         `}>
 
+            {!hideGUI && <EditingTools />}
             {!hideGUI && <ManipulationTools />}
             {!hideGUI && <Calendar />}
 

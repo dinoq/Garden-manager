@@ -1,7 +1,7 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx, css } from '@emotion/react';
-import React, { MouseEventHandler, useEffect, useState } from 'react';
+import { css, jsx } from '@emotion/react';
+import React, { useEffect, useState } from 'react';
 import { IPlant } from '../../helpers/plant-types';
 import { createNewSeedBedAction } from '../../store/reducers/SeedBedsSlice';
 import { setMouseDownPosition } from '../../store/reducers/ViewNavigationSlice';
@@ -10,9 +10,7 @@ import SearchList from './SearchList';
 import { IAppObject } from '../../helpers/types';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import useDB from '../../hooks/useDB';
 import { DEPTH } from "../../helpers/constants";
-import { processPlants } from '../../helpers/functions';
 import InputField from '../GUI/InputField';
 import usePlantsFromDB from '../../hooks/usePlantsFromDB';
 
@@ -96,7 +94,7 @@ const SideBar: React.FC<{}> = () => {
                 console.log('plant: ', plant);
                 dispatch(setMouseDownPosition({ x: e.clientX, y: e.clientY }));
                 if (plant) {
-                    dispatch(createNewSeedBedAction({ position: { x: e.clientX - worldPos.x, y: e.clientY - toolbarHeight }, plant }))
+                    dispatch(createNewSeedBedAction({ position: { x: e.clientX - worldPos.x, y: e.clientY - worldPos.y - toolbarHeight }, plant }))
                 }
             })
     }

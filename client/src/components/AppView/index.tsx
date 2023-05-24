@@ -4,18 +4,17 @@ import { css, jsx } from "@emotion/react";
 import { useEffect, useRef, useState } from "react";
 import { IPosition, ISeedBed } from "../../helpers/types";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { createNewSeedBedAction, placeSeedBedAction } from "../../store/reducers/SeedBedsSlice";
-import { moveWorldByMouseAction, zoomAction } from "../../store/reducers/ViewNavigationSlice";
+import { placeSeedBedAction } from "../../store/reducers/SeedBedsSlice";
+import { zoomAction } from "../../store/reducers/ViewNavigationSlice";
 import Field from "../Field";
 import Scale from "./Scale";
 import SeedBed from "../SeedBed";
 import MessageBar from "../MesageBar";
-import { DEPTH } from "../../helpers/constants";
-import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import useLocalCoordinates from "../../hooks/useLocalCoordinates";
 import FieldEditDialog from "../FieldEditDialog";
 import React from "react";
+import OpenProjectDialog from "../OpenProjectDialog";
 
 
 interface IAppViewProps {
@@ -32,6 +31,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     const isMovingAppView = useAppSelector(state => state.navigationReducer.isMovingAppView);
     const seedBedsReducer = useAppSelector(state => state.seedBedsReducer);
     const menuWidth = useAppSelector(state => state.guiReducer.menuWidth);
+    const showOpenProjectDialog = useAppSelector(state => state.guiReducer.showOpenProjectDialog);
     const toolbarHeight = useAppSelector(state => state.guiReducer.toolbarHeight);
     const worldWidth = useAppSelector(state => state.navigationReducer.worldWidth) * worldZoom;
     const worldHeight = useAppSelector(state => state.navigationReducer.worldHeight) * worldZoom;
@@ -124,6 +124,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
                 <Scale />
                 <MessageBar />
                 {seedBedsReducer.selectedSeedBed != -1 && <FieldEditDialog id={seedBedsReducer.selectedSeedBed}/>}
+                {showOpenProjectDialog && <OpenProjectDialog />}
             </div>
         </div>
     )

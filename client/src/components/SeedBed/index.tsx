@@ -36,8 +36,8 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
     const zoomed = zoomedFactory(zoom);
     const worldPos = useAppSelector(selector => selector.navigationReducer.position);
     const mouseDownStartPosition = useAppSelector(selector => selector.navigationReducer.mouseDownStartPosition);
-    
-    const isSelected = useAppSelector((selector)=>selector.seedBedsReducer.selectedSeedBed==props.id);
+
+    const isSelected = useAppSelector((selector) => selector.seedBedsReducer.selectedSeedBed == props.id);
 
     const seedBedWidth = zoomed((localSeedBedSize.width > 0) ? localSeedBedSize.width : props.width);
     const seedBedHeight = zoomed((localSeedBedSize.height > 0) ? localSeedBedSize.height : props.height);
@@ -129,14 +129,25 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
 
 
     let seeds: Array<any> = Array();
-    for (let i = 0; i < plantCount; i++) {
-        seeds.push(<Plant {...props} key={"sees-bed-" + i} rowDirection={props.rowsDirection} />)
+    if (plantCount < 50) {
+        for (let i = 0; i < plantCount; i++) {
+            seeds.push(<Plant {...props} key={"sees-bed-" + i} rowDirection={props.rowsDirection} />)
+        }
+    } else {
+        for (let i = 0; i < 4; i++) {
+            seeds[i] = new Array();
+            for (let j = 0; j < 3; j++) {
+                seeds[i].push(<Plant {...props} key={"sees-bed-" + i*10+j} rowDirection={props.rowsDirection} />)
+            }
+        }
     }
+
+    const showAllSeeds = plantCount < 50;
     return (
         <div onMouseEnter={mouseEnterHandler} onMouseLeave={mouseLeaveHandler} css={css`
                 /*background: #686868;*/
                 /*background: url("imgs/${props.plant.icon}");*/
-                border: 1px solid ${isSelected? "#17ff00": "green"};
+                border: 1px solid ${isSelected ? "#17ff00" : "green"};
                 width: ${seedBedWidth}px;
                 height: ${seedBedHeight}px;
                 position: absolute;
@@ -146,7 +157,7 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
                 box-sizing: content-box; 
             `}>
             {(showOnHoverIcon || false) && <RotateRowDirectionIcon seedBedWidth={seedBedWidth} IconClicked={() => { dispatch(changeRowsDirectionAction(props.id)) }} />}
-            <div css={css`
+            {showAllSeeds && <div css={css`
                 display: flex;
                 flex-wrap: wrap;
                 flex-direction: row;
@@ -157,7 +168,33 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
                 {seeds}
 
                 {/*showOnHoverIcon && <DetailIcon seedBedWidth={seedBedWidth} IconClicked={detailClickedHandler} />*/}
-            </div>
+            </div>}
+            {!showAllSeeds && <div css={css`                
+                padding-left: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? rowSeedShift : inRowSeedShift)}px;
+                //padding-top: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? inRowSeedShift : rowSeedShift)}px;
+            `}>
+                <div css={css`
+                    position: absolute;
+                    top: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? inRowSeedShift : rowSeedShift)}px;
+                    left: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? rowSeedShift : inRowSeedShift)}px;
+                `}>{seeds[0]}</div>
+                <div css={css`
+                    position: absolute;
+                    bottom: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? inRowSeedShift : rowSeedShift)}px;
+                    left: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? rowSeedShift : inRowSeedShift)}px;
+                `}>{seeds[1]}</div>
+                <div css={css`
+                    position: absolute;
+                    top: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? inRowSeedShift : rowSeedShift)}px;
+                    right: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? rowSeedShift : inRowSeedShift)}px;
+                `}>{seeds[2]}</div>
+                <div css={css`
+                    position: absolute;
+                    right: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? rowSeedShift : inRowSeedShift)}px;
+                    bottom: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? inRowSeedShift : rowSeedShift)}px;
+                `}>{seeds[3]}</div>
+            </div>}
+
             <div css={css`
                 background-color: #dddddd;
                 left: ${(seedBedWidth - 25) / 2}px;

@@ -4,7 +4,7 @@ export enum DEPTH {
     SEEDBED,
     SIDEBAR,
     UNPLACED_SEEDBED,
-    
+
     MESSAGE_BAR,
     SCALE,
     FIELD_EDITS,
@@ -14,6 +14,7 @@ export enum DEPTH {
 
 
     HEADER,
-    CALENDAR
+    CALENDAR,
+    MODAL_WINDOW
 }
 
