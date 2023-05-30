@@ -40,12 +40,17 @@ export const processPlants = (plants: IPlant[]) => {
 
         edited.push(editedPlant);
     })
-    console.log('edited: ', edited);
     return edited;
 }
 
+export const stringifyIfDateLong = (variable: any) => {
+    if (variable instanceof Date) {
+        return variable.toLocaleDateString("cs-CZ", { year: 'numeric', month: "2-digit", day: 'numeric', hour: "2-digit", minute: "2-digit", second: "2-digit" })
+    }
+    return variable;
+}
 
-let warnSwitchedOffShown = false;
+let warnSwitchedOffShown = true;
 export const consoleWarn = (msg: string) =>{
     if(config.warnInConsole){
         console.warn(msg);

@@ -3,7 +3,7 @@
 import { css, jsx } from "@emotion/react";
 
 export interface ISelectboxProps {
-    value: string,
+    defaultValue: string,
     options: Array<any>,
 }
 

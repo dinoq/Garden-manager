@@ -5,7 +5,9 @@ import { DEPTH } from '../../../helpers/constants';
 
 export interface IModalWindowProps {
     children: React.ReactNode;
-    closeModal: React.MouseEventHandler<HTMLDivElement>
+    closeModalHandler?: React.MouseEventHandler<HTMLDivElement>,
+    position: {left: string, top: string, right: string, bottom: string},
+    dimension: {width: string, height: string}
 }
 
 const BORDER_RADIUS = 15;
@@ -13,36 +15,47 @@ const ModalWindow: React.FC<IModalWindowProps> = (props) => {
 
     return (
         <div css={css`
-            width: 500px;
-            height: 500px;
+            width: ${props.dimension.width};
+            height: ${props.dimension.height};
+            top: ${props.position.top};
+            left: ${props.position.left};
+            right: ${props.position.right};
+            bottom: ${props.position.bottom};
             background-color: #535353;
             z-index: ${DEPTH.MODAL_WINDOW};
             position: fixed;
-            top: 50%;
-            left: 50%;
             transform: translate(-50%, -50%);
             border-radius: ${BORDER_RADIUS}px;
-        
+            display: flex;  
+            flex-direction: column;     
         `}>
             <div css={css`
                 border-radius: 15px 15px 0 0;
                 background-color: #232323;
                 color: white;
-
-
+                display: flex;
             `}>
-                <div css={css`                
+                <div css={css`          
                     text-align: end;
-                    padding: 15px;
-                    width:20px;
+                    padding: 5px;
+                    margin: 7px;
                     border: 1px solid white;
                     position: relative;
-                    right: 0;                
-                `} onClick={props.closeModal}>X</div>
+                    right: 0;
+                    margin-left: auto;
+                    border-radius: 5px;             
+                    cursor: pointer;
+                `} onClick={props.closeModalHandler}>X</div>
 
             </div>
-            <div>
-
+            <div css={css`
+                color: white;                
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                padding: 15px;
+            `}>
+                {props.children}
             </div>
 
         </div>

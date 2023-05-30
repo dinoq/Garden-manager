@@ -2,15 +2,24 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ROWDIRECTIONS } from "../../components/SeedBed/Plant";
 import { IPlant } from "../../helpers/plant-types";
 import { IPosition, ISeedBed } from "../../helpers/types";
+import { IProjectDialogProps } from "../../components/ProjectDialog";
 
-interface ISeedBedSlice {
+export interface ISeedBedSlice {
     seedBeds: ISeedBed[],
-    selectedSeedBed: number
+    selectedSeedBed: number,
+    projectID: number,
+    projectName: string,
+    lastModified: number,
+    created: number
 }
 
 const initialState: ISeedBedSlice = {
     seedBeds: [],
-    selectedSeedBed: -1
+    selectedSeedBed: -1,
+    projectID: -1,
+    projectName: "",
+    lastModified: new Date().getTime(),
+    created: new Date().getTime(),
 }
 
 const SeedBedsSlice = createSlice({
@@ -53,9 +62,26 @@ const SeedBedsSlice = createSlice({
             }else{
                 state.seedBeds[index].rowsDirection = ROWDIRECTIONS.LEFT_TO_RIGHT;
             }
-        }
+        },
+        /*setSeedbedsFromString: (state: ISeedBedSlice, action: PayloadAction<string>) => {
+            let definition = action.payload.length? action.payload : "[]";
+            state.seedBeds = JSON.parse(definition);
+            state.selectedSeedBed = -1;
+        }*/
+        setProject: (state: ISeedBedSlice, action: PayloadAction<ISeedBedSlice>) => {
+            state = action.payload;
+        },
+        setProjectName: (state: ISeedBedSlice, action: PayloadAction<string>) => {
+            state.projectName = action.payload;
+        },
+        setLMT: (state: ISeedBedSlice, action: PayloadAction<number>) => {
+            state.lastModified = action.payload;
+        },
+        setProjectID: (state: ISeedBedSlice, action: PayloadAction<number>) => {
+            state.projectID = action.payload;
+        },
     }
 })
 
-export const { updateWidthAction, updateHeightAction, updatePositionAction, updateSelectedSeedBed , createNewSeedBedAction, placeSeedBedAction, changeRowsDirectionAction } = SeedBedsSlice.actions;
+export const { updateWidthAction, updateHeightAction, updatePositionAction, updateSelectedSeedBed , createNewSeedBedAction, placeSeedBedAction, changeRowsDirectionAction, setProject,setProjectName, setLMT, setProjectID } = SeedBedsSlice.actions;
 export default SeedBedsSlice.reducer;

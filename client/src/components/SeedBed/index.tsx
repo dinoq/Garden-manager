@@ -114,14 +114,12 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
     const seedBedWidthForCalculation = props.rowsDirection == ROWDIRECTIONS.LEFT_TO_RIGHT ? seedBedWidth : seedBedHeight;
     let inRowCountDecimal = seedBedWidthForCalculation / (zoomed(props.plant.inRowSpacingMin));
     let inRowCount = Math.floor(inRowCountDecimal);
-    console.log('inRowCount: ', inRowCount);
     let inRowCountDecimalPart = inRowCountDecimal - inRowCount;
     const inRowSeedShift = (zoomed(props.plant.inRowSpacingMin) * inRowCountDecimalPart) / 2;
 
     const seedBedHeightForCalculation = props.rowsDirection == ROWDIRECTIONS.LEFT_TO_RIGHT ? seedBedHeight : seedBedWidth;
     let rowsCountDecimal = seedBedHeightForCalculation / (zoomed(props.plant.betweenRowSpacingMin));
     let rowsCount = Math.floor(rowsCountDecimal);
-    console.log('rowsCount: ', rowsCount);
     let rowCountDecimalPart = rowsCountDecimal - rowsCount;
     const rowSeedShift = (zoomed(props.plant.betweenRowSpacingMin) * rowCountDecimalPart) / 2;
 

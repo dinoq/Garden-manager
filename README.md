@@ -1,4 +1,5 @@
 TODO:
+- nešly by nějak předělat reducery setLMT a setProjectName do setProject? Jakože nějak pomocí spread operátoru?
 -zoom předělat taky na lokální a až po mouseup vložit do reduxu
 -Scale přesunovatelné, ale bez funkce zoomu (jestli tak ted funguje)
 -do nastavení přidat rozlišení zda dělit měsíce na 1/2/4 části a defaultně dát 2
@@ -6,6 +7,7 @@ TODO:
 - Vkládání rostlin i "táhnutím" (ne jen kliknutím) ze seznamu
 - změnit "SeedBedsSlice->createNewSeedBedAction->rowsDirection" podle defaultního nastavení! (Aktuálně se tam prostě vkládá ROWDIRECTIONS.LEFT_TO_RIGHT)
 - mód pokládání plant pomocí více klikání (uživatel vybere plant a kliká všude kam se mají vkládat jednotlivé rostliny) - nemusí po každé pokládce znovu vybírat rostlinu; mohlo by být realizováno při výběru plants switchem mezi módy - Pozn: jednotlivé rostliny by asi neměli mít FieldEditDialog? Minimálně ne tak podrobný...
+- autosave
 
 
 FieldEditDialog:

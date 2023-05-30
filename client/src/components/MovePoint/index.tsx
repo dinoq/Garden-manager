@@ -16,7 +16,6 @@ const MovePoint: React.FC<IMovePointProps> = (props) => {
             x: e.clientX,
             y: e.clientY
         })
-        console.log('startPos: ', startPos);
         setIsMouseDown(true);
     }
     const drag = (e: React.MouseEvent<HTMLImageElement>) => {
@@ -28,7 +27,6 @@ const MovePoint: React.FC<IMovePointProps> = (props) => {
         }
     }
     const dragEnd = (e: React.MouseEvent<HTMLImageElement>) => {
-        console.log('startPos: ', startPos);
         setIsMouseDown(false);
     }
     return (

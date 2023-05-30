@@ -7,12 +7,10 @@ const useDB = (query: string) => {
     consoleWarn("edit cache type to interface");
     
     useEffect(() => {
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         if(cache.current[query] !== undefined){
             consoleWarn("todo");
         }
         const getDBData = async () => {
-            console.log('______________________________getDBData______________________________');
             const dbData = await (await fetch("http://localhost:3001/" + query)).json();
             if (dbData) {
                 dbData.forEach((dbEntry: any) => {

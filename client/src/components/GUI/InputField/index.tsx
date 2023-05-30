@@ -5,7 +5,7 @@ import { css, jsx } from "@emotion/react";
 export interface IInputFieldProps {
     value: string,
     onKeyUpHandler?: React.KeyboardEventHandler<HTMLInputElement>,
-    onChangeHandler?: React.ChangeEventHandler<HTMLInputElement>,
+    onChangeHandler: React.ChangeEventHandler<HTMLInputElement>,
     placeholder?: string,
     name?: string,
     id?: string,

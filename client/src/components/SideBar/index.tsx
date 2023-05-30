@@ -45,9 +45,7 @@ const SideBar: React.FC<{}> = () => {
         if(!plantsFromDB)
             return;
         //setPlantsFromDB([...plantsFromDB]);
-        console.log('processedPlantsFromDB____ NOT IT: ', plantsFromDB);
         setActualPlantList([...plantsFromDB]);
-        console.log('plantList: ', actualPlantList);
     }, [plantsFromDB])
     
 
@@ -75,7 +73,6 @@ const SideBar: React.FC<{}> = () => {
         let plants =  getPlantsByPartName(inputSearch);        
         setActualPlantList([...plants]);
     }
-    console.log('plants33: ', actualPlantList);
 
     const getFilterToggleBtn = (label: string) => {
         return (
@@ -91,7 +88,6 @@ const SideBar: React.FC<{}> = () => {
         let plantName = (e.target as HTMLLIElement)?.textContent;
         if (plantName != undefined && plantName.length > 0)
             getPlantByName(plantName).then(plant => {
-                console.log('plant: ', plant);
                 dispatch(setMouseDownPosition({ x: e.clientX, y: e.clientY }));
                 if (plant) {
                     dispatch(createNewSeedBedAction({ position: { x: e.clientX - worldPos.x, y: e.clientY - worldPos.y - toolbarHeight }, plant }))

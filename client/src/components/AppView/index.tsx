@@ -14,7 +14,10 @@ import { useAppSelector } from "../../hooks/useAppSelector";
 import useLocalCoordinates from "../../hooks/useLocalCoordinates";
 import FieldEditDialog from "../FieldEditDialog";
 import React from "react";
-import OpenProjectDialog from "../OpenProjectDialog";
+import ProjectDialog, { ProjectDialogStates } from "../ProjectDialog";
+import { setMessage } from "../../store/reducers/GUISlice";
+import DBManager from "../../helpers/DBManager";
+import { consoleWarn } from "../../helpers/functions";
 
 
 interface IAppViewProps {
@@ -31,7 +34,8 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     const isMovingAppView = useAppSelector(state => state.navigationReducer.isMovingAppView);
     const seedBedsReducer = useAppSelector(state => state.seedBedsReducer);
     const menuWidth = useAppSelector(state => state.guiReducer.menuWidth);
-    const showOpenProjectDialog = useAppSelector(state => state.guiReducer.showOpenProjectDialog);
+    const showProjectDialog = useAppSelector(state => state.guiReducer.ProjectDialog.show);
+    const projectDialogState = useAppSelector(state => state.guiReducer.ProjectDialog.state);
     const toolbarHeight = useAppSelector(state => state.guiReducer.toolbarHeight);
     const worldWidth = useAppSelector(state => state.navigationReducer.worldWidth) * worldZoom;
     const worldHeight = useAppSelector(state => state.navigationReducer.worldHeight) * worldZoom;
@@ -54,6 +58,14 @@ const AppView: React.FC<IAppViewProps> = (props) => {
         if(unplacedBed){
             setMouseAppViewPosition({ x: unplacedBed.x, y: unplacedBed.y });}    
     }, [seedBedsReducer.seedBeds.length])
+
+    /*
+    const autoSave = setInterval(()=>{
+        consoleWarn("autosave off");
+        //DBManager.saveProject(seedBedsReducer);
+        //dispatch(setMessage("autosave..."))
+        setTimeout(()=>dispatch(setMessage("")), 5*1000)
+    }, 60*1000)*/
     
     const mouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         setMouseStartDiffPosition({ diffX: e.clientX - worldPosition.x, diffY: e.clientY - worldPosition.y })
@@ -71,7 +83,6 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     }
 
     const mouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        //console.log('e.clientX,Y: ', e.clientX, e.clientY);
         if (movingByWorld) {
             updateLocal(e)
         }
@@ -97,6 +108,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
         }
         return <SeedBed key={"seed-bed-" + i} {...seedBed} {...position} />
     })
+
 
     const memoSeedbeds = React.memo(seedBeds)   
 
@@ -124,7 +136,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
                 <Scale />
                 <MessageBar />
                 {seedBedsReducer.selectedSeedBed != -1 && <FieldEditDialog id={seedBedsReducer.selectedSeedBed}/>}
-                {showOpenProjectDialog && <OpenProjectDialog />}
+                {showProjectDialog && <ProjectDialog state={projectDialogState}/>}
             </div>
         </div>
     )

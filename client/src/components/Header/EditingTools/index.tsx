@@ -3,6 +3,10 @@
 import { jsx } from '@emotion/react';
 import { css } from '@emotion/react';
 import { useAppSelector } from '../../../hooks/useAppSelector';
+import { useAppDispatch } from '../../../hooks/useAppDispatch';
+import { showProjectDialog } from '../../../store/reducers/GUISlice';
+import DBManager from '../../../helpers/DBManager';
+import { setLMT } from '../../../store/reducers/SeedBedsSlice';
 
 
 export interface IEditingToolsProps {
@@ -11,7 +15,9 @@ export interface IEditingToolsProps {
 
 //nový, uložit, uložit jako, undo/redo, copy/cut/paste, delete
 const EditingTools: React.FC<IEditingToolsProps> = (props) => {
-    const seedbeds = useAppSelector(state => state.seedBedsReducer.seedBeds);
+    const dispatch = useAppDispatch();
+    const seedBedsReducer = useAppSelector(state => state.seedBedsReducer);
+
 
     return (
         <div aria-label="Editing tools" css={css`
@@ -31,31 +37,40 @@ const EditingTools: React.FC<IEditingToolsProps> = (props) => {
                 margin: 15px;
                 padding: 15px;
 
+                button{
+                    cursor: pointer;
+                    width: 32px;
+                    height: 32px;
+                    background-size: contain;
+                    border: 0;
+                }
+
             `}>
             <button onClick={(e) => {
             }} css={css`
                 background: url("./imgs/new.png");
-                width: 32px;
-                height: 32px;
-                background-size: contain;
-                border: 0;
                 `}></button>
-            <button onClick={(e) => {
+            <button onClick={(e) => { dispatch(showProjectDialog(false))
             }} css={css`
                 background: url("./imgs/open.png");
-                width: 32px;
-                height: 32px;
-                background-size: contain;
-                border: 0;
                 `}></button>
             <button onClick={(e) => {
-                console.log(JSON.stringify(seedbeds))
+                
+                let projectID = seedBedsReducer.projectID;
+                if(seedBedsReducer.projectID == -1){
+                    dispatch(showProjectDialog(true))
+                }else{
+                    const lastModified = new Date().getTime();
+                    dispatch(setLMT(lastModified))
+                    DBManager.saveProject({...seedBedsReducer, lastModified}); // Dekomposition is used, becauce projectID can change (few lines above) and it is not possible to wait for store change
+                }
             }} css={css`
                 background: url("./imgs/save.png");
-                width: 32px;
-                height: 32px;
-                background-size: contain;
-                border: 0;
+                `}></button>
+            <button onClick={(e) => {
+                dispatch(showProjectDialog(true))
+            }} css={css`
+                background: url("./imgs/save-as.png");
                 `}></button>
 
         </div>

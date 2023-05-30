@@ -10,6 +10,7 @@ import { useAppSelector } from "../../hooks/useAppSelector";
 import Selectbox from "../GUI/Selectbox";
 import usePlantsFromDB from "../../hooks/usePlantsFromDB";
 import { IPlant, IPlantDB } from "../../helpers/plant-types";
+import ModalWindow from "../GUI/ModalWindow";
 export interface IFieldEditDialogProps {
     id: number;
 }
@@ -21,37 +22,18 @@ const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
     const seedBed = useAppSelector(state => state.seedBedsReducer.seedBeds[props.id]);
 
     const plantsFromDB = usePlantsFromDB();
-    let options = plantsFromDB.map((plant: IPlant)=>{
-        return {text:plant.name, value: plant.id}
+    let options = plantsFromDB.map((plant: IPlant) => {
+        return { text: plant.name, value: plant.id }
     })
-    console.log('options: ', options);
+    
     return (
-        <div css={css`
-            padding: 20px;
-            position: fixed;
-            /* left: ${position.x}px;
-            top: ${position.y}px; */
-            right: 0;
-            top: 500px;
-            background-color: #474747;
-            border-radius: 10px;
-            z-index: ${DEPTH.FIELD_EDITS};
-        `}>
-            <div onClick={() => { dispatch(updateSelectedSeedBed(-1)) }} css={css`            
-                position: relative;
-                top: -15px;
-                right: -5px;
-                color: white;
-                border: 1px solid aliceblue;
-                border-radius: 5px;
-                padding: 1px 5px;
-                cursor: pointer;
-            `}>X</div>
+        <ModalWindow position={{left: "initial", top: "50%", right: "0", bottom:"initial"}} dimension={{width: "250px", height
+        : "initial"}} closeModalHandler={() => { dispatch(updateSelectedSeedBed(-1))}}>
 
-            <Selectbox value={seedBed.plant.name} options={[]}/>
-            <InputField value={seedBed.plant.inRowSpacing + " x " + seedBed.plant.betweenRowSpacing} />
+            <Selectbox defaultValue={seedBed.plant.name} options={[]} />
+            <InputField value={seedBed.plant.inRowSpacing + " x " + seedBed.plant.betweenRowSpacing} onChangeHandler={()=>{console.log("READONLY INPUT!")}}/>
 
-        </div>
+        </ModalWindow>
     )
 }
 

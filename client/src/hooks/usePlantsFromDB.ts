@@ -9,7 +9,6 @@ const usePlantsFromDB = () => {
         setProcessedPlants(processPlants(plantsFromDB));
     }, [plantsFromDB])
 
-    console.log('processedPlants: ', processedPlants);
     return processedPlants;
 }
 
