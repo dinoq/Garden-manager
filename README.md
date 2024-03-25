@@ -8,12 +8,14 @@ TODO:
 - změnit "SeedBedsSlice->createNewSeedBedAction->rowsDirection" podle defaultního nastavení! (Aktuálně se tam prostě vkládá ROWDIRECTIONS.LEFT_TO_RIGHT)
 - mód pokládání plant pomocí více klikání (uživatel vybere plant a kliká všude kam se mají vkládat jednotlivé rostliny) - nemusí po každé pokládce znovu vybírat rostlinu; mohlo by být realizováno při výběru plants switchem mezi módy - Pozn: jednotlivé rostliny by asi neměli mít FieldEditDialog? Minimálně ne tak podrobný...
 - autosave
+- metr do tools
+-field splitter, joiner
 
 
 FieldEditDialog:
 Rozdělení na basic/advanced (Uvnitř každého sekce?)
 Basic:
-Plant Info - název fieldu, volba rostliny, odruda, radiobutton defaultní/manuální spon (a kdyžtak volba), orientace řádků,umístění fieldu od-do (měsíc)/sow out+harvest time=>vypočítaná doba fieldu?, vypočítané info o cca množství celkových rostlin, množství potřebného osiva (v gramech), příp. orientačně očekávané množství úrody 
+Plant Info - název fieldu, volba rostliny, odruda, selectbox spon (poslední volba custom - zobrazí dále pole), orientace řádků,umístění fieldu od-do (měsíc)/sow out+harvest time=>vypočítaná doba fieldu?, vypočítané info o cca množství celkových rostlin, množství potřebného osiva (v gramech), příp. orientačně očekávané množství úrody 
 interplant aligner - interplant, target field
 succesion ? Pokud by se vůbec neměnila velikost fieldu, tak možná bude jednodušší... Jen se nastaví od kterého měsíce bude změna a zbytek Fieldu se přenastaví v tomto období na danou rostlinu??
 možnost zadání šířky/výšky fieldu (+ tlačítko pro otočení), stejně tak možnost zadaní množství rostlin v řádku/počtu řádků (+ tlačítko pro otočení), podobně tlačítko pro nastavení velikosti dle jiného fieldu (výběr ze seznamu, kde bude u každého název, plodina, odrůda, měsíce na poli, součadnice)

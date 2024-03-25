@@ -3,8 +3,13 @@
 import { css, jsx } from "@emotion/react";
 
 export interface ISelectboxProps {
-    defaultValue: string,
+    defaultValue: number,
     options: Array<any>,
+}
+
+export interface IOption {
+    name: string,
+    value: number
 }
 
 const Selectbox: React.FC<ISelectboxProps> = (props) => {
@@ -13,12 +18,10 @@ const Selectbox: React.FC<ISelectboxProps> = (props) => {
     width: 100%;
     height: 30px;
     border-radius: 5px;
-`} {...props}>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
+`}>
+            {props.options.map((option: IOption) => {
+                return <option value={option.value} selected={props.defaultValue === option.value}>{option.name}</option>
+            })}
         </select>
     )
 }
