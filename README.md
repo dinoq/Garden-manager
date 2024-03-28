@@ -1,4 +1,5 @@
 TODO:
+-přidat kompas + rotace celého view
 - nešly by nějak předělat reducery setLMT a setProjectName do setProject? Jakože nějak pomocí spread operátoru?
 -zoom předělat taky na lokální a až po mouseup vložit do reduxu
 -Scale přesunovatelné, ale bez funkce zoomu (jestli tak ted funguje)
@@ -27,7 +28,7 @@ defaultně zobrazovat rozšířený filtr? (Vyhledávání rostlin/objektů) - n
 
 
 Záložky
-Design, varieties manager, sow times, notes, settings
+Design, varieties manager, sow times, notes, settings, control garden (IoT), shop
 _________________________
 V horním menu:
 editační tlačítka (nový, uložit, uložit jako, undo/redo, copy/cut/paste, delete), kalendář, manipulační tlačítka (move, zoom, rectangle select, free select), create (plant, object, paths, field, shapes, text) - jako výběr obrazců v ms word, seedbed creation tools (horizontal split, vertical split, path?, merge),layers (plants, object, all, lock all), help
