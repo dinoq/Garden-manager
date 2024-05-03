@@ -9,7 +9,8 @@ export interface IInputFieldProps {
     placeholder?: string,
     name?: string,
     id?: string,
-    type?: string
+    type?: string,
+    readonly?: boolean
 }
 
 const InputField: React.FC<IInputFieldProps> = (props) => {

@@ -80,6 +80,9 @@ const SeedBedsSlice = createSlice({
         setProjectID: (state: ISeedBedSlice, action: PayloadAction<number>) => {
             state.projectID = action.payload;
         },
+        // changePlant: (state: ISeedBedSlice, action: PayloadAction<number>) => {
+
+        // }
     }
 })
 

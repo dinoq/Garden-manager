@@ -15,7 +15,7 @@ interface IGUISlice {
 const initialState: IGUISlice = {
     menuWidth: 300,
     toolbarHeight: 150,
-    hideGUI: false,
+    hideGUI: true,
     message: "Start with.... dasdf asdf asdf adf asdf asdf adasdf asdf asdf adf asdf asdf adasdf asdf asdf adf asdf asdf adasdf sdf asdf adf asdf asdf adasdf asdf asdf adf asdf asdf asdf asdf",
     ProjectDialog: {
         show: false,

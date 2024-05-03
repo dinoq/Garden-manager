@@ -12,27 +12,30 @@ import { IPlant } from "../../helpers/plant-types";
 import ModalWindow from "../GUI/ModalWindow";
 import SearchableSelectbox from "../GUI/SearchableSelectbox";
 export interface IFieldEditDialogProps {
-    id: number;
+    seedBedID: number;
+    children: JSX.Element[] | JSX.Element
 }
 
 const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
     const dispatch = useAppDispatch();
     const [position, setPosition] = useState({ x: 500, y: 500 });
 
-    const seedBed = useAppSelector(state => state.seedBedsReducer.seedBeds[props.id]);
 
     const plantsFromDB: Array<IPlant> = usePlantsFromDB();
     let options: Array<IOption> = plantsFromDB.map((plant: IPlant) => {
         return { name: plant.name, value: plant.id }
     })
-    
-    return (
-        <ModalWindow position={{left: "initial", top: "50%", right: "0", bottom:"initial"}} dimension={{width: "250px", height
-        : "initial"}} closeModalHandler={() => { dispatch(updateSelectedSeedBed(-1))}}>
-            <InputField value="Field1" onChangeHandler={()=>{}}/>
-            <SearchableSelectbox defaultValue={seedBed.plant.id} options={options} />
-            <InputField value={seedBed.plant.inRowSpacing + " x " + seedBed.plant.betweenRowSpacing} onChangeHandler={()=>{console.log("READONLY INPUT!")}}/>
 
+    const plantNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log('plantNameChanged e.target.value: ', e.target.value);
+    }
+
+    return (
+        <ModalWindow position={{ left: "initial", top: "50%", right: "0", bottom: "initial" }} dimension={{
+            width: "250px", height
+                : "initial"
+        }} closeModalHandler={() => { dispatch(updateSelectedSeedBed(-1)) }}>
+            {props.children}
         </ModalWindow>
     )
 }

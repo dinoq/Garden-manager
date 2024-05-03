@@ -6,6 +6,7 @@ import InputField from "../InputField";
 export interface ISelectboxProps {
     defaultValue: number,
     options: Array<any>,
+    onChange: Function
 }
 
 export interface IOption {
@@ -13,24 +14,23 @@ export interface IOption {
     value: number
 }
 
-const inputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.value
-    console.log('e.target.value: ', e.target.value);
-}
 
 const SearchableSelectbox: React.FC<ISelectboxProps> = (props) => {
+    const inputChanged = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        props.onChange(e);
+    }
     return (
         <div>
             <select css={css`                
-    width: 100%;
-    height: 30px;
-    border-radius: 5px;
-`}>
+                width: 100%;
+                height: 30px;
+                border-radius: 5px;
+            `} defaultValue={props.defaultValue} onChange={inputChanged}>
                 {props.options.map((option: IOption) => {
-                    return <option value={option.value} selected={props.defaultValue === option.value}>{option.name}</option>
+                    return <option key={"plant-" + option.value} value={option.value}>{option.name}</option>
                 })}
             </select>
-            <InputField value="" onChangeHandler={inputChanged} />
+            {/* <InputField value="" onChangeHandler={(e)=>{inputChanged(e)}} /> */}
         </div>
     )
 }
