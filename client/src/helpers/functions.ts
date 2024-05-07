@@ -1,5 +1,5 @@
 import { config } from "./config";
-import { GrowthType, IPlant } from "./plant-types";
+import { GrowthType, IPlant, IVariety } from "./plant-types";
 
 /*
 
@@ -11,27 +11,58 @@ export const cmToPX = (cm: number, zoom: number)=>{
     return cm*zoom;
 }*/
 
-export const zoomedFactory = (zoom: number) => { return (size: number) => zoom * size;}
+export const zoomedFactory = (zoom: number) => { return (size: number) => zoom * size; }
 
 
-export const processPlants = (plants: IPlant[]) => {
+export const processPlants = (plants: IPlant[], varieties: IVariety[]) => {
     const edited = new Array();
+    const varietiesObj: {[key: number]: IVariety[];} = {};
+    varieties.forEach(variety => { // Remap varieties array to object which has variety.crop as keys
+        // Check if the id_foreign value already exists as a key in the result object
+        if (varietiesObj[variety.crop]) {
+          // If it exists, push the current object to the array associated with that key
+          varietiesObj[variety.crop].push(variety);
+        } else {
+          // If it doesn't exist, create a new array with the current object and assign it to the key
+          varietiesObj[variety.crop] = [variety];
+        }
+      });
+    console.log('varietiesObj: ', varietiesObj[3]);
 
-    plants.forEach(plant =>{
-        let editedPlant = {...plant};
+    plants.forEach(plant => {
+        let editedPlant = { ...plant };
 
-        //betweenRowSpacingMin a inRowSpacingMin
-        editedPlant.betweenRowSpacingMin = parseInt(editedPlant.betweenRowSpacing);
-        editedPlant.inRowSpacingMin = parseInt(editedPlant.inRowSpacing);
-
-        if(Number.isInteger(plant.betweenRowSpacing)){
-            editedPlant.betweenRowSpacingMin = parseInt(plant.betweenRowSpacing);
+        if (varietiesObj[plant.id]) {
+            editedPlant.varieties = varietiesObj[plant.id];
+        }
+        const emptyVariety: IVariety = { id: -1, crop: plant.id, name: "-", PlantSpacing: null, RowSpacing: null }
+        if(editedPlant.varieties?.length){ // Put empty variety at first index
+            editedPlant.varieties?.unshift(emptyVariety);
         }else{
-            const dashIndex = editedPlant.betweenRowSpacing?.indexOf("-");
-            if(dashIndex >= 0){
-                editedPlant.betweenRowSpacingMin = parseInt(plant.betweenRowSpacing.substring(0,dashIndex));
-                
-            }else{
+            editedPlant.varieties = [emptyVariety];
+        }
+
+        if(!editedPlant.RowSpacing){
+            console.warn(editedPlant.name + " doesn't have RowSpacing set!\nSetting to 1!");
+            editedPlant.RowSpacing = "1";
+        }
+        if(!editedPlant.PlantSpacing){
+            console.warn(editedPlant.name + " doesn't have PlantSpacing set!\nSetting to 1!");
+            editedPlant.PlantSpacing = "1";
+        }
+
+        //RowSpacingMin a PlantSpacingMin
+        editedPlant.RowSpacingMin = parseInt(editedPlant.RowSpacing);
+        editedPlant.PlantSpacingMin = parseInt(editedPlant.PlantSpacing);
+
+        if (Number.isInteger(plant.RowSpacing)) {
+            editedPlant.RowSpacingMin = parseInt(editedPlant.RowSpacing);
+        } else {
+            const dashIndex = editedPlant.RowSpacing.indexOf("-");
+            if (dashIndex >= 0) {
+                editedPlant.RowSpacingMin = parseInt(editedPlant.RowSpacing.substring(0, dashIndex));
+
+            } else {
             }
         }
 
@@ -51,20 +82,20 @@ export const stringifyIfDateLong = (variable: any) => {
 }
 
 let warnSwitchedOffShown = true;
-export const consoleWarn = (msg: string) =>{
-    if(config.warnInConsole){
+export const consoleWarn = (msg: string) => {
+    if (config.warnInConsole) {
         console.warn(msg);
-    }else if(!warnSwitchedOffShown){
+    } else if (!warnSwitchedOffShown) {
         console.warn("Warn switched off!");
         warnSwitchedOffShown = true;
     }
 }
 
 let errorSwitchedOffShown = false;
-export const consoleError = (msg: string) =>{
-    if(config.errorInConsole){
+export const consoleError = (msg: string) => {
+    if (config.errorInConsole) {
         console.error(msg);
-    }else if(!errorSwitchedOffShown){
+    } else if (!errorSwitchedOffShown) {
         console.error("Error switched off!");
         errorSwitchedOffShown = true;
     }

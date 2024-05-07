@@ -51,8 +51,8 @@ const ResizePoint: React.FC<IResizePointProps> = (props) => {
 
     const seedBed = useAppSelector(state => state.seedBedsReducer.seedBeds[props.id]);
     const seedBedDirection = seedBed.rowsDirection;
-    const minimalWidth = (seedBedDirection == ROWDIRECTIONS.LEFT_TO_RIGHT) ? seedBed.plant.inRowSpacingMin : seedBed.plant.betweenRowSpacingMin;
-    const minimalHeight = (seedBedDirection == ROWDIRECTIONS.LEFT_TO_RIGHT) ? seedBed.plant.betweenRowSpacingMin : seedBed.plant.inRowSpacingMin;
+    const minimalWidth = (seedBedDirection == ROWDIRECTIONS.LEFT_TO_RIGHT) ? seedBed.plant.PlantSpacingMin : seedBed.plant.RowSpacingMin;
+    const minimalHeight = (seedBedDirection == ROWDIRECTIONS.LEFT_TO_RIGHT) ? seedBed.plant.RowSpacingMin : seedBed.plant.PlantSpacingMin;
 
     const [isMoving, setIsMoving] = useState(false);
 

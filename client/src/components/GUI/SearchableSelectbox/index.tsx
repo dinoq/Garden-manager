@@ -1,12 +1,16 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
+import { useState } from "react";
 import InputField from "../InputField";
+import { useAppDispatch } from "../../../hooks/useAppDispatch";
+import { enableZoomAction } from "../../../store/reducers/ViewNavigationSlice";
 
 export interface ISelectboxProps {
     defaultValue: number,
-    options: Array<any>,
-    onChange: Function
+    defaultOptions: Array<IOption>,
+    onChange: Function,
+    width: number
 }
 
 export interface IOption {
@@ -16,21 +20,25 @@ export interface IOption {
 
 
 const SearchableSelectbox: React.FC<ISelectboxProps> = (props) => {
-    const inputChanged = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const dispatch = useAppDispatch();
+    const [searchText, setSearchText] = useState("");
+    const [options, setOptions] = useState(props.defaultOptions);
+    console.log('props.defaultOptions: ', props.defaultOptions, options);
+
+    const inputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    }
+
+    const showOptions = (e: React.MouseEvent<HTMLInputElement>) => {
+        console.log('showOptions: ',options, props.defaultOptions);
+    }
+
+    const optionSelected = (e: React.MouseEvent<HTMLInputElement>) => {
         props.onChange(e);
     }
+
     return (
         <div>
-            <select css={css`                
-                width: 100%;
-                height: 30px;
-                border-radius: 5px;
-            `} defaultValue={props.defaultValue} onChange={inputChanged}>
-                {props.options.map((option: IOption) => {
-                    return <option key={"plant-" + option.value} value={option.value}>{option.name}</option>
-                })}
-            </select>
-            {/* <InputField value="" onChangeHandler={(e)=>{inputChanged(e)}} /> */}
+            <InputField onChangeHandler={inputChanged} value={searchText}  />
         </div>
     )
 }

@@ -10,7 +10,8 @@ export interface IInputFieldProps {
     name?: string,
     id?: string,
     type?: string,
-    readonly?: boolean
+    readonly?: boolean,
+    onClick?: React.MouseEventHandler<any>
 }
 
 const InputField: React.FC<IInputFieldProps> = (props) => {

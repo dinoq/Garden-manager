@@ -24,11 +24,11 @@ const Plant: React.FC<ISeedCircle> = (props) => {
     const plantSize = 45;
     let marginTB, marginLR;
     if(props.rowDirection === ROWDIRECTIONS.LEFT_TO_RIGHT){
-        marginTB = zoomed(props.plant.betweenRowSpacingMin/2 - plantSize/2);
-        marginLR = zoomed(props.plant.inRowSpacingMin/2 - plantSize/2);
+        marginTB = zoomed(props.plant.RowSpacingMin/2 - plantSize/2);
+        marginLR = zoomed(props.plant.PlantSpacingMin/2 - plantSize/2);
     }else{
-        marginLR = zoomed(props.plant.betweenRowSpacingMin/2 - plantSize/2);
-        marginTB = zoomed(props.plant.inRowSpacingMin/2 - plantSize/2);
+        marginLR = zoomed(props.plant.RowSpacingMin/2 - plantSize/2);
+        marginTB = zoomed(props.plant.PlantSpacingMin/2 - plantSize/2);
     }
     return (
         <div css={css`

@@ -34,13 +34,22 @@ export interface IPlant extends IPlantDB{
     id: number,
     name: string,
     family: PlantFamily,
+    varieties: IVariety[],
     position: PlantSunRequirements,
     year: PlantYear,
-    inRowSpacing: string,
-    inRowSpacingMin: number,
-    betweenRowSpacing: string,
-    betweenRowSpacingMin: number,
+    PlantSpacing: string,
+    PlantSpacingMin: number,
+    RowSpacing: string,
+    RowSpacingMin: number,
     icon: string,
     growingPeriod: number,
     growthType: GrowthType
+}
+
+export interface IVariety {
+    id: number,
+    name: string,
+    crop: number,
+    PlantSpacing: string | null,
+    RowSpacing: string | null,
 }

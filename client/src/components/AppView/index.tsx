@@ -40,7 +40,6 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     const toolbarHeight = useAppSelector(state => state.guiReducer.toolbarHeight);
     const worldWidth = useAppSelector(state => state.navigationReducer.worldWidth) * worldZoom;
     const worldHeight = useAppSelector(state => state.navigationReducer.worldHeight) * worldZoom;
-    const seedBed = useAppSelector(state => state.seedBedsReducer.seedBeds[seedBedsReducer.selectedSeedBed]);
 
     const [isMouseDown, setIsMouseDown] = useState(false);
     const [isMiddleMouseDown, setIsMiddleMouseDown] = useState(false);
@@ -112,8 +111,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
         return <SeedBed key={"seed-bed-" + i} {...seedBed} {...position} />
     })
 
-
-    const memoSeedbeds = React.memo(seedBeds)
+    const MemoFieldEditDialog = React.memo(FieldEditDialog);
 
     return (
         <div css={css`
@@ -138,10 +136,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
                 <Field x={500/*(browserWidth-menuWidth)/2 - 200 + menuWidth*/} y={500/*(browserHeight-toolbarHeight)/2 - 250 + toolbarHeight*/} width={100} height={100} />
                 <Scale />
                 <MessageBar />
-                {seedBedsReducer.selectedSeedBed != -1 && <FieldEditDialog seedBedID={seedBedsReducer.selectedSeedBed}>
-                    <InputField value={seedBed.plant.name} readonly={true} onChangeHandler={() => { }} />
-                    <InputField value={seedBed.plant.inRowSpacing + " x " + seedBed.plant.betweenRowSpacing} onChangeHandler={() => { console.log("READONLY INPUT!") }} />
-                </FieldEditDialog>}
+                {seedBedsReducer.selectedSeedBed != -1 && <MemoFieldEditDialog/>}
                 {showProjectDialog && <ProjectDialog state={projectDialogState} />}
             </div>
         </div>
@@ -163,6 +158,6 @@ const seedBeds: React.FunctionComponent<{ beds: ISeedBed[], mouseAppViewPosition
     )
 }
 
-const MemoSeedBeds = React.memo(seedBeds);
 
+const MemoSeedBeds = React.memo(seedBeds);
 export default AppView;

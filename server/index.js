@@ -11,17 +11,25 @@ const corsOption = {
 app.use(cors(corsOption));
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+    res.send("Hello World!");
 });
 
-app.get("/vegetable", (req, res) => {
-  const db = new Database("./database/GardenManager.db", { verbose: console.log });
-  const stmt = db.prepare('SELECT * FROM Vegetable');
-  const vegetable = stmt.all();
+app.get("/crop", (req, res) => {
+    const db = new Database("./database/GardenManager.db", { verbose: console.log });
+    const stmt = db.prepare('SELECT * FROM Crop');
+    const crop = stmt.all();
 
-  res.send(vegetable);
+    res.send(crop);
+});
+
+app.get("/variety", (req, res) => {
+    const db = new Database("./database/GardenManager.db", { verbose: console.log });
+    const stmt = db.prepare('SELECT * FROM Variety');
+    const variety = stmt.all();
+
+    res.send(variety);
 });
 
 app.listen(port, () => {
-  console.log(`App listening on port ${port}`);
+    console.log(`App listening on port ${port}`);
 });

@@ -12,7 +12,7 @@ interface IFIeldProps extends IRect {
 }
 
 const Field: React.FC<IFIeldProps> = (props) => {
-    const zoom = useAppSelector(selector => selector.navigationReducer.zoom);
+    const zoom = useAppSelector(state => state.navigationReducer.zoom);
     const zoomed = zoomedFactory(zoom);
     
     const width = zoomed(props.width);

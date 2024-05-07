@@ -112,16 +112,16 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
     }
 
     const seedBedWidthForCalculation = props.rowsDirection == ROWDIRECTIONS.LEFT_TO_RIGHT ? seedBedWidth : seedBedHeight;
-    let inRowCountDecimal = seedBedWidthForCalculation / (zoomed(props.plant.inRowSpacingMin));
+    let inRowCountDecimal = seedBedWidthForCalculation / (zoomed(props.plant.PlantSpacingMin));
     let inRowCount = Math.floor(inRowCountDecimal);
     let inRowCountDecimalPart = inRowCountDecimal - inRowCount;
-    const inRowSeedShift = (zoomed(props.plant.inRowSpacingMin) * inRowCountDecimalPart) / 2;
+    const inRowSeedShift = (zoomed(props.plant.PlantSpacingMin) * inRowCountDecimalPart) / 2;
 
     const seedBedHeightForCalculation = props.rowsDirection == ROWDIRECTIONS.LEFT_TO_RIGHT ? seedBedHeight : seedBedWidth;
-    let rowsCountDecimal = seedBedHeightForCalculation / (zoomed(props.plant.betweenRowSpacingMin));
+    let rowsCountDecimal = seedBedHeightForCalculation / (zoomed(props.plant.RowSpacingMin));
     let rowsCount = Math.floor(rowsCountDecimal);
     let rowCountDecimalPart = rowsCountDecimal - rowsCount;
-    const rowSeedShift = (zoomed(props.plant.betweenRowSpacingMin) * rowCountDecimalPart) / 2;
+    const rowSeedShift = (zoomed(props.plant.RowSpacingMin) * rowCountDecimalPart) / 2;
 
     const plantCount = rowsCount * inRowCount;
 

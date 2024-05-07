@@ -5,6 +5,7 @@ import { consoleError } from "../../helpers/functions";
 
 interface IViewNavigationSlice {
     zoom: number,
+    canZoom: boolean,
     position: IPosition,
     isMovingAppView: boolean,
     mouseDownStartPosition: IPosition,
@@ -14,6 +15,7 @@ interface IViewNavigationSlice {
 
 const initialState: IViewNavigationSlice = {
     zoom: 1,
+    canZoom: true,
     position: {
         x: 0,
         y: 0
@@ -30,6 +32,9 @@ const ViewNavigationSlice = createSlice(
         initialState,
         reducers: {
             zoomAction: (state: IViewNavigationSlice, action: PayloadAction<{ zoomDirection: number, menuWidth: number }>) => {
+                if(!state.canZoom){
+                    return
+                }
                 const zoomDirection = action.payload.zoomDirection;
                 const menubarWidth = action.payload.menuWidth;
 
@@ -67,6 +72,11 @@ const ViewNavigationSlice = createSlice(
                 }
             },
 
+            enableZoomAction: (state: IViewNavigationSlice, action: PayloadAction<boolean>) => {
+                state.canZoom = action.payload;
+            },
+
+
             moveWorldByMouseAction: (state: IViewNavigationSlice, action: PayloadAction<IPosition>) => {
                 state.position = action.payload;
             },
@@ -78,12 +88,11 @@ const ViewNavigationSlice = createSlice(
             setMouseDownPosition: (state: IViewNavigationSlice, action: PayloadAction<IPosition>) => {
                 state.mouseDownStartPosition = action.payload;
             },
-
         }
     }
 )
 
-export const { zoomAction, moveWorldByMouseAction, setIsMovingAppViewAction, setMouseDownPosition } = ViewNavigationSlice.actions;
+export const { zoomAction, enableZoomAction, moveWorldByMouseAction, setIsMovingAppViewAction, setMouseDownPosition } = ViewNavigationSlice.actions;
 export default ViewNavigationSlice.reducer;
 
 /*

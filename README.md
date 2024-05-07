@@ -1,4 +1,5 @@
 TODO:
+-SearchableSelectbox.options - prázdné (protože se nastavuje jen při prvním rerenderu a rerenderuje se to hodněkrát - možná memo?)
 -přidat kompas + rotace celého view
 - nešly by nějak předělat reducery setLMT a setProjectName do setProject? Jakože nějak pomocí spread operátoru?
 -zoom předělat taky na lokální a až po mouseup vložit do reduxu
@@ -14,9 +15,22 @@ TODO:
 
 
 FieldEditDialog:
-Rozdělení na basic/advanced (Uvnitř každého sekce?)
-Basic:
-Plant Info - název fieldu, volba rostliny, odruda, selectbox spon (poslední volba custom - zobrazí dále pole), orientace řádků,umístění fieldu od-do (měsíc)/sow out+harvest time=>vypočítaná doba fieldu?, vypočítané info o cca množství celkových rostlin, množství potřebného osiva (v gramech), příp. orientačně očekávané množství úrody 
+Rozdělení na Settings/Info
+Settings:
+název rostliny, - při změně YNC dialog jestli měnit spon podle defaultu plodiny
+odruda,  - při změně YNC dialog jestli měnit spon defaultu odrudy
+orientace řádků,
+umístění fieldu od-do (měsíc) (+tlačítko create succesion)
+rozměry fieldu 
+spon(radiobutton basic X advanced) (poslední volba custom - zobrazí dále pole), 
+_____
+Info:
+vegetační doba
+vypočítaná doba fieldu(sow out+harvest time), 
+vypočítané info o cca množství celkových rostlin, 
+množství potřebného osiva (v gramech)
+orientačně očekávané množství úrody 
+
 interplant aligner - interplant, target field
 succesion ? Pokud by se vůbec neměnila velikost fieldu, tak možná bude jednodušší... Jen se nastaví od kterého měsíce bude změna a zbytek Fieldu se přenastaví v tomto období na danou rostlinu??
 možnost zadání šířky/výšky fieldu (+ tlačítko pro otočení), stejně tak možnost zadaní množství rostlin v řádku/počtu řádků (+ tlačítko pro otočení), podobně tlačítko pro nastavení velikosti dle jiného fieldu (výběr ze seznamu, kde bude u každého název, plodina, odrůda, měsíce na poli, součadnice)
@@ -28,10 +42,10 @@ defaultně zobrazovat rozšířený filtr? (Vyhledávání rostlin/objektů) - n
 
 
 Záložky
-Design, varieties manager, sow times, notes, settings, control garden (IoT), shop
+Design, Crop and varieties manager, sow times, notes, plants/calendar, settings, control garden (IoT), shop
 _________________________
 V horním menu:
-editační tlačítka (nový, uložit, uložit jako, undo/redo, copy/cut/paste, delete), kalendář, manipulační tlačítka (move, zoom, rectangle select, free select), create (plant, object, paths, field, shapes, text) - jako výběr obrazců v ms word, seedbed creation tools (horizontal split, vertical split, path?, merge),layers (plants, object, all, lock all), help
+editační tlačítka (nový, uložit, uložit jako, undo/redo, copy/cut/paste, delete), kalendář, manipulační tlačítka (move, zoom, rectangle select, free select), create (plant, object, paths, field, shapes, text) - jako výběr obrazců v ms word, seedbed creation tools (horizontal split, vertical split, path?, merge),layers (plants, object, irrigation, all, lock all), help
 _________________________
 Dole
 

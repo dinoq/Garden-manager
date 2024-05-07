@@ -3,10 +3,11 @@ import { processPlants } from "../helpers/functions";
 import useDB from "./useDB";
 
 const usePlantsFromDB = () => {
-    const plantsFromDB = useDB("vegetable");
+    const plantsFromDB = useDB("crop");
+    const varietiesFromDB = useDB("variety");
     const [processedPlants, setProcessedPlants] = useState<any>([]);
     useEffect(()=>{
-        setProcessedPlants(processPlants(plantsFromDB));
+        setProcessedPlants(processPlants(plantsFromDB, varietiesFromDB));
     }, [plantsFromDB])
 
     return processedPlants;
