@@ -40,6 +40,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     const toolbarHeight = useAppSelector(state => state.guiReducer.toolbarHeight);
     const worldWidth = useAppSelector(state => state.navigationReducer.worldWidth) * worldZoom;
     const worldHeight = useAppSelector(state => state.navigationReducer.worldHeight) * worldZoom;
+    const hideGUI = useAppSelector(state=> state.guiReducer.hideGUI);
 
     const [isMouseDown, setIsMouseDown] = useState(false);
     const [isMiddleMouseDown, setIsMiddleMouseDown] = useState(false);
@@ -123,7 +124,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
             top: 0;
         `}>
             <div ref={viewElement} onDragOver={e => e.preventDefault()} onWheel={zoom} onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} css={css`
-                background-color: #777b77;
+                background-color: #6d6d6d;
                 border: 1px solid green;
                 position: relative;
                 width: ${worldWidth}px;
@@ -134,7 +135,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
             `}>
                 {<MemoSeedBeds beds={seedBedsReducer.seedBeds} mouseAppViewPosition={mouseAppViewPosition} />}
                 <Field x={500/*(browserWidth-menuWidth)/2 - 200 + menuWidth*/} y={500/*(browserHeight-toolbarHeight)/2 - 250 + toolbarHeight*/} width={100} height={100} />
-                <Scale />
+                {!hideGUI && <Scale />}
                 <MessageBar />
                 {seedBedsReducer.selectedSeedBed != -1 && <MemoFieldEditDialog/>}
                 {showProjectDialog && <ProjectDialog state={projectDialogState} />}
@@ -151,6 +152,7 @@ const seedBeds: React.FunctionComponent<{ beds: ISeedBed[], mouseAppViewPosition
                 let position: IPosition = { x: seedBed.x, y: seedBed.y };
                 if (!seedBed.isPlaced) {
                     position = { x: mouseAppViewPosition.x - seedBed.width / 2, y: mouseAppViewPosition.y - seedBed.height / 2 };
+                    console.log('position: ', position);
                 }
                 return <SeedBed key={"seed-bed-" + i} {...seedBed} {...position} />
             })}

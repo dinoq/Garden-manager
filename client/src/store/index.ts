@@ -3,6 +3,7 @@ import NavigationReducer from "./reducers/ViewNavigationSlice";
 import SeedBedsReducer from "./reducers/SeedBedsSlice";
 import CalendarReducer from "./reducers/CalendarSlice";
 import GUIReducer from "./reducers/GUISlice";
+import DBSlice from "./reducers/DBSlice";
 
 
 const store = configureStore({
@@ -11,6 +12,7 @@ const store = configureStore({
         seedBedsReducer: SeedBedsReducer,
         calendarReducer: CalendarReducer,
         guiReducer: GUIReducer,
+        dbReducer: DBSlice,
     }
 })
 

@@ -18,7 +18,7 @@ const Header: React.FC<{}> = () => {
         <div css={css`
             width: 100%;
             height: 100%;
-            background-color: #a6a6a6;
+            background-color: #737373;
             display: flex;
             z-index: ${DEPTH.HEADER};
         `}>

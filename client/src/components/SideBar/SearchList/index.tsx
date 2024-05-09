@@ -5,12 +5,16 @@ import { MouseEventHandler } from 'react';
 import { IPlant } from '../../../helpers/plant-types';
 import { IAppObject } from '../../../helpers/types';
 import ListItem from './ListItem';
+import { useAppSelector } from '../../../hooks/useAppSelector';
 
 interface ICategory{
     items: Array<IPlant|IAppObject> ,
     setNewUplacedSeedBed: MouseEventHandler<HTMLLIElement>,
 }
 const SearchList: React.FC<ICategory> = (props) => {    
+    const hideGUI = useAppSelector(state=> state.guiReducer.hideGUI);
+    
+    const items = hideGUI? props.items.slice(0, 5): props.items;
     return (
         <ul css={css`
             list-style-type: none;
@@ -18,8 +22,8 @@ const SearchList: React.FC<ICategory> = (props) => {
             height: 100%;
             overflow-y: scroll;
     `}>
-            {props.items.map((item, i) => {
-                return <ListItem key={"search-list-item-" + i} index={i} isLastItem={i==props.items.length-1} item={item} setNewUplacedSeedBed={props.setNewUplacedSeedBed} />
+            {items.map((item, i) => {
+                return <ListItem key={"search-list-item-" + item.id} isLastItem={i==props.items.length-1} item={item} setNewUplacedSeedBed={props.setNewUplacedSeedBed} />
             })}
         </ul>
     )

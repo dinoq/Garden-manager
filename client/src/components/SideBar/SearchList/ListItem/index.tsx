@@ -5,17 +5,18 @@ import { css } from '@emotion/react';
 import { MouseEventHandler } from 'react';
 import { IPlant } from '../../../../helpers/plant-types';
 import { IAppObject } from '../../../../helpers/types';
+import { useAppSelector } from '../../../../hooks/useAppSelector';
 
 interface IListItem{
-    index: number,
     item: IPlant | IAppObject,
     setNewUplacedSeedBed: MouseEventHandler<HTMLLIElement>,
     isLastItem: boolean
 }
 const ListItem: React.FC<IListItem> = (props) => {
-
+    const hideGUI = useAppSelector(state=> state.guiReducer.hideGUI);
+    const name = hideGUI? props.item.name.substring(0,2) : props.item.name;
     return (<
-        li key={"plant-" + props.index} draggable="false" onClick={props.setNewUplacedSeedBed} css={css`
+        li key={"plant-" + props.item.id} id={"plant-" + props.item.id} draggable="false" onClick={props.setNewUplacedSeedBed} css={css`
     cursor: pointer;
     padding: 15px;
     margin: 5px 0;
@@ -26,7 +27,7 @@ const ListItem: React.FC<IListItem> = (props) => {
     text-align: center;
     border-radius: 10px;
     user-select: none;
-`}>{props.item.name/*.substring(0,1)*/}</li>
+`}>{name}</li>
     )
 }
 

@@ -14,8 +14,8 @@ export const cmToPX = (cm: number, zoom: number)=>{
 export const zoomedFactory = (zoom: number) => { return (size: number) => zoom * size; }
 
 
-export const processPlants = (plants: IPlant[], varieties: IVariety[]) => {
-    const edited = new Array();
+export const processPlants = (plants: IPlant[], varieties: IVariety[]): IPlant[] => {
+    const edited: IPlant[] = new Array();
     const varietiesObj: {[key: number]: IVariety[];} = {};
     varieties.forEach(variety => { // Remap varieties array to object which has variety.crop as keys
         // Check if the id_foreign value already exists as a key in the result object
@@ -27,10 +27,9 @@ export const processPlants = (plants: IPlant[], varieties: IVariety[]) => {
           varietiesObj[variety.crop] = [variety];
         }
       });
-    console.log('varietiesObj: ', varietiesObj[3]);
 
     plants.forEach(plant => {
-        let editedPlant = { ...plant };
+        let editedPlant:IPlant = { ...plant };
 
         if (varietiesObj[plant.id]) {
             editedPlant.varieties = varietiesObj[plant.id];
@@ -43,11 +42,11 @@ export const processPlants = (plants: IPlant[], varieties: IVariety[]) => {
         }
 
         if(!editedPlant.RowSpacing){
-            console.warn(editedPlant.name + " doesn't have RowSpacing set!\nSetting to 1!");
+            consoleWarn(editedPlant.name + " doesn't have RowSpacing set!\nSetting to 1!");
             editedPlant.RowSpacing = "1";
         }
         if(!editedPlant.PlantSpacing){
-            console.warn(editedPlant.name + " doesn't have PlantSpacing set!\nSetting to 1!");
+            consoleWarn(editedPlant.name + " doesn't have PlantSpacing set!\nSetting to 1!");
             editedPlant.PlantSpacing = "1";
         }
 
@@ -72,6 +71,16 @@ export const processPlants = (plants: IPlant[], varieties: IVariety[]) => {
         edited.push(editedPlant);
     })
     return edited;
+}
+
+export const getPlantByID = (idStr: string, plants:IPlant[]) => {
+    let id = idStr;
+    if(idStr.includes("-")){
+        const idStart = idStr.indexOf("-") + 1;
+        id = idStr.substring(idStart);
+    }
+    const cropID = parseInt(id);
+    return plants.find(plant => plant.id === cropID)
 }
 
 export const stringifyIfDateLong = (variable: any) => {

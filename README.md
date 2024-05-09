@@ -1,5 +1,5 @@
 TODO:
--SearchableSelectbox.options - prázdné (protože se nastavuje jen při prvním rerenderu a rerenderuje se to hodněkrát - možná memo?)
+-SearchableSelectbox rerenfering too often on new object addition (in function itself and in useeffect [props.allOptions])
 -přidat kompas + rotace celého view
 - nešly by nějak předělat reducery setLMT a setProjectName do setProject? Jakože nějak pomocí spread operátoru?
 -zoom předělat taky na lokální a až po mouseup vložit do reduxu

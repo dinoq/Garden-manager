@@ -1,14 +1,23 @@
 import { useEffect, useState } from "react";
 import { processPlants } from "../helpers/functions";
 import useDB from "./useDB";
+import { IPlant } from "../helpers/plant-types";
+import { useAppSelector } from "./useAppSelector";
+import { useAppDispatch } from "./useAppDispatch";
+import { setDBDataAction } from "../store/reducers/DBSlice";
 
 const usePlantsFromDB = () => {
-    const plantsFromDB = useDB("crop");
-    const varietiesFromDB = useDB("variety");
-    const [processedPlants, setProcessedPlants] = useState<any>([]);
+    const dispatch = useAppDispatch();
+    const {data: plantsFromDB, dataLoaded: plantsFetched} = useDB("crop");
+    const {data: varietiesFromDB, dataLoaded: varietiesFetched} = useDB("variety");
+    const [processedPlants, setProcessedPlants] = useState<IPlant[]>([]);
+
     useEffect(()=>{
-        setProcessedPlants(processPlants(plantsFromDB, varietiesFromDB));
-    }, [plantsFromDB])
+        if(plantsFetched && varietiesFetched && !processedPlants.length){
+            const a = processPlants(plantsFromDB, varietiesFromDB);
+            setProcessedPlants(a);
+        }
+    }, [plantsFetched, varietiesFetched]) // TODO add if fetched changed
 
     return processedPlants;
 }
