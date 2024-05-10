@@ -20,12 +20,10 @@ const useDB = (query: string) => {
 
     useEffect(() => {
         if (currentCache?.fetched) {
-            console.count("not fetched");
             return;
         }
         dispatch(setFetchedAction(query));
         const getDBData = async () => {
-            console.count("fetched");
 
             const dbData = await (await fetch("http://localhost:3001/" + query)).json();
             if (dbData) {

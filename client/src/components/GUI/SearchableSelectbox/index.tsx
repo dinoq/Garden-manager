@@ -7,7 +7,7 @@ import { useAppDispatch } from "../../../hooks/useAppDispatch";
 import { enableZoomAction } from "../../../store/reducers/ViewNavigationSlice";
 
 export interface ISelectboxProps {
-    defaultValue: number,
+    selectedValue: number,
     allOptions: Array<IOption>,
     onChange: Function,
     modalWidth: number
@@ -21,28 +21,29 @@ export interface IOption {
 
 const SearchableSelectbox: React.FC<ISelectboxProps> = (props) => {
     const dispatch = useAppDispatch();
-    const [searchText, setSearchText] = useState("");
-    const [options, setOptions] = useState<IOption[]>([]);
-
+    const [searchText, setSearchText] = useState(props.allOptions.find(option => option.value === props.selectedValue)?.name || "");
+    const [options, setOptions] = useState<IOption[]>(props.allOptions);
+    const [optionsVisible, setOptionsVisible] = useState(false);
+    
     useEffect(() => {
-        console.log('props.allOptions.length, options.length: ', props.allOptions.length, options.length);
-        setOptions(props.allOptions); // All options are not available at first render, so we muset set it manually on props.allOptions change (initial set in useState applies only on first render)
-    }, [props.allOptions]);
-
+        setSearchText(props.allOptions.find(option => option.value === props.selectedValue)?.name || "");
+    }, [props.selectedValue])
+    
     const inputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
         const text = e.currentTarget.value;
         setSearchText(text);
-        const filteredOptions = props.allOptions.filter(option => option.name.includes(text));
+        const toLowerRemoveDiacritics = (str: string) => str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // Converts string to lower case and removes diacritics (for more exact comparison)
+        const filteredOptions = props.allOptions.filter(option => toLowerRemoveDiacritics(option.name).includes(toLowerRemoveDiacritics(text)));
         setOptions(filteredOptions);
     }
 
     const showOptions = (e: React.MouseEvent<HTMLInputElement>) => {
-        console.log('showOptions: ', options, props.allOptions);
+        setOptionsVisible(true);
     }
 
-    const optionSelected = (e: React.MouseEvent<HTMLDivElement>) => {
-        console.log('click');
-        //props.onChange(e);
+    const optionSelected = (e: React.MouseEvent<HTMLDivElement>) => {        
+        setOptionsVisible(false);
+        props.onChange(e);
     }
 
     return (
@@ -53,10 +54,17 @@ const SearchableSelectbox: React.FC<ISelectboxProps> = (props) => {
                 max-height: 200px;
                 overflow-y: scroll;
                 cursor: pointer;
+                background-color: #6e6e6e;
+                position: absolute;
+                display: ${optionsVisible? "block" : "none"};
             `} onMouseEnter={() => dispatch(enableZoomAction(false))} onMouseLeave={() => dispatch(enableZoomAction(true))}>
                 {options.map(option => {
                     return (
-                        <div key={"option-" + option.value} id={"option-" + option.value} onClick={optionSelected}>
+                        <div key={"option-" + option.value} id={"option-" + option.value} onClick={optionSelected} css={css`
+                            &:hover {
+                                background-color: #575757;
+                            }
+                        `}>
                             {option.name}
                         </div>)
                 })}

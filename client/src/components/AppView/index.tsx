@@ -12,7 +12,7 @@ import SeedBed from "../SeedBed";
 import MessageBar from "../MesageBar";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import useLocalCoordinates from "../../hooks/useLocalCoordinates";
-import FieldEditDialog from "../FieldEditDialog";
+import MemoFieldEditDialog from "../FieldEditDialog";
 import React from "react";
 import ProjectDialog, { ProjectDialogStates } from "../ProjectDialog";
 import { setMessage } from "../../store/reducers/GUISlice";
@@ -112,7 +112,6 @@ const AppView: React.FC<IAppViewProps> = (props) => {
         return <SeedBed key={"seed-bed-" + i} {...seedBed} {...position} />
     })
 
-    const MemoFieldEditDialog = React.memo(FieldEditDialog);
 
     return (
         <div css={css`
@@ -152,7 +151,6 @@ const seedBeds: React.FunctionComponent<{ beds: ISeedBed[], mouseAppViewPosition
                 let position: IPosition = { x: seedBed.x, y: seedBed.y };
                 if (!seedBed.isPlaced) {
                     position = { x: mouseAppViewPosition.x - seedBed.width / 2, y: mouseAppViewPosition.y - seedBed.height / 2 };
-                    console.log('position: ', position);
                 }
                 return <SeedBed key={"seed-bed-" + i} {...seedBed} {...position} />
             })}

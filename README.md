@@ -1,30 +1,46 @@
-TODO:
--SearchableSelectbox rerenfering too often on new object addition (in function itself and in useeffect [props.allOptions])
--přidat kompas + rotace celého view
+TODO refactor:
 - nešly by nějak předělat reducery setLMT a setProjectName do setProject? Jakože nějak pomocí spread operátoru?
 -zoom předělat taky na lokální a až po mouseup vložit do reduxu
--Scale přesunovatelné, ale bez funkce zoomu (jestli tak ted funguje)
--do nastavení přidat rozlišení zda dělit měsíce na 1/2/4 části a defaultně dát 2
-- Ke každému fieldu budou pod sebou fieldEdity - rozevíratelné dialogy (něco jako ve Fusion360 při např. extrude). Přesunovatelné.
-- Vkládání rostlin i "táhnutím" (ne jen kliknutím) ze seznamu
 - změnit "SeedBedsSlice->createNewSeedBedAction->rowsDirection" podle defaultního nastavení! (Aktuálně se tam prostě vkládá ROWDIRECTIONS.LEFT_TO_RIGHT)
-- mód pokládání plant pomocí více klikání (uživatel vybere plant a kliká všude kam se mají vkládat jednotlivé rostliny) - nemusí po každé pokládce znovu vybírat rostlinu; mohlo by být realizováno při výběru plants switchem mezi módy - Pozn: jednotlivé rostliny by asi neměli mít FieldEditDialog? Minimálně ne tak podrobný...
+
+__________________________________________________________
+### Zákl. Funkcionality
 - autosave
+__________________________________________________________
+### Object creation
+- mód pokládání plant pomocí více klikání (uživatel vybere plant a kliká všude kam se mají vkládat jednotlivé rostliny) - nemusí po každé pokládce znovu vybírat rostlinu; mohlo by být realizováno při výběru plants switchem mezi módy - Pozn: jednotlivé rostliny by asi neměli mít FieldEditDialog? Minimálně ne tak podrobný... - možná switch mezi create plant/seedbed
+- Možnost kliknutí i táhnutí v seznamu
+-při pokládání při kliknutí vložit velikost o jedné rostlině (tak aby se zobrazil move handler i size handler), příp nějaká minimální u malých crop
+
+__________________________________________________________
+### Levé menu (pro vytváření objektů)
+-hideable
+__________________________________________________________
+### AppView
+-přidat kompas + rotace celého view
+-Scale přesunovatelné, ale bez funkce zoomu (jestli tak ted funguje)
 - metr do tools
 -field splitter, joiner
 
 
-FieldEditDialog:
-Rozdělení na Settings/Info
-Settings:
+__________________________________________________________
+### Nastavení:
+-do nastavení přidat rozlišení zda dělit měsíce na 1/2/4 části a defaultně dát 2
+-defaultně zobrazovat rozšířený filtr? (Vyhledávání rostlin/objektů) - nastavuje se v Sidebar/showFilter
+__________________________________________________________
+### FieldEditDialog:  
+[x] Moveable,  
+[x] Collapsible  
+Rozdělení na Settings/Info  
+Settings:  
 název rostliny, - při změně YNC dialog jestli měnit spon podle defaultu plodiny
 odruda,  - při změně YNC dialog jestli měnit spon defaultu odrudy
 orientace řádků,
 umístění fieldu od-do (měsíc) (+tlačítko create succesion)
 rozměry fieldu 
 spon(radiobutton basic X advanced) (poslední volba custom - zobrazí dále pole), 
-_____
-Info:
+
+#### Info:
 vegetační doba
 vypočítaná doba fieldu(sow out+harvest time), 
 vypočítané info o cca množství celkových rostlin, 
@@ -35,9 +51,6 @@ interplant aligner - interplant, target field
 succesion ? Pokud by se vůbec neměnila velikost fieldu, tak možná bude jednodušší... Jen se nastaví od kterého měsíce bude změna a zbytek Fieldu se přenastaví v tomto období na danou rostlinu??
 možnost zadání šířky/výšky fieldu (+ tlačítko pro otočení), stejně tak možnost zadaní množství rostlin v řádku/počtu řádků (+ tlačítko pro otočení), podobně tlačítko pro nastavení velikosti dle jiného fieldu (výběr ze seznamu, kde bude u každého název, plodina, odrůda, měsíce na poli, součadnice)
 
-
-Do uživatelského nastavení:
-defaultně zobrazovat rozšířený filtr? (Vyhledávání rostlin/objektů) - nastavuje se v Sidebar/showFilter
 
 
 

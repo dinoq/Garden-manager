@@ -70,7 +70,7 @@ const ProjectDialog: React.FC<IProjectDialogProps> = (props) => {
     }
 
     return (
-        <ModalWindow position={{left: "50%", top: "50%", right: "initial", bottom:"initial"}} dimension={{width: "500px", height
+        <ModalWindow position={{left: "50%", top: "50%"}} dimension={{width: "500px", height
         : "500px"}} closeModalHandler={() => dispatch(hideProjectDialog())}>
             <ListPanel items={projects} header={header} />
             {props.state == ProjectDialogStates.SAVE_PROJECT && (

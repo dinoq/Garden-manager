@@ -7,7 +7,6 @@ import { useAppDispatch } from "./useAppDispatch";
 import { setDBDataAction } from "../store/reducers/DBSlice";
 
 const usePlantsFromDB = () => {
-    const dispatch = useAppDispatch();
     const {data: plantsFromDB, dataLoaded: plantsFetched} = useDB("crop");
     const {data: varietiesFromDB, dataLoaded: varietiesFetched} = useDB("variety");
     const [processedPlants, setProcessedPlants] = useState<IPlant[]>([]);
