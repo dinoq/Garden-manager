@@ -18,7 +18,7 @@ const ModalWindow: React.FC<IModalWindowProps> = (props) => {
     const [modalDragStartPosition, setModalDragStartPosition] = useState({ left: 0, top: 0 });
     const [mouseStartPosition, setMouseStartPosition] = useState({ left: 0, top: 0 });
     const [collapsed, setCollapsed] = useState(false);
-    const [modalMaxHeight, setModalMaxHeight] = useState(0);
+    const [modalHeight, setModalHeight] = useState(0);
 
     const dragStartHandler = (e: React.MouseEvent) => {
         const rect = modalRef.current?.getBoundingClientRect();
@@ -32,13 +32,15 @@ const ModalWindow: React.FC<IModalWindowProps> = (props) => {
         const mouseXDiff = e.clientX - mouseStartPosition.left;
         const mouseYDiff = e.clientY - mouseStartPosition.top;
         setPosition({ left: (modalDragStartPosition.left + mouseXDiff) + "px", top: (modalDragStartPosition.top + mouseYDiff) + "px" })
-        console.log('position: ', position);
     }
     const dragEndHandler = (e: React.MouseEvent) => {
-        console.log('position: ', position);
     }
 
     const toggleCollapse = (e: React.MouseEvent) => {
+        if(!collapsed){
+            const rect = modalRef.current?.getBoundingClientRect();
+            setModalHeight(rect?.height || 0);
+        }
         setCollapsed(prevVal => !prevVal);
     }
 
@@ -92,7 +94,7 @@ const ModalWindow: React.FC<IModalWindowProps> = (props) => {
                 flex-direction: column;
                 padding:  ${collapsed ? "0px 15px 0px 15px" : "15px 15px 15px 15px"};
                 transition: padding .3s ease-out, height .3s ease-out;
-                height: ${collapsed ? "0px" : "100px"};
+                height: ${collapsed ? "0px" : (modalHeight? modalHeight + "px" : "auto")};
                 overflow: hidden;
             `}>
                 {props.children}

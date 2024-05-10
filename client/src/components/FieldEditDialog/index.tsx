@@ -22,19 +22,34 @@ const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
     const actualSeedBed = useAppSelector((state: RootState) => state.seedBedsReducer.seedBeds[state.seedBedsReducer.selectedSeedBed]);
 
     const [plantOptions, setPlantOptions] = useState<IOption[]>([]);
+    const [varietyOptions, setVarietyOptions] = useState<IOption[]>([]);
     const modalWidth = 250;
 
     const [plantsFromDB, setPlantsFromDB] = useState<IPlant[]>([]);
 
+    
+    useEffect(() => {
+        let varietyOps: Array<IOption> = actualSeedBed.plant.varieties.map(variety => {
+            return { name: variety.name, value: variety.id }
+        })
+        setVarietyOptions(varietyOps);
+    }, [actualSeedBed]) 
+    
     const pl: Array<IPlant> = usePlantsFromDB();
     useEffect(() => {
         setPlantsFromDB(pl);
-    }, [pl])
+    }, [pl]) // Todo - musí to byt v useeffect?
+
     useEffect(() => {
-        let options: Array<IOption> = plantsFromDB.map((plant: IPlant) => {
+        let plantOps: Array<IOption> = plantsFromDB.map((plant: IPlant) => {
             return { name: plant.name, value: plant.id }
         })
-        setPlantOptions(options);
+        setPlantOptions(plantOps);
+
+        let varietyOps: Array<IOption> = actualSeedBed.plant.varieties.map(variety => {
+            return { name: variety.name, value: variety.id }
+        })
+        setVarietyOptions(varietyOps);
     }, [plantsFromDB])
 
     const cropChanged = (e: React.MouseEvent) => {
@@ -51,6 +66,9 @@ const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
         }} closeModalHandler={() => { dispatch(updateSelectedSeedBed(-1)) }}>
             <Label text={"Plodina"}>
                 {plantOptions.length > 0 ? <SearchableSelectbox allOptions={plantOptions} selectedValue={actualSeedBed.plant.id} onChange={cropChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
+            </Label>
+            <Label text={"Odrůda"}>
+                {plantOptions.length > 0 ? <SearchableSelectbox allOptions={varietyOptions} selectedValue={actualSeedBed.variety?.id || 0} onChange={cropChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
             </Label>
             <InputField value={actualSeedBed.plant.PlantSpacing + " x " + actualSeedBed.plant.RowSpacing} onChangeHandler={() => { console.log("READONLY INPUT!") }} />
         </ModalWindow>
