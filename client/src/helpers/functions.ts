@@ -15,7 +15,7 @@ export const zoomedFactory = (zoom: number) => { return (size: number) => zoom *
 
 
 export const processPlants = (plants: IPlant[], varieties: IVariety[]): IPlant[] => {
-    const edited: IPlant[] = new Array();
+    const edited: IPlant[] = [];
     const varietiesObj: {[key: number]: IVariety[];} = {};
     varieties.forEach(variety => { // Remap varieties array to object which has variety.crop as keys
         // Check if the id_foreign value already exists as a key in the result object

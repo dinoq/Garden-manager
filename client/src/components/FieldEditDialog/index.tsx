@@ -1,5 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from "@emotion/react";
 import { memo, useEffect, useState } from "react";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
@@ -69,10 +70,10 @@ const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
                 : "initial"
         }} closeModalHandler={() => { dispatch(updateSelectedSeedBed(-1)) }}>
             <Label text={"Plodina"}>
-                {plantOptions.length > 0 ? <SearchableSelectbox allOptions={plantOptions} selectedValue={actualSeedBed.plant.id} onChange={cropChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
+                {plantOptions.length > 0 ? <SearchableSelectbox name="field-edit-dialog-crop-selectbox" allOptions={plantOptions} selectedValue={actualSeedBed.plant.id} onChange={cropChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
             </Label>
             <Label text={"Odrůda"}>
-                {varietyOptions.length > 0 ? <SearchableSelectbox allOptions={varietyOptions} selectedValue={actualSeedBed.variety?.id_variety || 0} onChange={varietyChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
+                {varietyOptions.length > 0 ? <SearchableSelectbox name="field-edit-dialog-variety-selectbox" allOptions={varietyOptions} selectedValue={actualSeedBed.variety?.id_variety || 0} onChange={varietyChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
             </Label>
             <InputField value={actualSeedBed.plant.PlantSpacing + " x " + actualSeedBed.plant.RowSpacing} onChangeHandler={() => { console.log("READONLY INPUT!") }} />
         </ModalWindow>

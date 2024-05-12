@@ -5,8 +5,9 @@ import { css } from '@emotion/react';
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../hooks/useAppSelector';
-import { setMonth, setQuarter, setYear } from '../../../store/reducers/CalendarSlice';
+import { setMonthAction, setQuarterAction, setYearAction } from '../../../store/reducers/CalendarSlice';
 import { DEPTH } from '../../../helpers/constants';
+import Selectbox, { IOption } from '../../GUI/Selectbox';
 
 
 
@@ -21,26 +22,74 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
     const month = useAppSelector(state => state.calendarReducer.actualMonth)
     const quarter = useAppSelector(state => state.calendarReducer.actualQuarter)
 
+    const lastFrostMonth = 5;
+    const lastFrostDay = 15;
+
+    const firstFrostMonth = 10;
+    const firstFrostDay = 1;
+
+
+    const monthPartCount = 2;
+    const timelineWidth = 250 * monthPartCount;
+    const linesCount = 13 * monthPartCount;
+    const monthPartWidth = timelineWidth / linesCount;
+    const halfMonthPartWidth = 0.5 * monthPartWidth;
     const calendarWidth = 150;
-    const initialTimelineX = (calendarWidth / 2) + 5;
+    const initialTimelineX = (calendarWidth / 2) + 5 - halfMonthPartWidth;
     const [isMouseDown, setIsMouseDown] = useState(false);
     const [timelineX, setTimelineX] = useState(initialTimelineX);
     const [mouseDownX, setMouseDownX] = useState(0)
 
-    const timelineWidth = 1000;
-    const linesCount = 13 * 4;
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const monthsOptions: IOption[] = months.map((month, index) => ({ name: month, value: index }))
+    const quarterOptions: IOption[] = []
+    for(let i = 0; i < monthPartCount; i++){
+        quarterOptions.push({name: (i + 1) + (monthPartCount === 2? ". half" : ". quarter"), value: i})
+    }
+    const lastFrostDateBarWidth = (lastFrostMonth) * monthPartCount * monthPartWidth - (monthPartWidth * monthPartCount * (lastFrostDay / new Date(new Date().getFullYear(), month + 1, 0).getDate()));
+    console.log('(lastFrostDay / new Date(new Date().getFullYear(), month + 1, 0).getDate()): ', (lastFrostDay / new Date(new Date().getFullYear(), month + 1, 0).getDate()));
+    console.log('monthPartWidth: ', monthPartWidth);
+    
+    const setMonth = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const newMonth = parseInt(e.currentTarget.value);
+        if (newMonth !== month) {
+            dispatch(setMonthAction(newMonth));
+            dispatch(setQuarterAction(0));
+            setTimelineX(initialTimelineX - (monthPartWidth * newMonth * monthPartCount));
+        }
+    }
 
+    const setQuarter = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const newQuarter = parseInt(e.currentTarget.value);
+        if (newQuarter !== quarter) {
+            setTimelineX(initialTimelineX - (monthPartWidth * month * monthPartCount) - (newQuarter * monthPartWidth));
+            dispatch(setQuarterAction(newQuarter));
+        }
+    }
     const setPrevYear = () => {
-        dispatch(setYear(year - 1));
-        dispatch(setQuarter(1));
-        dispatch(setMonth(1));
+        dispatch(setYearAction(year - 1));
+        dispatch(setMonthAction(0));
+        dispatch(setQuarterAction(0));
         setTimelineX(initialTimelineX);
     }
+
     const setNextYear = () => {
-        dispatch(setYear(year + 1));
-        dispatch(setQuarter(1));
-        dispatch(setMonth(1));
+        dispatch(setYearAction(year + 1));
+        dispatch(setMonthAction(0));
+        dispatch(setQuarterAction(0));
         setTimelineX(initialTimelineX);
+    }
+
+    const setPrevMonth = () => {
+        setTimelineX(initialTimelineX - monthPartWidth * ((month - 1) * monthPartCount + (quarter)));
+        dispatch(setMonthAction(month - 1));
+        dispatch(setQuarterAction(0));
+    }
+
+    const setNextMonth = () => {
+        setTimelineX(initialTimelineX - monthPartWidth * ((month + 1) * monthPartCount + (quarter)));
+        dispatch(setMonthAction(month + 1));
+        dispatch(setQuarterAction(0));
     }
 
     const mouseDown = (e: React.MouseEvent) => {
@@ -51,31 +100,32 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
     const mouseMove = (e: React.MouseEvent) => {
         if (isMouseDown) {
             const newX = e.clientX - mouseDownX;
-            if (newX < initialTimelineX && newX > (-timelineWidth + calendarWidth)+10) {
+            if (newX < initialTimelineX && newX > (-timelineWidth + calendarWidth) + 10) {
                 setTimelineX(newX);
-                let newMonth = Math.floor((((-newX - 3) / (timelineWidth / linesCount)) + 4) / 4) + 1; // -3= tolerance kvůli nepřesnosti gui
-                newMonth = newMonth == 0 ? 1 : newMonth;
-                let newQuarter = (Math.floor((-newX - 3) / (timelineWidth / linesCount)) + 4) % 4 + 1;
-                newQuarter = newQuarter == 0 ? 1 : newQuarter;
-                dispatch(setQuarter(newQuarter));
-                dispatch(setMonth(newMonth));
+                const monthsPartShiftedCount = Math.floor((initialTimelineX - newX - halfMonthPartWidth) / monthPartWidth) + 1;
+                const newMonth = Math.floor(monthsPartShiftedCount / monthPartCount);
+                const newQuarter = monthsPartShiftedCount % monthPartCount;
+                dispatch(setQuarterAction(newQuarter));
+                dispatch(setMonthAction(newMonth));
             }
         }
     }
 
     const mouseUp = (e: React.MouseEvent) => {
         setIsMouseDown(false);
-        const partWidth = timelineWidth / linesCount;
-        setTimelineX(initialTimelineX - partWidth * ((month - 1) * 4 + (quarter - 1) + 0.5));
+        //const monthsPartShiftedCount = Math.floor((initialTimelineX - newX - halfMonthPartWidth) / monthPartWidth) + 1;
+        //setTimelineX(initialTimelineX - monthPartWidth * ((month) * monthPartCount + (quarter) + halfMonthPartWidth));
+        setTimelineX(initialTimelineX - (monthPartWidth * month * monthPartCount) - (quarter * monthPartWidth));
+        console.log('(quarter * halfMonthPartWidth): ', (quarter * halfMonthPartWidth));
     }
 
-    let lines: Array<any> = Array();
+    let lines: Array<any> = [];
     for (let i = 0; i < linesCount; i++) {
-        const lineIsMonth = i % 4 == 0;
-        let monthStr = (((Math.floor(i / 4)) % 12) + 1).toString();
-        monthStr = monthStr == "0" ? "12" : monthStr;
-        monthStr += i >= 48? "/"+(year+1) : "";
-        if(i < 48){
+        const lineIsMonth = i % monthPartCount === 0;
+        let monthStr = (((Math.floor(i / monthPartCount)) % 12) + 1).toString();
+        monthStr = monthStr === "0" ? "12" : monthStr;
+        monthStr += i >= 48 ? "/" + (year + 1) : "";
+        if (i < 48) {
             lines.push(<div aria-label={lineIsMonth ? monthStr : ""} key={"line-" + i} css={css`
                 :before {
                     content: attr(aria-label);
@@ -92,10 +142,10 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
                 height: ${lineIsMonth ? 15 : 6}px;
                 background-color: red;
                 top: ${lineIsMonth ? -4 : 0}px;
-                left: ${(timelineWidth / linesCount) * i}px;
+                left: ${(monthPartWidth) * i}px;
                 position: absolute;
             `}>
-    
+
             </div>);
         }
     }
@@ -129,7 +179,6 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
             `}>
                 <div onClick={setPrevYear} css={css`
                     padding: 5px;
-                    background-color: red;
                     cursor: pointer;
                     background-color: #727272;
                     border-radius: 5px;
@@ -141,7 +190,6 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
                 </div>
                 <div onClick={setNextYear} css={css`
                     padding: 5px;
-                    background-color: red;
                     cursor: pointer;
                     background-color: #727272;
                     border-radius: 5px;
@@ -149,14 +197,27 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
                 </div>
             </div>
 
-            <div onMouseDown={mouseDown} css={css`
+            <div css={css`
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+            `}>
+                <div onClick={setPrevMonth} css={css`
+                    padding: 5px;
+                    cursor: pointer;
+                    background-color: #727272;
+                    border-radius: 5px;
+                    `}>{"<"}
+                </div>
+                <div onMouseDown={mouseDown} css={css`
                 width: 100%;
                 padding: 20px 5px;
                 border-radius: 5px;
                 background-color: #7b7b7b;
                 overflow: hidden;
-            `}>
-                <div css={css`
+                `}>
+                    <div css={css`
                     width: ${timelineWidth}px;
                     height: 5px;    
                     position: relative;
@@ -165,11 +226,16 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
                     background-color: #535353;
                     cursor: grab;
                     transition: ${isMouseDown ? "" : "left 0.3s ease-in"};
-                `}>
-                    {lines}
-
-                </div>
-                <div css={css`
+                    `}>
+                        <div css={css`
+                            width: ${lastFrostDateBarWidth}px;
+                            height: 5px;
+                            background-color: #8989ff;
+                            position: absolute;
+                        `}></div>
+                        {lines}
+                    </div>
+                    <div css={css`
                     left: 70px;
                     top: 12px;
                     width: 0px;
@@ -180,10 +246,31 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
                     position: relative;
                     `}>
 
+                    </div>
+                </div>
+
+                <div onClick={setNextMonth} css={css`
+                    padding: 5px;
+                    cursor: pointer;
+                    background-color: #727272;
+                    border-radius: 5px;
+                    `}>{">"}
                 </div>
             </div>
 
-            <div>{month} ({quarter}. quarter)</div>
+
+
+            <div css={css`
+                    width: 100%;
+                    display: flex;
+                `}>
+                <div css={css`
+                    width: 50%;
+                `}><Selectbox name="calendar-months-selectbox" options={monthsOptions} defaultValue={month} onChange={setMonth} /></div>
+                <div css={css`
+                    width: 50%;
+                `}><Selectbox name="calendar-months-selectbox" options={quarterOptions} defaultValue={quarter} onChange={setQuarter} /></div>
+            </div>
             {isMouseDown && <div css={css`
                 background-color: blue;
                 width: 100%;

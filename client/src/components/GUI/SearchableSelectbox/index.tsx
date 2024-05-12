@@ -7,6 +7,7 @@ import { useAppDispatch } from "../../../hooks/useAppDispatch";
 import { enableZoomAction } from "../../../store/reducers/ViewNavigationSlice";
 
 export interface ISelectboxProps {
+    name: string,
     selectedValue: number,
     allOptions: Array<IOption>,
     onChange: Function,
@@ -80,7 +81,7 @@ const SearchableSelectbox: React.FC<ISelectboxProps> = (props) => {
             `} onMouseEnter={() => dispatch(enableZoomAction(false))} onMouseLeave={() => dispatch(enableZoomAction(true))} ref={optionsRef}>
                 {options.map(option => {
                     return (
-                        <div key={"option-" + option.value} id={"option-" + option.value} onClick={optionSelected} css={css`
+                        <div key={props.name + "-option-" + option.value} id={"option-" + option.value} onClick={optionSelected} css={css`
                             &:hover {
                                 background-color: #575757;
                             }
