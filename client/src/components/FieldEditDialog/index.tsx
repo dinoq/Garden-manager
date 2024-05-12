@@ -3,7 +3,7 @@
 import { css, jsx } from "@emotion/react";
 import { memo, useEffect, useState } from "react";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { changePlant, updateSelectedSeedBed } from "../../store/reducers/SeedBedsSlice";
+import { changePlant, changeVariety, updateSelectedSeedBed } from "../../store/reducers/SeedBedsSlice";
 import InputField from "../GUI/InputField";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { IOption } from "../GUI/Selectbox";
@@ -13,7 +13,7 @@ import ModalWindow from "../GUI/ModalWindow";
 import SearchableSelectbox from "../GUI/SearchableSelectbox";
 import Label from "../GUI/Label";
 import { RootState } from "../../store";
-import { getPlantByID } from "../../helpers/functions";
+import { getArrEntryByIDAndIDName } from "../../helpers/functions";
 export interface IFieldEditDialogProps {
 }
 
@@ -29,11 +29,12 @@ const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
 
     
     useEffect(() => {
+        console.log('actualSeedBed.plant.varieties: ', actualSeedBed.plant.varieties);
         let varietyOps: Array<IOption> = actualSeedBed.plant.varieties.map(variety => {
-            return { name: variety.name, value: variety.id }
+            return { name: variety.name, value: variety.id_variety }
         })
         setVarietyOptions(varietyOps);
-    }, [actualSeedBed]) 
+    }, [actualSeedBed.plant.varieties]) 
     
     const pl: Array<IPlant> = usePlantsFromDB();
     useEffect(() => {
@@ -45,17 +46,20 @@ const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
             return { name: plant.name, value: plant.id }
         })
         setPlantOptions(plantOps);
-
-        let varietyOps: Array<IOption> = actualSeedBed.plant.varieties.map(variety => {
-            return { name: variety.name, value: variety.id }
-        })
-        setVarietyOptions(varietyOps);
     }, [plantsFromDB])
 
     const cropChanged = (e: React.MouseEvent) => {
-        const newPlant = getPlantByID(e.currentTarget.id, plantsFromDB);
+        const newPlant = getArrEntryByIDAndIDName("id", e.currentTarget.id, plantsFromDB);
         if (newPlant) {
             dispatch(changePlant(newPlant));
+        }
+    }
+
+    const varietyChanged = (e: React.MouseEvent) => {
+        const newVariety = getArrEntryByIDAndIDName("id_variety", e.currentTarget.id, actualSeedBed.plant.varieties);
+        console.log('newVariety: ', newVariety);
+        if (newVariety) {
+            dispatch(changeVariety(newVariety));
         }
     }
 
@@ -68,7 +72,7 @@ const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
                 {plantOptions.length > 0 ? <SearchableSelectbox allOptions={plantOptions} selectedValue={actualSeedBed.plant.id} onChange={cropChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
             </Label>
             <Label text={"Odrůda"}>
-                {plantOptions.length > 0 ? <SearchableSelectbox allOptions={varietyOptions} selectedValue={actualSeedBed.variety?.id || 0} onChange={cropChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
+                {varietyOptions.length > 0 ? <SearchableSelectbox allOptions={varietyOptions} selectedValue={actualSeedBed.variety?.id_variety || 0} onChange={varietyChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
             </Label>
             <InputField value={actualSeedBed.plant.PlantSpacing + " x " + actualSeedBed.plant.RowSpacing} onChangeHandler={() => { console.log("READONLY INPUT!") }} />
         </ModalWindow>

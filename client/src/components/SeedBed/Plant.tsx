@@ -33,7 +33,7 @@ const Plant: React.FC<ISeedCircle> = (props) => {
     return (
         <div css={css`
             /*background-color: #00ff5a;*/
-            background-image: url("imgs/potato.png");
+            background-image: ${'url("imgs/' + seedBed.plant.icon + '")'};
             background-size: contain;
             width: ${zoomed(plantSize)}px;
             height: ${zoomed(plantSize)}px;

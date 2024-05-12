@@ -34,7 +34,7 @@ export const processPlants = (plants: IPlant[], varieties: IVariety[]): IPlant[]
         if (varietiesObj[plant.id]) {
             editedPlant.varieties = varietiesObj[plant.id];
         }
-        const emptyVariety: IVariety = { id: -1, crop: plant.id, name: "-", PlantSpacing: null, RowSpacing: null }
+        const emptyVariety: IVariety = { id_variety: -1, crop: plant.id, name: "(not selected)", PlantSpacing: null, RowSpacing: null }
         if(editedPlant.varieties?.length){ // Put empty variety at first index
             editedPlant.varieties?.unshift(emptyVariety);
         }else{
@@ -73,14 +73,21 @@ export const processPlants = (plants: IPlant[], varieties: IVariety[]): IPlant[]
     return edited;
 }
 
-export const getPlantByID = (idStr: string, plants:IPlant[]) => {
+/**
+ * Searches for a record in an array of objects based on the given identifier and identifier name.
+ * @param idAttr The name of the attribute to search by.
+ * @param idStr The value of the identifier. In format whatever-id (eg. option-3, where 3 id actual id)
+ * @param plants The array of objects to search within.
+ * @returns The object from the array of objects that corresponds to the given identifier and identifier name, or null if not found.
+ */
+export const getArrEntryByIDAndIDName = (idAttr: string, idStr: string, plants: Array<any>) => {
     let id = idStr;
     if(idStr.includes("-")){
         const idStart = idStr.indexOf("-") + 1;
         id = idStr.substring(idStart);
     }
     const cropID = parseInt(id);
-    return plants.find(plant => plant.id === cropID)
+    return plants.find(plant => plant[idAttr] === cropID)
 }
 
 export const stringifyIfDateLong = (variable: any) => {

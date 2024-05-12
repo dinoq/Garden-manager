@@ -10,7 +10,15 @@ __________________________________________________________
 ### Object creation
 [ ] mód pokládání plant pomocí více klikání (uživatel vybere plant a kliká všude kam se mají vkládat jednotlivé rostliny) - nemusí po každé pokládce znovu vybírat rostlinu; mohlo by být realizováno při výběru plants switchem mezi módy - Pozn: jednotlivé rostliny by asi neměli mít FieldEditDialog? Minimálně ne tak podrobný... - možná switch mezi create plant/seedbed
 [ ] Možnost kliknutí i táhnutí v seznamu
-[ ] při pokládání při kliknutí vložit velikost o jedné rostlině (tak aby se zobrazil move handler i size handler), příp nějaká minimální u malých crop
+[ ] při pokládání při kliknutí vložit velikost o jedné rostlině (tak aby se zobrazil move handler i size handler), příp nějaká minimální u malých crop. Možná při resize nastavit minimální velikost na jednu rostlinu?
+#### Object types
+[ ] plants
+[ ] paths
+[ ] irrigation
+[ ] other objects
+[ ] field ?
+[ ] shapes
+[ ] text
 
 __________________________________________________________
 ### Levé menu (pro vytváření objektů)
@@ -27,20 +35,24 @@ __________________________________________________________
 ### Nastavení:
 [ ] do nastavení přidat rozlišení zda dělit měsíce na 1/2/4 části a defaultně dát 2
 [ ] defaultně zobrazovat rozšířený filtr? (Vyhledávání rostlin/objektů) - nastavuje se v Sidebar/showFilter
+[ ] snap objects to other objects
+[ ] snap objects to grid
+[ ] show grid
 __________________________________________________________
 ### FieldEditDialog:  
 [x] Moveable,  
 [x] Collapsible  
 [ ] Rozdělení na Settings/Info  
-Settings:  
-[ ] název rostliny, - při změně YNC dialog jestli měnit spon podle defaultu plodiny
-[ ] odruda,  - při změně YNC dialog jestli měnit spon defaultu odrudy
+#### Settings:  
+[ ] název rostliny, - při změně "are you sure? Don't want to use succession plant?" -> I am sure/succession/cancel (+checkbox remember my choice and don't show again [not recommended]). Při "I am sure" YNC dialog jestli měnit spon podle defaultu plodiny
+[ ] odruda,  - při změně "are you sure?" -> Yes/cancel (+checkbox remember my choice and don't show again).při potvrzení YNC dialog jestli měnit spon defaultu odrudy
 [ ] orientace řádků,
 [ ] umístění fieldu od-do (měsíc) (+tlačítko create succesion)
 [ ] rozměry fieldu 
-[ ] spon(radiobutton basic X advanced) (poslední volba custom - zobrazí dále pole), 
+[ ] spon(selectbox [from plant, from variety, variety X..., variety Y..., custom] -> input underneath ( two slider and input underneath)). On change in slider/input automatically change selectbox value to custom. Remember custom when change in selectox from custom to another.
 
-#### Info:
+#### Basic Info:
+[ ] Button advanced info (opens big modal with all info [and setting]? about plant)
 [ ] vegetační doba
 [ ] vypočítaná doba fieldu(sow out+harvest time), 
 [ ] vypočítané info o cca množství celkových rostlin, 
@@ -56,11 +68,23 @@ Settings:
 __________________________________________________________
 
 Záložky
-[ ] Design, Crop and varieties manager, sow times, notes, plants/calendar, settings, control garden (IoT), shop
+[ ] Design
+[ ] Crop and varieties manager
+[ ] sow times
+[ ] notes
+[ ] plants/calendar
+[ ] settings
+[ ] control garden (IoT)
+[ ] shop
 __________________________________________________________
 V horním menu:
-[ ] editační tlačítka (nový, uložit, uložit jako, undo/redo, copy/cut/paste, delete), 
-[ ] kalendář, manipulační tlačítka (move, zoom, rectangle select, free select), create (plant, object, paths, field, shapes, text) - jako výběr obrazců v ms word, seedbed creation tools (horizontal split, vertical split, path?, merge),layers (plants, object, irrigation, all, lock all), help
+[ ] file edit tools (new, save, save as, undo/redo, copy/cut/paste, delete), 
+[ ] calendar (add arrow before and after months [two arrow - one for moving by 1 part, one form jumping between months]), 
+[ ] manipulation tools (move, zoom, rectangle select, free select), 
+[ ] create? (plant, object, paths, field, shapes, text) - as selection of shapes in ms word - maybe open left menu on select there with pre-filtered [which was selected]
+[ ] seedbed creation tools (horizontal split, vertical split, path?, merge),
+[ ] layers (plants, object, irrigation, all, lock all), help
+[ ] tools (meter)
 __________________________________________________________
 Dole
 

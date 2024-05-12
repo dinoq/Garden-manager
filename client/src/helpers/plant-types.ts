@@ -47,7 +47,7 @@ export interface IPlant extends IPlantDB{
 }
 
 export interface IVariety {
-    id: number,
+    id_variety: number,
     name: string,
     crop: number,
     PlantSpacing: string | null,

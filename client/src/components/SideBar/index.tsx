@@ -13,7 +13,7 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 import { DEPTH } from "../../helpers/constants";
 import InputField from '../GUI/InputField';
 import usePlantsFromDB from '../../hooks/usePlantsFromDB';
-import { getPlantByID } from '../../helpers/functions';
+import { getArrEntryByIDAndIDName } from '../../helpers/functions';
 
 enum SEARCH_TYPE {
     PLANTS,
@@ -85,7 +85,7 @@ const SideBar: React.FC<{}> = () => {
     }
 
     const setNewUplacedSeedBed = (e: React.MouseEvent<HTMLLIElement>) => {
-        const plant = getPlantByID(e.currentTarget.id, actualPlantList);
+        const plant = getArrEntryByIDAndIDName("id", e.currentTarget.id, actualPlantList);
         if (plant) {
             dispatch(createNewSeedBedAction({ position: { x: e.clientX - worldPos.x, y: e.clientY - worldPos.y - toolbarHeight }, plant }))
         }
