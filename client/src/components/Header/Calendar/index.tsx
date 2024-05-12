@@ -22,6 +22,8 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
     const month = useAppSelector(state => state.calendarReducer.actualMonth)
     const quarter = useAppSelector(state => state.calendarReducer.actualQuarter)
 
+    const monthPartCount = useAppSelector(state => state.settingsReducer.calendar.monthPartCounts);
+
     const lastFrostMonth = 5;
     const lastFrostDay = 15;
 
@@ -29,7 +31,6 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
     const firstFrostDay = 1;
 
 
-    const monthPartCount = 2;
     const timelineWidth = 250 * monthPartCount;
     const linesCount = 13 * monthPartCount;
     const monthPartWidth = timelineWidth / linesCount;
