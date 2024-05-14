@@ -18,14 +18,14 @@ const Header: React.FC<{}> = () => {
         <div css={css`
             width: 100%;
             height: 100%;
-            background-color: #737373;
+            background-color: #b3b3b3;
             display: flex;
             z-index: ${DEPTH.HEADER};
         `}>
 
             {!hideGUI && <EditingTools />}
             {!hideGUI && <ManipulationTools />}
-            {!hideGUI && <Calendar />}
+            {hideGUI && <Calendar />}
 
         </div>
     )

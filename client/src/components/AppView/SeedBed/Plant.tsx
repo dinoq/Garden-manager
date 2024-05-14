@@ -1,7 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx } from '@emotion/react';
-import { css } from '@emotion/react';
+import { css, jsx } from '@emotion/react';
 import { ISeedBedProps } from '.';
 import { zoomedFactory } from '../../../helpers/functions';
 import { useAppSelector } from '../../../hooks/useAppSelector';

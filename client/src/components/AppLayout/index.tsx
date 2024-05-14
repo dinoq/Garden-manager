@@ -1,19 +1,24 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import Header from "../Header";
-import SideBar from "../SideBar";
 import AppView from "../AppView";
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useEffect } from 'react';
 import { setIsMovingAppViewAction } from '../../store/reducers/ViewNavigationSlice';
 import { useAppSelector } from '../../hooks/useAppSelector';
+import TabBar from '../GUI/TabBar';
+import NotesView from '../NotesView';
+import SettingsView from '../SettingsView';
 
 function AppLayout() {
     const dispatch = useAppDispatch();
     const menuWidth = useAppSelector(state => state.guiReducer.menuWidth);
     const toolbarHeight = useAppSelector(state => state.guiReducer.toolbarHeight);
+    const hideGUI = useAppSelector(state=> state.guiReducer.hideGUI);
 
+    const selectedTab = useAppSelector(state => state.guiReducer.selectedTab);
+    const tabs = [<AppView />, <NotesView />, <SettingsView />];
+    
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") {
@@ -46,19 +51,14 @@ function AppLayout() {
             <div css={css`
                 height: ${toolbarHeight}px;
                 width: 100vw;
-                background-color: #00182e;
             `}>
-                <Header />
+                <TabBar />
             </div>
             <div css={css`
-                height: calc(100vh - ${toolbarHeight}px);
-                width: 100vw;
+                background-color: #c2c2c2;
             `}>
-                    <SideBar />
-                    <AppView />
-
+                {tabs[selectedTab]}
             </div>
-
         </div>
     );
 }

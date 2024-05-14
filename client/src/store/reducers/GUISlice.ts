@@ -1,6 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ProjectDialogStates } from "../../components/AppView/ProjectDialog";
 
+export enum ProjectDialogStates {
+    OPEN_PROJECT,
+    SAVE_PROJECT
+}
 
 interface IGUISlice {
     menuWidth: number,
@@ -10,7 +13,8 @@ interface IGUISlice {
     ProjectDialog: {
         show: boolean,
         state: ProjectDialogStates
-    }
+    },
+    selectedTab: number
 }
 const initialState: IGUISlice = {
     menuWidth: 300,
@@ -20,7 +24,8 @@ const initialState: IGUISlice = {
     ProjectDialog: {
         show: false,
         state: ProjectDialogStates.OPEN_PROJECT
-    }
+    },
+    selectedTab: 0
 }
 
 const GUISlice = createSlice({
@@ -39,9 +44,12 @@ const GUISlice = createSlice({
         },
         setMessage: (state: IGUISlice, action: PayloadAction<string>) => {
             //state.message = action.payload;
+        },
+        changeTabAction: (state: IGUISlice, action: PayloadAction<number>) => {
+            state.selectedTab = action.payload;
         }
     }
 })
 
-export const { hideProjectDialog, showProjectDialog, setMessage } = GUISlice.actions;
+export const { hideProjectDialog, showProjectDialog, setMessage, changeTabAction } = GUISlice.actions;
 export default GUISlice.reducer;

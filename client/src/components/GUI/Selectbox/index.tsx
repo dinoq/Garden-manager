@@ -5,7 +5,7 @@ import { css, jsx } from "@emotion/react";
 export interface ISelectboxProps {
     name: string,
     defaultValue: number,
-    options: Array<any>,
+    options: IOption[],
     onChange: React.ChangeEventHandler
 }
 

@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css } from "@emotion/react";
+import { css, jsx } from "@emotion/react";
 import React, { useEffect, useRef, useState } from "react";
 import { IPosition, ISeedBed } from "../../helpers/types";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
@@ -14,6 +14,8 @@ import MessageBar from "./MesageBar";
 import ProjectDialog from "./ProjectDialog";
 import Scale from "./Scale";
 import SeedBed from "./SeedBed";
+import SideBar from "../SideBar";
+import Header from "../Header";
 
 
 interface IAppViewProps {
@@ -35,7 +37,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     const toolbarHeight = useAppSelector(state => state.guiReducer.toolbarHeight);
     const worldWidth = useAppSelector(state => state.navigationReducer.worldWidth) * worldZoom;
     const worldHeight = useAppSelector(state => state.navigationReducer.worldHeight) * worldZoom;
-    const hideGUI = useAppSelector(state=> state.guiReducer.hideGUI);
+    const hideGUI = useAppSelector(state => state.guiReducer.hideGUI);
 
     const [isMouseDown, setIsMouseDown] = useState(false);
     const [isMiddleMouseDown, setIsMiddleMouseDown] = useState(false);
@@ -109,32 +111,45 @@ const AppView: React.FC<IAppViewProps> = (props) => {
 
 
     return (
-        <div css={css`
-            overflow: hidden;
-            width: 100%;
-            height: 100%;
-            position: relative;
-            left: 0;
-            top: 0;
-        `}>
-            <div ref={viewElement} onDragOver={e => e.preventDefault()} onWheel={zoom} onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} css={css`
-                background-color: #6d6d6d;
-                border: 1px solid green;
-                position: relative;
-                width: ${worldWidth}px;
-                height: ${worldHeight}px;
-                left: ${worldPos.x}px;
-                top: ${worldPos.y}px;
-                cursor: ${cursor};
+        <React.Fragment>
+            <div css={css`
+                height: ${toolbarHeight}px;
+                width: 100vw;
+                background-color: #00182e;
             `}>
-                {<MemoSeedBeds beds={seedBedsReducer.seedBeds} mouseAppViewPosition={mouseAppViewPosition} />}
-                <Field x={500/*(browserWidth-menuWidth)/2 - 200 + menuWidth*/} y={500/*(browserHeight-toolbarHeight)/2 - 250 + toolbarHeight*/} width={100} height={100} />
-                {!hideGUI && <Scale />}
-                <MessageBar />
-                {seedBedsReducer.selectedSeedBed !== -1 && <MemoFieldEditDialog/>}
-                {showProjectDialog && <ProjectDialog state={projectDialogState} />}
+                <Header />
             </div>
-        </div>
+            <div css={css`
+                height: calc(100vh - ${toolbarHeight}px);
+                width: 100vw;
+            `}>
+                {!hideGUI && <SideBar />}
+                <div css={css`
+                    overflow: hidden;
+                    width: 100%;
+                    height: 100%;
+                    position: relative;
+                    left: 0;
+                    top: 0;
+                `}>
+                    <div ref={viewElement} onDragOver={e => e.preventDefault()} onWheel={zoom} onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} css={css`
+                        position: relative;
+                        width: ${worldWidth}px;
+                        height: ${worldHeight}px;
+                        left: ${worldPos.x}px;
+                        top: ${worldPos.y}px;
+                        cursor: ${cursor};
+                    `}>
+                        {<MemoSeedBeds beds={seedBedsReducer.seedBeds} mouseAppViewPosition={mouseAppViewPosition} />}
+                        {!hideGUI && <Scale />}
+                        <MessageBar />
+                        {seedBedsReducer.selectedSeedBed !== -1 && <MemoFieldEditDialog />}
+                        {showProjectDialog && <ProjectDialog state={projectDialogState} />}
+                    </div>
+                </div>
+            </div>
+
+        </React.Fragment>
     )
 }
 

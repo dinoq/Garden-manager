@@ -1,7 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx } from '@emotion/react';
-import { css } from '@emotion/react';
+import { css, jsx } from '@emotion/react';
 import { MouseEventHandler } from 'react';
 import { IPlant } from '../../../../helpers/plant-types';
 import { IAppObject } from '../../../../helpers/types';

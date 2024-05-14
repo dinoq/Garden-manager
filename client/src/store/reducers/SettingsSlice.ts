@@ -1,14 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+export type monthPartsCountType = 1 | 2 | 4;
 
 interface ISettingsSlice {
     calendar: {
-        monthPartCounts: 2 | 4;
+        monthPartsCount: monthPartsCountType;
     }
 }
 const initialState: ISettingsSlice = {
     calendar: {
-        monthPartCounts: 4
+        monthPartsCount: 4
     }
 }
 
@@ -16,8 +17,11 @@ const SettingsSlice = createSlice({
     name: "SettingsSlice",
     initialState,
     reducers: {
+        setMonthPartsCountAction: (state: ISettingsSlice, action: PayloadAction<monthPartsCountType>) => {
+            state.calendar.monthPartsCount = action.payload;
+        }
     }
 })
 
-export const {  } = SettingsSlice.actions;
+export const { setMonthPartsCountAction } = SettingsSlice.actions;
 export default SettingsSlice.reducer;

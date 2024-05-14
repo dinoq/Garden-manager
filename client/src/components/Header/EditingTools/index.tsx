@@ -1,7 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx } from '@emotion/react';
-import { css } from '@emotion/react';
+import { css, jsx } from '@emotion/react';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { showProjectDialog } from '../../../store/reducers/GUISlice';

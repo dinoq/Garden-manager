@@ -1,7 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx } from '@emotion/react';
-import { css } from '@emotion/react';
+import { css, jsx } from '@emotion/react';
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../hooks/useAppSelector';
@@ -22,7 +21,7 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
     const month = useAppSelector(state => state.calendarReducer.actualMonth)
     const quarter = useAppSelector(state => state.calendarReducer.actualQuarter)
 
-    const monthPartCount = useAppSelector(state => state.settingsReducer.calendar.monthPartCounts);
+    const monthPartCount = useAppSelector(state => state.settingsReducer.calendar.monthPartsCount);
 
     const lastFrostMonth = 5;
     const lastFrostDay = 15;

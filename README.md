@@ -33,8 +33,7 @@ __________________________________________________________
 
 __________________________________________________________
 ### Nastavení:
-[ ] do nastavení přidat rozlišení zda dělit měsíce na 1/2/4 části a defaultně dát 2
-[ ] defaultně zobrazovat rozšířený filtr? (Vyhledávání rostlin/objektů) - nastavuje se v Sidebar/showFilter
+[ ] month part (1/2/4, default: 2)
 [ ] snap objects to other objects
 [ ] snap objects to grid
 [ ] show grid
@@ -58,6 +57,7 @@ __________________________________________________________
 [ ] vypočítané info o cca množství celkových rostlin, 
 [ ] množství potřebného osiva (v gramech)
 [ ] orientačně očekávané množství úrody 
+[ ] approximate income
 
 [ ] interplant aligner - interplant, target field
 [ ] succesion ? Pokud by se vůbec neměnila velikost fieldu, tak možná bude jednodušší... Jen se nastaví od kterého měsíce bude změna a zbytek Fieldu se přenastaví v tomto období na danou rostlinu??
@@ -68,12 +68,12 @@ __________________________________________________________
 __________________________________________________________
 
 Záložky
-[ ] Design
-[ ] Crop and varieties manager
-[ ] sow times
+[ ] Design (Base app view)
+[ ] plants/parts list
 [ ] notes
-[ ] plants/calendar
+[ ] planning calendar
 [ ] settings
+[ ] Crop and varieties manager (user can edit settings locally for plants here)
 [ ] control garden (IoT)
 [ ] shop
 __________________________________________________________

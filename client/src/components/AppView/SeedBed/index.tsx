@@ -1,6 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css } from '@emotion/react';
+import { css, jsx } from '@emotion/react';
 import React, { useEffect, useRef, useState } from "react";
 import { DEPTH } from '../../../helpers/constants';
 import { zoomedFactory } from '../../../helpers/functions';
