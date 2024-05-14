@@ -30,13 +30,17 @@ __________________________________________________________
 [ ] metr do tools
 [ ] field splitter, joiner
 
+[ ] solve click on multiple plant section (which will be selected if they are stacked?)
+
 
 __________________________________________________________
-### Nastavení:
+### Settings:
 [ ] month part (1/2/4, default: 2)
 [ ] snap objects to other objects
 [ ] snap objects to grid
 [ ] show grid
+
+[ ] Apply changes only on "save" button (actually saved automatically by change)
 __________________________________________________________
 ### FieldEditDialog:  
 [x] Moveable,  
@@ -71,7 +75,7 @@ Záložky
 [ ] Design (Base app view)
 [ ] plants/parts list
 [ ] notes
-[ ] planning calendar
+[ ] planning calendar (weather included)
 [ ] settings
 [ ] Crop and varieties manager (user can edit settings locally for plants here)
 [ ] control garden (IoT)
@@ -85,12 +89,19 @@ V horním menu:
 [ ] seedbed creation tools (horizontal split, vertical split, path?, merge),
 [ ] layers (plants, object, irrigation, all, lock all), help
 [ ] tools (meter)
+[ ] group objects
 __________________________________________________________
 Dole
 
 Advance features
 
 [ ] Vytvoření pole libovolného tvaru->umístění cest/rozdělení na záhony->volba co bude zaseto
+[ ] automatic weather checking -> showing tips for user based on it (eg. can transplant seedlings earlier if no frost near last frost date)
+__________________________________________________________
+Naming:
+seedbed => plant section
+crop, plant => plant
+
 __________________________________________________________
 
 Spuštění:

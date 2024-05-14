@@ -6,7 +6,6 @@ import { dragPointSize } from '.';
 import { zoomedFactory } from '../../../helpers/functions';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from "../../../hooks/useAppSelector";
-import { updateHeightAction, updateSelectedSeedBed, updateWidthAction } from '../../../store/reducers/SeedBedsSlice';
 import { ROWDIRECTIONS } from './Plant';
 
 interface IResizePointsProps {
@@ -86,8 +85,7 @@ const ResizePoint: React.FC<IResizePointProps> = (props) => {
     }
 
     return (
-        <div draggable="true" onDrag={dragHandler} onDragStart={dragStartHandler} onDragEnd={dragEndHandler} onMouseDown={() => { dispatch(updateSelectedSeedBed(props.id)) }}
-            css={css`
+        <div draggable="true" onDrag={dragHandler} onDragStart={dragStartHandler} onDragEnd={dragEndHandler} css={css`
         background: #26262641;
         border: 1px solid #262626;
         width: ${dragPointSize}px;

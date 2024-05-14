@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { dragPointSize } from ".";
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from "../../../hooks/useAppSelector";
-import { updatePositionAction, updateSelectedSeedBed } from '../../../store/reducers/SeedBedsSlice';
+import { updatePositionAction } from '../../../store/reducers/SeedBedsSlice';
 
 interface IDragPointProps {
     id: number,
@@ -54,8 +54,7 @@ const DragPoint: React.FC<IDragPointProps> = (props) => {
 
     return (
 
-        <div draggable="true" onDrag={dragHandler} onDragStart={dragStartHandler} onDragEnd={dragEndHandler} onMouseDown={()=>{dispatch(updateSelectedSeedBed(props.id))}}
-            css={css`    
+        <div draggable="true" onDrag={dragHandler} onDragStart={dragStartHandler} onDragEnd={dragEndHandler} css={css`    
         background: #3e3e3e54;
         border: 1px solid #303030;
         width: ${dragPointSize}px;

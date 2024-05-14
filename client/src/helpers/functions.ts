@@ -17,15 +17,21 @@ export const zoomedFactory = (zoom: number) => { return (size: number) => zoom *
 export const processPlants = (plants: IPlant[], varieties: IVariety[]): IPlant[] => {
     const edited: IPlant[] = [];
     const varietiesObj: {[key: number]: IVariety[];} = {};
-    varieties.forEach(variety => { // Remap varieties array to object which has variety.crop as keys
+    varieties.forEach(variety => { // process varieties and remap varieties array to object which has variety.crop as keys
+        const varietyCopy: IVariety = JSON.parse(JSON.stringify(variety));
+        varietyCopy.RowSpacingMin = parseSpacingToMin(varietyCopy.RowSpacingStr || "0");
+        varietyCopy.PlantSpacingMin = parseSpacingToMin(varietyCopy.PlantSpacingStr || "0");
+
         // Check if the id_foreign value already exists as a key in the result object
-        if (varietiesObj[variety.crop]) {
+        if (varietiesObj[varietyCopy.crop]) {
           // If it exists, push the current object to the array associated with that key
-          varietiesObj[variety.crop].push(variety);
+          varietiesObj[varietyCopy.crop].push(varietyCopy);
         } else {
           // If it doesn't exist, create a new array with the current object and assign it to the key
-          varietiesObj[variety.crop] = [variety];
+          varietiesObj[varietyCopy.crop] = [varietyCopy];
         }
+
+
       });
 
     plants.forEach(plant => {
@@ -34,36 +40,25 @@ export const processPlants = (plants: IPlant[], varieties: IVariety[]): IPlant[]
         if (varietiesObj[plant.id]) {
             editedPlant.varieties = varietiesObj[plant.id];
         }
-        const emptyVariety: IVariety = { id_variety: -1, crop: plant.id, name: "(not selected)", PlantSpacing: null, RowSpacing: null }
+        const emptyVariety: IVariety = { id_variety: -1, crop: plant.id, name: "(not selected)", PlantSpacingStr: null, RowSpacingStr: null, PlantSpacingMin: 0, RowSpacingMin: 0 }
         if(editedPlant.varieties?.length){ // Put empty variety at first index
             editedPlant.varieties?.unshift(emptyVariety);
         }else{
             editedPlant.varieties = [emptyVariety];
         }
 
-        if(!editedPlant.RowSpacing){
+        if(!editedPlant.RowSpacingStr){
             consoleWarn(editedPlant.name + " doesn't have RowSpacing set!\nSetting to 1!");
-            editedPlant.RowSpacing = "1";
+            editedPlant.RowSpacingStr = "1";
         }
-        if(!editedPlant.PlantSpacing){
+        if(!editedPlant.PlantSpacingStr){
             consoleWarn(editedPlant.name + " doesn't have PlantSpacing set!\nSetting to 1!");
-            editedPlant.PlantSpacing = "1";
+            editedPlant.PlantSpacingStr = "1";
         }
 
         //RowSpacingMin a PlantSpacingMin
-        editedPlant.RowSpacingMin = parseInt(editedPlant.RowSpacing);
-        editedPlant.PlantSpacingMin = parseInt(editedPlant.PlantSpacing);
-
-        if (Number.isInteger(plant.RowSpacing)) {
-            editedPlant.RowSpacingMin = parseInt(editedPlant.RowSpacing);
-        } else {
-            const dashIndex = editedPlant.RowSpacing.indexOf("-");
-            if (dashIndex >= 0) {
-                editedPlant.RowSpacingMin = parseInt(editedPlant.RowSpacing.substring(0, dashIndex));
-
-            } else {
-            }
-        }
+        editedPlant.RowSpacingMin = parseSpacingToMin(plant.RowSpacingStr || "0");
+        editedPlant.PlantSpacingMin = parseSpacingToMin(plant.PlantSpacingStr || "0");
 
         // GrowthType
         editedPlant.growthType = GrowthType[editedPlant["growth-type"] as (keyof typeof GrowthType)];
@@ -71,6 +66,22 @@ export const processPlants = (plants: IPlant[], varieties: IVariety[]): IPlant[]
         edited.push(editedPlant);
     })
     return edited;
+}
+
+const parseSpacingToMin = (strSpacing: string) => {
+    if (/^\d+$/.test(strSpacing)) {
+        return parseInt(strSpacing);
+    } else {
+        const dashIndex = strSpacing.indexOf("-");
+        const slashIndex = strSpacing.indexOf("/");
+        if (dashIndex >= 0) {
+            return parseInt(strSpacing.substring(0, dashIndex));
+        } else if (slashIndex >= 0) {
+            return parseInt(strSpacing.substring(0, slashIndex));
+        } else {
+            throw new Error("Strange spacing in DB: " + strSpacing);
+        }
+    }
 }
 
 /**

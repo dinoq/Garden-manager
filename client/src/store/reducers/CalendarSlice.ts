@@ -4,12 +4,14 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface ICalendarSlice{
     actualYear: number,
     actualMonth: number,
-    actualQuarter: number
+    actualMonthPart: number,
+    showAllMonths: boolean
 }
 const initialState: ICalendarSlice = {
     actualYear: new Date().getFullYear(),
     actualMonth: 0,
-    actualQuarter: 0
+    actualMonthPart: 0,
+    showAllMonths: false
 }
 
 const CalendarSlice = createSlice({
@@ -22,11 +24,14 @@ const CalendarSlice = createSlice({
         setMonthAction: (state: ICalendarSlice, action: PayloadAction<number>)=>{
             state.actualMonth = action.payload;
         },
-        setQuarterAction: (state: ICalendarSlice, action: PayloadAction<number>)=>{
-            state.actualQuarter = action.payload;
+        setMonthPartAction: (state: ICalendarSlice, action: PayloadAction<number>)=>{
+            state.actualMonthPart = action.payload;
+        },
+        setShowAllMonthsAction: (state: ICalendarSlice, action: PayloadAction<boolean>)=>{
+            state.showAllMonths = action.payload;
         },
     }
 })
 
-export const {setYearAction, setMonthAction, setQuarterAction} = CalendarSlice.actions;
+export const {setYearAction, setMonthAction, setMonthPartAction, setShowAllMonthsAction} = CalendarSlice.actions;
 export default CalendarSlice.reducer;

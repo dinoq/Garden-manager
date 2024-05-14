@@ -13,8 +13,8 @@ const DetailIcon: React.FC<IDetailIconProps> = (props) => {
 
     return (
         <div onClick={props.IconClicked} css={css`
-                width: fit-content;
-                height: fit-content;
+                width: 50px;
+                height: 50px;
                 padding: 0 4px;
                 background-color: #ffffffce;
                 border-radius: 7px;

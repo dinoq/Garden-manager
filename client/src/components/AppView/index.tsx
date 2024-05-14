@@ -123,7 +123,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
                 height: calc(100vh - ${toolbarHeight}px);
                 width: 100vw;
             `}>
-                {!hideGUI && <SideBar />}
+                {<SideBar />}
                 <div css={css`
                     overflow: hidden;
                     width: 100%;

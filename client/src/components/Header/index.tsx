@@ -25,7 +25,7 @@ const Header: React.FC<{}> = () => {
 
             {!hideGUI && <EditingTools />}
             {!hideGUI && <ManipulationTools />}
-            {hideGUI && <Calendar />}
+            {!hideGUI && <Calendar />}
 
         </div>
     )

@@ -47,6 +47,7 @@ function AppLayout() {
             height: 100vh;
             width: 100vw;
             overflow: hidden;
+            background-color: #a3a3a3;
         `}>
             <div css={css`
                 height: ${toolbarHeight}px;
@@ -55,7 +56,6 @@ function AppLayout() {
                 <TabBar />
             </div>
             <div css={css`
-                background-color: #c2c2c2;
             `}>
                 {tabs[selectedTab]}
             </div>

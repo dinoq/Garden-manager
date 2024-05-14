@@ -8,7 +8,6 @@ export default class{
     public static saveProject(project: ISeedBedSlice) {        
         const projects: Array<ISeedBedSlice> = this.getProjects();
         let index = projects.findIndex(proj => proj.projectID == project.projectID);
-        console.log('project.projectID: ', project.projectID);
         if(index == -1){
             projects.push(project);
         }else{

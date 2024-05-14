@@ -38,6 +38,11 @@ const SeedBedsSlice = createSlice({
             state.seedBeds[index].x = action.payload.position.x;
             state.seedBeds[index].y = action.payload.position.y;
         },
+        updateSpacingAction: (state: ISeedBedSlice, action: PayloadAction<{ id: number, plantSpacing: number, rowSpacing: number }>) => {
+            const index = state.seedBeds.findIndex(seedBed => seedBed.id === action.payload.id);
+            state.seedBeds[index].rowSpacing = action.payload.rowSpacing;
+            state.seedBeds[index].plantSpacing = action.payload.plantSpacing;
+        },
         updateSelectedSeedBed: (state: ISeedBedSlice, action: PayloadAction<number>) => {
             state.selectedSeedBed = action.payload;
         },
@@ -45,7 +50,10 @@ const SeedBedsSlice = createSlice({
             const id = state.seedBeds.length;
             const plant = action.payload.plant;
             const variety =  (plant.varieties && plant.varieties.length)? plant.varieties[0] : undefined;
-            state.seedBeds.push({ id, variety, width: plant.PlantSpacingMin ? plant.PlantSpacingMin : 50, height: plant.RowSpacingMin ? plant.RowSpacingMin : 50, plant, ...action.payload.position, isPlaced: false, name: id.toString(), rowsDirection: ROWDIRECTIONS.LEFT_TO_RIGHT })
+            const width = plant.PlantSpacingMin ? plant.PlantSpacingMin : 50;
+            const height = plant.RowSpacingMin ? plant.RowSpacingMin : 50;
+
+            state.seedBeds.push({ id, variety, width, height, plant, ...action.payload.position, isPlaced: false, name: id.toString(), rowsDirection: ROWDIRECTIONS.LEFT_TO_RIGHT })
             state.selectedSeedBed = id;
         },
         placeSeedBedAction: (state: ISeedBedSlice, action: PayloadAction<{ id: number, position: IPosition }>) => {
@@ -92,5 +100,5 @@ const SeedBedsSlice = createSlice({
     }
 })
 
-export const { updateWidthAction, updateHeightAction, updatePositionAction, updateSelectedSeedBed, createNewSeedBedAction, placeSeedBedAction, changeRowsDirectionAction, setProject, setProjectName, setLMT, setProjectID, changePlant, changeVariety } = SeedBedsSlice.actions;
+export const { updateWidthAction, updateHeightAction, updatePositionAction, updateSpacingAction, updateSelectedSeedBed, createNewSeedBedAction, placeSeedBedAction, changeRowsDirectionAction, setProject, setProjectName, setLMT, setProjectID, changePlant, changeVariety } = SeedBedsSlice.actions;
 export default SeedBedsSlice.reducer;

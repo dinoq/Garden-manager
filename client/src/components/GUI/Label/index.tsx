@@ -10,7 +10,9 @@ export interface ILabelProps {
 const Label: React.FC<ILabelProps> = (props) => {
     
     return (
-        <div>
+        <div css={css`
+            width: 100%;
+        `}>
             {props.text}
             {props.children}
         </div>

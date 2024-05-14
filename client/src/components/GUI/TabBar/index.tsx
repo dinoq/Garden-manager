@@ -15,7 +15,7 @@ const TabBar: FC<ITabBarProps> = () => {
     const selectedTab = useAppSelector(state => state.guiReducer.selectedTab);
 
     const tabs = ["Design", "notes", "settings"]
-    //const tabs = ["Design", "plants/parts list", "notes", "planning calendar", "settings","Crop and varieties manager", "control garden (IoT)", "shop"]
+    //const tabs = ["Design", "plants/parts list", "notes", "planning calendar", "settings","Crop and varieties manager", "control garden (IoT)", "shop", "report bug/request feature"]
 
     const tabClickedEventHandler = (e: React.MouseEvent) => {
         const tabID = parseInt(e.currentTarget.id.substring(e.currentTarget.id.indexOf("-") + 1));

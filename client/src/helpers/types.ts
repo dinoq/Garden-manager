@@ -20,6 +20,8 @@ export interface ISeedBed extends IAppObject{
     id: number, 
     plant: IPlant,
     variety?: IVariety,
+    plantSpacing?: number,
+    rowSpacing?: number,
     isPlaced: boolean,
     rowsDirection: ROWDIRECTIONS;
 }

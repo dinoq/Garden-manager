@@ -32,7 +32,7 @@ const useDB = (query: string) => {
                     Object.entries(dbEntry).forEach(([key, val]) => {
                         if (key.includes("-")) {
                             let nameParts = key.split("-");
-                            let newKey = nameParts.map((part, index) => index === 0 ? part : part.charAt(0).toUpperCase() + part.slice(1)).join("");
+                            let newKey = nameParts.map((part, index) => part.charAt(0).toUpperCase() + part.slice(1)).join("");
                             dbEntry[newKey] = val;
                         }
                     })
