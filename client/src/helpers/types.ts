@@ -1,4 +1,4 @@
-import { ROWDIRECTIONS } from "../components/SeedBed/Plant";
+import { ROWDIRECTIONS } from "../components/AppView/SeedBed/Plant";
 import { IPlant, IVariety } from "./plant-types";
 
 export interface IDimensions{

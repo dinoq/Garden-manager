@@ -1,10 +1,10 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { IRect } from "../../helpers/types";
-import { useAppSelector } from "../../hooks/useAppSelector";
-import { DEPTH } from "../../helpers/constants";
-import { zoomedFactory } from "../../helpers/functions";
+import { IRect } from "../../../helpers/types";
+import { useAppSelector } from "../../../hooks/useAppSelector";
+import { DEPTH } from "../../../helpers/constants";
+import { zoomedFactory } from "../../../helpers/functions";
 
 
 interface IFIeldProps extends IRect {

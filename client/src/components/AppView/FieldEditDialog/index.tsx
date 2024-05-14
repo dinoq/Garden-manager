@@ -3,18 +3,18 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { css, jsx } from "@emotion/react";
 import { memo, useEffect, useState } from "react";
-import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { changePlant, changeVariety, updateSelectedSeedBed } from "../../store/reducers/SeedBedsSlice";
-import InputField from "../GUI/InputField";
-import { useAppSelector } from "../../hooks/useAppSelector";
-import { IOption } from "../GUI/Selectbox";
-import usePlantsFromDB from "../../hooks/usePlantsFromDB";
-import { IPlant } from "../../helpers/plant-types";
-import ModalWindow from "../GUI/ModalWindow";
-import SearchableSelectbox from "../GUI/SearchableSelectbox";
-import Label from "../GUI/Label";
-import { RootState } from "../../store";
-import { getArrEntryByIDAndIDName } from "../../helpers/functions";
+import { useAppDispatch } from "../../../hooks/useAppDispatch";
+import { changePlant, changeVariety, updateSelectedSeedBed } from "../../../store/reducers/SeedBedsSlice";
+import InputField from "../../GUI/InputField";
+import { useAppSelector } from "../../../hooks/useAppSelector";
+import { IOption } from "../../GUI/Selectbox";
+import usePlantsFromDB from "../../../hooks/usePlantsFromDB";
+import { IPlant } from "../../../helpers/plant-types";
+import ModalWindow from "../../GUI/ModalWindow";
+import SearchableSelectbox from "../../GUI/SearchableSelectbox";
+import Label from "../../GUI/Label";
+import { RootState } from "../../../store";
+import { getArrEntryByIDAndIDName } from "../../../helpers/functions";
 export interface IFieldEditDialogProps {
 }
 

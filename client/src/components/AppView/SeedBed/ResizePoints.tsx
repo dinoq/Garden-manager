@@ -3,10 +3,10 @@
 import { jsx, css } from '@emotion/react';
 import React, { useState } from 'react';
 import { dragPointSize } from '.';
-import { zoomedFactory } from '../../helpers/functions';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { useAppSelector } from "../../hooks/useAppSelector";
-import { updateHeightAction, updateSelectedSeedBed, updateWidthAction } from '../../store/reducers/SeedBedsSlice';
+import { zoomedFactory } from '../../../helpers/functions';
+import { useAppDispatch } from '../../../hooks/useAppDispatch';
+import { useAppSelector } from "../../../hooks/useAppSelector";
+import { updateHeightAction, updateSelectedSeedBed, updateWidthAction } from '../../../store/reducers/SeedBedsSlice';
 import { ROWDIRECTIONS } from './Plant';
 
 interface IResizePointsProps {

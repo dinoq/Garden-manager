@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ROWDIRECTIONS } from "../../components/SeedBed/Plant";
+import { ROWDIRECTIONS } from "../../components/AppView/SeedBed/Plant";
 import { IPlant, IVariety } from "../../helpers/plant-types";
 import { IPosition, ISeedBed } from "../../helpers/types";
-import { IProjectDialogProps } from "../../components/ProjectDialog";
 
 export interface ISeedBedSlice {
     seedBeds: ISeedBed[],
@@ -58,7 +57,7 @@ const SeedBedsSlice = createSlice({
         changeRowsDirectionAction: (state: ISeedBedSlice, action: PayloadAction<number>) => {
             const index = state.seedBeds.findIndex(seedBed => seedBed.id === action.payload);
             const currentDirection = state.seedBeds[index].rowsDirection;
-            if (currentDirection == ROWDIRECTIONS.LEFT_TO_RIGHT) {
+            if (currentDirection === ROWDIRECTIONS.LEFT_TO_RIGHT) {
                 state.seedBeds[index].rowsDirection = ROWDIRECTIONS.TOP_TO_DOWN;
             } else {
                 state.seedBeds[index].rowsDirection = ROWDIRECTIONS.LEFT_TO_RIGHT;

@@ -2,18 +2,18 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/react';
 import { css } from '@emotion/react';
-import ModalWindow from '../GUI/ModalWindow';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { hideProjectDialog } from '../../store/reducers/GUISlice';
+import ModalWindow from '../../GUI/ModalWindow';
+import { useAppDispatch } from '../../../hooks/useAppDispatch';
+import { hideProjectDialog } from '../../../store/reducers/GUISlice';
 import { useState, useEffect } from "react"
-import ListPanel from '../GUI/ListPanel';
-import InputField from '../GUI/InputField';
-import Button from '../GUI/Button';
-import { ISeedBedSlice, setLMT, setProject, setProjectID, setProjectName as setProjectNameAction } from '../../store/reducers/SeedBedsSlice';
-import { useAppSelector } from '../../hooks/useAppSelector';
-import { ISeedBed } from '../../helpers/types';
-import { stringifyIfDateLong } from '../../helpers/functions';
-import DBManager from '../../helpers/DBManager';
+import ListPanel from '../../GUI/ListPanel';
+import InputField from '../../GUI/InputField';
+import Button from '../../GUI/Button';
+import { ISeedBedSlice, setLMT, setProject, setProjectID, setProjectName as setProjectNameAction } from '../../../store/reducers/SeedBedsSlice';
+import { useAppSelector } from '../../../hooks/useAppSelector';
+import { ISeedBed } from '../../../helpers/types';
+import { stringifyIfDateLong } from '../../../helpers/functions';
+import DBManager from '../../../helpers/DBManager';
 
 export interface IProjectInfos extends ISeedBedSlice{
     onClick?: any

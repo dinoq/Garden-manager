@@ -3,8 +3,8 @@
 import { jsx } from '@emotion/react';
 import { css } from '@emotion/react';
 import { ISeedBedProps } from '.';
-import { zoomedFactory } from '../../helpers/functions';
-import { useAppSelector } from '../../hooks/useAppSelector';
+import { zoomedFactory } from '../../../helpers/functions';
+import { useAppSelector } from '../../../hooks/useAppSelector';
 
 export enum ROWDIRECTIONS{
     LEFT_TO_RIGHT,

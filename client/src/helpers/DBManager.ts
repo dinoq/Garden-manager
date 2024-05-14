@@ -1,4 +1,4 @@
-import { IProjectInfos } from "../components/ProjectDialog";
+import { IProjectInfos } from "../components/AppView/ProjectDialog";
 import { ISeedBedSlice } from "../store/reducers/SeedBedsSlice";
 import { ISeedBed } from "./types";
 

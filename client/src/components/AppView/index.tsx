@@ -1,24 +1,19 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { css, jsx } from "@emotion/react";
-import { useEffect, useRef, useState } from "react";
+import { css } from "@emotion/react";
+import React, { useEffect, useRef, useState } from "react";
 import { IPosition, ISeedBed } from "../../helpers/types";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { placeSeedBedAction } from "../../store/reducers/SeedBedsSlice";
-import { zoomAction } from "../../store/reducers/ViewNavigationSlice";
-import Field from "../Field";
-import Scale from "./Scale";
-import SeedBed from "../SeedBed";
-import MessageBar from "../MesageBar";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import useLocalCoordinates from "../../hooks/useLocalCoordinates";
-import MemoFieldEditDialog from "../FieldEditDialog";
-import React from "react";
-import ProjectDialog, { ProjectDialogStates } from "../ProjectDialog";
-import { setMessage } from "../../store/reducers/GUISlice";
-import DBManager from "../../helpers/DBManager";
-import { consoleWarn } from "../../helpers/functions";
-import InputField from "../GUI/InputField";
+import { placeSeedBedAction } from "../../store/reducers/SeedBedsSlice";
+import { zoomAction } from "../../store/reducers/ViewNavigationSlice";
+import Field from "./Field";
+import MemoFieldEditDialog from "./FieldEditDialog";
+import MessageBar from "./MesageBar";
+import ProjectDialog from "./ProjectDialog";
+import Scale from "./Scale";
+import SeedBed from "./SeedBed";
 
 
 interface IAppViewProps {
@@ -73,7 +68,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     const mouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
         setMouseStartDiffPosition({ diffX: e.clientX - worldPosition.x, diffY: e.clientY - worldPosition.y })
         setIsMouseDown(true);
-        setIsMiddleMouseDown(e.button == 1);
+        setIsMiddleMouseDown(e.button === 1);
 
         if (unplacedBed) {
             let position: IPosition = { x: unplacedBed.x, y: unplacedBed.y };
@@ -136,7 +131,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
                 <Field x={500/*(browserWidth-menuWidth)/2 - 200 + menuWidth*/} y={500/*(browserHeight-toolbarHeight)/2 - 250 + toolbarHeight*/} width={100} height={100} />
                 {!hideGUI && <Scale />}
                 <MessageBar />
-                {seedBedsReducer.selectedSeedBed != -1 && <MemoFieldEditDialog/>}
+                {seedBedsReducer.selectedSeedBed !== -1 && <MemoFieldEditDialog/>}
                 {showProjectDialog && <ProjectDialog state={projectDialogState} />}
             </div>
         </div>

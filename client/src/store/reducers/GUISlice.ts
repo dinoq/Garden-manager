@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ProjectDialogStates } from "../../components/ProjectDialog";
+import { ProjectDialogStates } from "../../components/AppView/ProjectDialog";
 
 
 interface IGUISlice {
@@ -15,7 +15,7 @@ interface IGUISlice {
 const initialState: IGUISlice = {
     menuWidth: 300,
     toolbarHeight: 150,
-    hideGUI: false,
+    hideGUI: true,
     message: "...",
     ProjectDialog: {
         show: false,

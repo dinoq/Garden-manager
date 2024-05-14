@@ -1,20 +1,18 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
-import { jsx, css } from '@emotion/react';
+import { css } from '@emotion/react';
 import React, { useEffect, useRef, useState } from "react";
-import { zoomedFactory } from '../../helpers/functions';
-import { IPlant } from '../../helpers/plant-types';
-import { Direction, IPosition, ISeedBed } from '../../helpers/types';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { useAppSelector } from '../../hooks/useAppSelector';
-import { changeRowsDirectionAction, updateHeightAction, updatePositionAction, updateSelectedSeedBed, updateWidthAction } from '../../store/reducers/SeedBedsSlice';
-import { setIsMovingAppViewAction } from '../../store/reducers/ViewNavigationSlice';
-import DetailIcon from './DetailIcon';
+import { DEPTH } from '../../../helpers/constants';
+import { zoomedFactory } from '../../../helpers/functions';
+import { Direction, IPosition, ISeedBed } from '../../../helpers/types';
+import { useAppDispatch } from '../../../hooks/useAppDispatch';
+import { useAppSelector } from '../../../hooks/useAppSelector';
+import { changeRowsDirectionAction, updateHeightAction, updateWidthAction } from '../../../store/reducers/SeedBedsSlice';
+import { setIsMovingAppViewAction } from '../../../store/reducers/ViewNavigationSlice';
 import DragPoint from './DragPoint';
+import Plant, { ROWDIRECTIONS } from './Plant';
 import PlantDialog from './PlantDialog';
 import ResizePoints from './ResizePoints';
-import Plant, { ROWDIRECTIONS } from './Plant';
-import { DEPTH } from '../../helpers/constants';
 import RotateRowDirectionIcon from './RotateRowDirectionIcon';
 
 export interface ISeedBedProps extends ISeedBed {
