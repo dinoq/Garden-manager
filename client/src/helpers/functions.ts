@@ -77,7 +77,7 @@ const parseSpacingToMin = (strSpacing: string) => {
         if (dashIndex >= 0) {
             return parseInt(strSpacing.substring(0, dashIndex));
         } else if (slashIndex >= 0) {
-            return parseInt(strSpacing.substring(0, slashIndex));
+            return parseInt(strSpacing.substring(slashIndex + 1));
         } else {
             throw new Error("Strange spacing in DB: " + strSpacing);
         }
@@ -88,17 +88,17 @@ const parseSpacingToMin = (strSpacing: string) => {
  * Searches for a record in an array of objects based on the given identifier and identifier name.
  * @param idAttr The name of the attribute to search by.
  * @param idStr The value of the identifier. In format whatever-id (eg. option-3, where 3 id actual id)
- * @param plants The array of objects to search within.
+ * @param arr The array of objects to search within.
  * @returns The object from the array of objects that corresponds to the given identifier and identifier name, or null if not found.
  */
-export const getArrEntryByIDAndIDName = (idAttr: string, idStr: string, plants: Array<any>) => {
+export const getArrEntryByIDAndIDName = (idAttr: string, idStr: string, arr: Array<any>) => {
     let id = idStr;
     if(idStr.includes("-")){
         const idStart = idStr.indexOf("-") + 1;
         id = idStr.substring(idStart);
     }
-    const cropID = parseInt(id);
-    return plants.find(plant => plant[idAttr] === cropID)
+    const entryID = parseInt(id);
+    return arr.find(entry => entry[idAttr] === entryID)
 }
 
 export const stringifyIfDateLong = (variable: any) => {

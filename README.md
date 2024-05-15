@@ -2,6 +2,8 @@ TODO refactor:
 [ ] nešly by nějak předělat reducery setLMT a setProjectName do setProject? Jakože nějak pomocí spread operátoru?
 [ ] zoom předělat taky na lokální a až po mouseup vložit do reduxu
 [ ] změnit "SeedBedsSlice->createNewSeedBedAction->rowsDirection" podle defaultního nastavení! (Aktuálně se tam prostě vkládá ROWDIRECTIONS.LEFT_TO_RIGHT)
+Lint
+rename all reducers to end with word Action
 
 __________________________________________________________
 ### Zákl. Funkcionality
@@ -39,6 +41,7 @@ __________________________________________________________
 [ ] snap objects to other objects
 [ ] snap objects to grid
 [ ] show grid
+[ ] show FieldEditDialog default by click on plant (vs doubleclick/some "info button" click)
 
 [ ] Apply changes only on "save" button (actually saved automatically by change)
 __________________________________________________________
@@ -98,6 +101,9 @@ Advance features
 [ ] Vytvoření pole libovolného tvaru->umístění cest/rozdělení na záhony->volba co bude zaseto
 [ ] automatic weather checking -> showing tips for user based on it (eg. can transplant seedlings earlier if no frost near last frost date)
 __________________________________________________________
+Other
+[ ] Feature division of different garden part?
+__________________________________________________________
 Naming:
 seedbed => plant section
 crop, plant => plant
@@ -107,3 +113,6 @@ __________________________________________________________
 Spuštění:
 klient - start
 server - start (nebo watch pro sledování změn a následný rebuild)
+
+cd ./server && npm run watch
+cd ./client && npm start

@@ -16,7 +16,7 @@ const Tab: FC<ITabProps> = (props) => {
 
     return (
         <div css={css`
-            padding: 10px;
+            padding: 5px 10px;
             cursor: pointer;
                 background-color: ${(selectedTab == props.id)? selectedColor : "initial"};
 

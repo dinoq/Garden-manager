@@ -40,8 +40,8 @@ const SeedBedsSlice = createSlice({
         },
         updateSpacingAction: (state: ISeedBedSlice, action: PayloadAction<{ id: number, plantSpacing: number, rowSpacing: number }>) => {
             const index = state.seedBeds.findIndex(seedBed => seedBed.id === action.payload.id);
-            state.seedBeds[index].rowSpacing = action.payload.rowSpacing;
-            state.seedBeds[index].plantSpacing = action.payload.plantSpacing;
+            state.seedBeds[index].rowSpacingMin = action.payload.rowSpacing;
+            state.seedBeds[index].plantSpacingMin = action.payload.plantSpacing;
         },
         updateSelectedSeedBed: (state: ISeedBedSlice, action: PayloadAction<number>) => {
             state.selectedSeedBed = action.payload;

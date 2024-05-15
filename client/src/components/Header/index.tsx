@@ -7,10 +7,11 @@ import { setIsMovingAppViewAction } from '../../store/reducers/ViewNavigationSli
 import Calendar from './Calendar';
 import ManipulationTools from './ManipulationTools';
 import EditingTools from './EditingTools';
+import Button from '../GUI/Button';
 
 
 const Header: React.FC<{}> = () => {
-
+    const toolbarMinimized = useAppSelector(state => state.guiReducer.toolbarMinimized);
     const toolbarHeight = useAppSelector(state => state.guiReducer.toolbarHeight);
     const hideGUI = useAppSelector(state=> state.guiReducer.hideGUI);
 
@@ -26,6 +27,9 @@ const Header: React.FC<{}> = () => {
             {!hideGUI && <EditingTools />}
             {!hideGUI && <ManipulationTools />}
             {!hideGUI && <Calendar />}
+            <div css={css`
+                /* margin-left: auto;*/
+            `}><Button text={toolbarMinimized? "↓" : "↑"} onClick={()=>{}} /></div>
 
         </div>
     )

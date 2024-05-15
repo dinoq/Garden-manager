@@ -21,9 +21,10 @@ enum SEARCH_TYPE {
 }
 const SideBar: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
-
     const menuWidth = useAppSelector(state => state.guiReducer.menuWidth);
     const toolbarHeight = useAppSelector(state => state.guiReducer.toolbarHeight);
+    const tabBarHeight = useAppSelector(state => state.guiReducer.tabBarHeight);
+
     const [inputSearch, setInputSearch] = useState("")
     const [showFilter, setShowFilter] = useState(true);
     const [searchType, setSearchType] = useState<SEARCH_TYPE>(SEARCH_TYPE.PLANTS);
@@ -87,25 +88,26 @@ const SideBar: React.FC<{}> = () => {
     const setNewUplacedSeedBed = (e: React.MouseEvent<HTMLLIElement>) => {
         const plant = getArrEntryByIDAndIDName("id", e.currentTarget.id, actualPlantList);
         if (plant) {
-            dispatch(createNewSeedBedAction({ position: { x: e.clientX - worldPos.x, y: e.clientY - worldPos.y - toolbarHeight }, plant }))
+            const width = plant.PlantSpacingMin ? plant.PlantSpacingMin : 50;
+            const height = plant.RowSpacingMin ? plant.RowSpacingMin : 50;
+            console.log('height: ', height);
+            dispatch(createNewSeedBedAction({ position: { x: e.clientX - worldPos.x, y: e.clientY - worldPos.y - toolbarHeight  }, plant }))
         }
     }
 
     return (
         <div css={css`
         z-index: ${DEPTH.SIDEBAR};
-        height: calc(100vh - ${toolbarHeight}px);
+        height: calc(100vh - ${toolbarHeight}px - ${tabBarHeight}px);
         width: ${menuWidth}px;
         position: absolute;
         left: 0;
     `}>
 
             <div css={css`
-            //width: ${menuWidth}px;
             height: 100%;
             padding: 10px;
             background-color: #393946;
-            //padding: 32px;
             display: flex;
             flex-direction: column;
         `}>

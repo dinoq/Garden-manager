@@ -12,9 +12,7 @@ import SettingsView from '../SettingsView';
 
 function AppLayout() {
     const dispatch = useAppDispatch();
-    const menuWidth = useAppSelector(state => state.guiReducer.menuWidth);
-    const toolbarHeight = useAppSelector(state => state.guiReducer.toolbarHeight);
-    const hideGUI = useAppSelector(state=> state.guiReducer.hideGUI);
+    const tabBarHeight = useAppSelector(state => state.guiReducer.tabBarHeight);
 
     const selectedTab = useAppSelector(state => state.guiReducer.selectedTab);
     const tabs = [<AppView />, <NotesView />, <SettingsView />];
@@ -50,12 +48,13 @@ function AppLayout() {
             background-color: #a3a3a3;
         `}>
             <div css={css`
-                height: ${toolbarHeight}px;
                 width: 100vw;
+                height: ${tabBarHeight}px;
             `}>
                 <TabBar />
             </div>
             <div css={css`
+                height: calc(100% - ${tabBarHeight}px);
             `}>
                 {tabs[selectedTab]}
             </div>

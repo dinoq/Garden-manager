@@ -8,6 +8,8 @@ export enum ProjectDialogStates {
 interface IGUISlice {
     menuWidth: number,
     toolbarHeight: number,
+    toolbarMinimized: boolean,
+    tabBarHeight: number,
     hideGUI: boolean,
     message: string;
     ProjectDialog: {
@@ -19,7 +21,9 @@ interface IGUISlice {
 const initialState: IGUISlice = {
     menuWidth: 300,
     toolbarHeight: 150,
-    hideGUI: true,
+    toolbarMinimized: false,
+    tabBarHeight: 50,
+    hideGUI: false,
     message: "...",
     ProjectDialog: {
         show: false,

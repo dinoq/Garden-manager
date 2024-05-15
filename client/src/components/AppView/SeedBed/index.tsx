@@ -33,7 +33,7 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
     const worldPos = useAppSelector(selector => selector.navigationReducer.position);
     const mouseDownStartPosition = useAppSelector(selector => selector.navigationReducer.mouseDownStartPosition);
 
-    const isSelected = useAppSelector((selector) => selector.seedBedsReducer.selectedSeedBed == props.id);
+    const isSelected = useAppSelector((selector) => selector.seedBedsReducer.selectedSeedBed === props.id);
 
     const seedBedWidth = zoomed((localSeedBedSize.width > 0) ? localSeedBedSize.width : props.width);
     const seedBedHeight = zoomed((localSeedBedSize.height > 0) ? localSeedBedSize.height : props.height);
@@ -101,22 +101,24 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
         setShowDetailIcon(false);
     }
 
-    const seedBedWidthForCalculation = props.rowsDirection == ROWDIRECTIONS.LEFT_TO_RIGHT ? seedBedWidth : seedBedHeight;
-    let inRowCountDecimal = seedBedWidthForCalculation / (zoomed(props.plant.PlantSpacingMin));
+    const plantSpacingMin = props.plantSpacingMin? props.plantSpacingMin : props.plant.PlantSpacingMin;
+    const seedBedWidthForCalculation = props.rowsDirection === ROWDIRECTIONS.LEFT_TO_RIGHT ? seedBedWidth : seedBedHeight;
+    let inRowCountDecimal = seedBedWidthForCalculation / (zoomed(plantSpacingMin));
     let inRowCount = Math.floor(inRowCountDecimal);
     let inRowCountDecimalPart = inRowCountDecimal - inRowCount;
-    const inRowSeedShift = (zoomed(props.plant.PlantSpacingMin) * inRowCountDecimalPart) / 2;
+    const inRowSeedShift = (zoomed(plantSpacingMin) * inRowCountDecimalPart) / 2;
 
-    const seedBedHeightForCalculation = props.rowsDirection == ROWDIRECTIONS.LEFT_TO_RIGHT ? seedBedHeight : seedBedWidth;
-    let rowsCountDecimal = seedBedHeightForCalculation / (zoomed(props.plant.RowSpacingMin));
+    const RowSpacingMin = props.rowSpacingMin? props.rowSpacingMin : props.plant.RowSpacingMin;
+    const seedBedHeightForCalculation = props.rowsDirection === ROWDIRECTIONS.LEFT_TO_RIGHT ? seedBedHeight : seedBedWidth;
+    let rowsCountDecimal = seedBedHeightForCalculation / (zoomed(RowSpacingMin));
     let rowsCount = Math.floor(rowsCountDecimal);
     let rowCountDecimalPart = rowsCountDecimal - rowsCount;
-    const rowSeedShift = (zoomed(props.plant.RowSpacingMin) * rowCountDecimalPart) / 2;
+    const rowSeedShift = (zoomed(RowSpacingMin) * rowCountDecimalPart) / 2;
 
     const plantCount = rowsCount * inRowCount;
 
 
-    let seeds: Array<any> = Array();
+    let seeds: Array<any> = [];
     if (plantCount < 50) {
         for (let i = 0; i < plantCount; i++) {
             seeds.push(<Plant {...props} key={"sees-bed-" + i} rowDirection={props.rowsDirection} />)

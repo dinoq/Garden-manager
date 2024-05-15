@@ -8,7 +8,6 @@ import { useAppSelector } from "../../hooks/useAppSelector";
 import useLocalCoordinates from "../../hooks/useLocalCoordinates";
 import { placeSeedBedAction } from "../../store/reducers/SeedBedsSlice";
 import { zoomAction } from "../../store/reducers/ViewNavigationSlice";
-import Field from "./Field";
 import MemoFieldEditDialog from "./FieldEditDialog";
 import MessageBar from "./MesageBar";
 import ProjectDialog from "./ProjectDialog";
@@ -35,6 +34,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     const showProjectDialog = useAppSelector(state => state.guiReducer.ProjectDialog.show);
     const projectDialogState = useAppSelector(state => state.guiReducer.ProjectDialog.state);
     const toolbarHeight = useAppSelector(state => state.guiReducer.toolbarHeight);
+    const tabBarHeight = useAppSelector(state => state.guiReducer.tabBarHeight);
     const worldWidth = useAppSelector(state => state.navigationReducer.worldWidth) * worldZoom;
     const worldHeight = useAppSelector(state => state.navigationReducer.worldHeight) * worldZoom;
     const hideGUI = useAppSelector(state => state.guiReducer.hideGUI);
@@ -73,12 +73,10 @@ const AppView: React.FC<IAppViewProps> = (props) => {
         setIsMiddleMouseDown(e.button === 1);
 
         if (unplacedBed) {
-            let position: IPosition = { x: unplacedBed.x, y: unplacedBed.y };
-            position = { x: mouseAppViewPosition.x - unplacedBed.width / 2, y: mouseAppViewPosition.y - unplacedBed.height / 2 };
+            let position: IPosition = { x: mouseAppViewPosition.x - unplacedBed.width / 2, y: mouseAppViewPosition.y - unplacedBed.height / 2 };
 
             dispatch(placeSeedBedAction({ id: unplacedBed.id, position }));
             setMouseAppViewPosition({ x: 0, y: 0 });
-
         }
     }
 
@@ -88,7 +86,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
         }
 
         if (unplacedBed) {
-            setMouseAppViewPosition({ x: ((e.clientX - worldPosition.x) / worldZoom), y: ((e.clientY - worldPosition.y) / worldZoom) - toolbarHeight });
+            setMouseAppViewPosition({ x: ((e.clientX - worldPosition.x) / worldZoom), y: (((e.clientY - worldPosition.y) - toolbarHeight - tabBarHeight) / worldZoom) });
         }
     }
 
@@ -120,9 +118,8 @@ const AppView: React.FC<IAppViewProps> = (props) => {
                 <Header />
             </div>
             <div css={css`
-                height: calc(100vh - ${toolbarHeight}px);
                 width: 100vw;
-            `}>
+            `} onMouseMove={mouseMove}>
                 {<SideBar />}
                 <div css={css`
                     overflow: hidden;
@@ -132,7 +129,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
                     left: 0;
                     top: 0;
                 `}>
-                    <div ref={viewElement} onDragOver={e => e.preventDefault()} onWheel={zoom} onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} css={css`
+                    <div ref={viewElement} onDragOver={e => e.preventDefault()} onWheel={zoom} onMouseDown={mouseDown} onMouseUp={mouseUp} css={css`
                         position: relative;
                         width: ${worldWidth}px;
                         height: ${worldHeight}px;

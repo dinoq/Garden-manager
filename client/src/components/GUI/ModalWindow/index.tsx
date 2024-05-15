@@ -20,6 +20,7 @@ const ModalWindow: React.FC<IModalWindowProps> = (props) => {
     const [collapsed, setCollapsed] = useState(false);
     const [modalHeight, setModalHeight] = useState(0);
 
+    const headerHeight = 50;
     const dragStartHandler = (e: React.MouseEvent) => {
         const rect = modalRef.current?.getBoundingClientRect();
         if (rect) {
@@ -39,7 +40,7 @@ const ModalWindow: React.FC<IModalWindowProps> = (props) => {
     const toggleCollapse = (e: React.MouseEvent) => {
         if(!collapsed){
             const rect = modalRef.current?.getBoundingClientRect();
-            setModalHeight(rect?.height || 0);
+            setModalHeight(rect?.height? rect?.height - headerHeight : 0);
         }
         setCollapsed(prevVal => !prevVal);
     }
@@ -66,6 +67,7 @@ const ModalWindow: React.FC<IModalWindowProps> = (props) => {
                 display: flex;
                 justify-content: space-between;
                 cursor: move;
+                height: ${headerHeight}px;
             `} draggable="true" onDragStart={dragStartHandler} onDrag={dragHandler} onDragEnd={dragEndHandler}>
                 <div css={css`          
                     text-align: end;

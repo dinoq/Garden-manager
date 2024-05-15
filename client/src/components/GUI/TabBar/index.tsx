@@ -25,7 +25,6 @@ const TabBar: FC<ITabBarProps> = () => {
     return (
         <div css={css`
             display: flex;
-            height: 50px;
             background-color: #e0e0e0;
             width: 100%;
         `}>

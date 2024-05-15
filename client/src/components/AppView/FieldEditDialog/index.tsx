@@ -30,7 +30,7 @@ const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
 
     const [plantsFromDB, setPlantsFromDB] = useState<IPlant[]>([]);
 
-    const plantSpacing: number = actualSeedBed.plantSpacing ? actualSeedBed.plantSpacing : actualSeedBed.plant.PlantSpacingMin;
+    const plantSpacing: number = actualSeedBed.plantSpacingMin ? actualSeedBed.plantSpacingMin : actualSeedBed.plant.PlantSpacingMin;
     const rowSpacing = actualSeedBed.plant.RowSpacingMin;
 
     const spacingOptions: IOption[] = (actualSeedBed.variety && actualSeedBed.variety.PlantSpacingMin? ["From plant", "From variety", "Custom"] : ["From plant", "Custom"]).map((opt, index) => ({ name: opt, value: index }));

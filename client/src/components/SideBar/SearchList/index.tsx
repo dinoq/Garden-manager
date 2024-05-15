@@ -7,14 +7,14 @@ import { IAppObject } from '../../../helpers/types';
 import ListItem from './ListItem';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 
-interface ICategory{
-    items: Array<IPlant|IAppObject> ,
+interface ICategory {
+    items: Array<IPlant | IAppObject>,
     setNewUplacedSeedBed: MouseEventHandler<HTMLLIElement>,
 }
-const SearchList: React.FC<ICategory> = (props) => {    
-    const hideGUI = useAppSelector(state=> state.guiReducer.hideGUI);
-    
-    const items = hideGUI? props.items.slice(0, 5): props.items;
+const SearchList: React.FC<ICategory> = (props) => {
+    const hideGUI = useAppSelector(state => state.guiReducer.hideGUI);
+
+    const items = hideGUI ? props.items.slice(0, 5) : props.items;
     return (
         <ul css={css`
             list-style-type: none;
@@ -23,7 +23,7 @@ const SearchList: React.FC<ICategory> = (props) => {
             overflow-y: scroll;
     `}>
             {items.map((item, i) => {
-                return <ListItem key={"search-list-item-" + item.id} isLastItem={i==props.items.length-1} item={item} setNewUplacedSeedBed={props.setNewUplacedSeedBed} />
+                return <ListItem key={"search-list-item-" + item.id} isLastItem={i === props.items.length - 1} item={item} setNewUplacedSeedBed={props.setNewUplacedSeedBed} />
             })}
         </ul>
     )
