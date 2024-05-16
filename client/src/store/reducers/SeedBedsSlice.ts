@@ -43,7 +43,7 @@ const SeedBedsSlice = createSlice({
             state.seedBeds[index].rowSpacingMin = action.payload.rowSpacing;
             state.seedBeds[index].plantSpacingMin = action.payload.plantSpacing;
         },
-        updateSelectedSeedBed: (state: ISeedBedSlice, action: PayloadAction<number>) => {
+        updateSelectedSeedBedAction: (state: ISeedBedSlice, action: PayloadAction<number>) => {
             state.selectedSeedBed = action.payload;
         },
         createNewSeedBedAction: (state: ISeedBedSlice, action: PayloadAction<{ position: IPosition, plant: IPlant }>) => {
@@ -80,29 +80,29 @@ const SeedBedsSlice = createSlice({
             state.seedBeds = JSON.parse(definition);
             state.selectedSeedBed = -1;
         }*/
-        setProject: (state: ISeedBedSlice, action: PayloadAction<ISeedBedSlice>) => {
+        setProjectAction: (state: ISeedBedSlice, action: PayloadAction<ISeedBedSlice>) => {
             state = action.payload;
         },
-        setProjectName: (state: ISeedBedSlice, action: PayloadAction<string>) => {
+        setProjectNameAction: (state: ISeedBedSlice, action: PayloadAction<string>) => {
             state.projectName = action.payload;
         },
-        setLMT: (state: ISeedBedSlice, action: PayloadAction<number>) => {
+        setLMTAction: (state: ISeedBedSlice, action: PayloadAction<number>) => {
             state.lastModified = action.payload;
         },
-        setProjectID: (state: ISeedBedSlice, action: PayloadAction<number>) => {
+        setProjectIDAction: (state: ISeedBedSlice, action: PayloadAction<number>) => {
             state.projectID = action.payload;
         },
-        changePlant: (state: ISeedBedSlice, action: PayloadAction<IPlant>) => {
+        changePlantAction: (state: ISeedBedSlice, action: PayloadAction<IPlant>) => {
             const actualSeedbed = state.seedBeds[state.selectedSeedBed];
             actualSeedbed.plant = action.payload;
             actualSeedbed.variety = action.payload.varieties[0];
         },
-        changeVariety: (state: ISeedBedSlice, action: PayloadAction<IVariety>) => {
+        changeVarietyAction: (state: ISeedBedSlice, action: PayloadAction<IVariety>) => {
             const actualSeedbed = state.seedBeds[state.selectedSeedBed];
             actualSeedbed.variety = action.payload;
         }
     }
 })
 
-export const { updateWidthAction, updateHeightAction, updatePositionAction, updateSpacingAction, updateSelectedSeedBed, createNewSeedBedAction, placeSeedBedAction, changeRowsDirectionAction, setProject, setProjectName, setLMT, setProjectID, changePlant, changeVariety } = SeedBedsSlice.actions;
+export const { updateWidthAction, updateHeightAction, updatePositionAction, updateSpacingAction, updateSelectedSeedBedAction, createNewSeedBedAction, placeSeedBedAction, changeRowsDirectionAction, setProjectAction, setProjectNameAction, setLMTAction, setProjectIDAction, changePlantAction, changeVarietyAction } = SeedBedsSlice.actions;
 export default SeedBedsSlice.reducer;

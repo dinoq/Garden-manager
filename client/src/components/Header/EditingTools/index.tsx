@@ -3,9 +3,9 @@
 import { css, jsx } from '@emotion/react';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
-import { setShowProjectDialog } from '../../../store/reducers/GUISlice';
+import { setShowProjectDialogAction } from '../../../store/reducers/GUISlice';
 import DBManager from '../../../helpers/DBManager';
-import { setLMT } from '../../../store/reducers/SeedBedsSlice';
+import { setLMTAction } from '../../../store/reducers/SeedBedsSlice';
 import LabeledCard from '../../GUI/LabeledCard';
 
 
@@ -35,7 +35,7 @@ const EditingTools: React.FC<IEditingToolsProps> = (props) => {
                 background: url("./imgs/new.png");
                 `}></button>
                 <button onClick={(e) => {
-                    dispatch(setShowProjectDialog(false))
+                    dispatch(setShowProjectDialogAction(false))
                 }} css={css`
                 background: url("./imgs/open.png");
                 `}></button>
@@ -43,17 +43,17 @@ const EditingTools: React.FC<IEditingToolsProps> = (props) => {
 
                     let projectID = seedBedsReducer.projectID;
                     if (seedBedsReducer.projectID == -1) {
-                        dispatch(setShowProjectDialog(true))
+                        dispatch(setShowProjectDialogAction(true))
                     } else {
                         const lastModified = new Date().getTime();
-                        dispatch(setLMT(lastModified))
+                        dispatch(setLMTAction(lastModified))
                         DBManager.saveProject({ ...seedBedsReducer, lastModified }); // Dekomposition is used, becauce projectID can change (few lines above) and it is not possible to wait for store change
                     }
                 }} css={css`
                 background: url("./imgs/save.png");
                 `}></button>
                 <button onClick={(e) => {
-                    dispatch(setShowProjectDialog(true))
+                    dispatch(setShowProjectDialogAction(true))
                 }} css={css`
                 background: url("./imgs/save-as.png");
                 `}></button>

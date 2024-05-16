@@ -4,7 +4,7 @@ import { css, jsx } from '@emotion/react';
 import React, { useEffect, useState } from 'react';
 import { IPlant } from '../../helpers/plant-types';
 import { createNewSeedBedAction } from '../../store/reducers/SeedBedsSlice';
-import { setMouseDownPosition } from '../../store/reducers/ViewNavigationSlice';
+import { setMouseDownPositionAction } from '../../store/reducers/ViewNavigationSlice';
 import SearchFilter from './SearchFilter';
 import SearchList from './SearchList';
 import { IAppObject } from '../../helpers/types';

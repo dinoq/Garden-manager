@@ -85,14 +85,14 @@ const ViewNavigationSlice = createSlice(
                 state.isMovingAppView = action.payload;
             },
 
-            setMouseDownPosition: (state: IViewNavigationSlice, action: PayloadAction<IPosition>) => {
+            setMouseDownPositionAction: (state: IViewNavigationSlice, action: PayloadAction<IPosition>) => {
                 state.mouseDownStartPosition = action.payload;
             },
         }
     }
 )
 
-export const { zoomAction, enableZoomAction, moveWorldByMouseAction, setIsMovingAppViewAction, setMouseDownPosition } = ViewNavigationSlice.actions;
+export const { zoomAction, enableZoomAction, moveWorldByMouseAction, setIsMovingAppViewAction, setMouseDownPositionAction } = ViewNavigationSlice.actions;
 export default ViewNavigationSlice.reducer;
 
 /*

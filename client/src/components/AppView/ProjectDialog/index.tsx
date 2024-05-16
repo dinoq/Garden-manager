@@ -3,12 +3,12 @@
 import { css, jsx } from '@emotion/react';
 import ModalWindow from '../../GUI/ModalWindow';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
-import { ProjectDialogStates, hideProjectDialog } from '../../../store/reducers/GUISlice';
+import { ProjectDialogStates, hideProjectDialogAction } from '../../../store/reducers/GUISlice';
 import { useState, useEffect } from "react"
 import ListPanel from '../../GUI/ListPanel';
 import InputField from '../../GUI/InputField';
 import Button from '../../GUI/Button';
-import { ISeedBedSlice, setLMT, setProject, setProjectID, setProjectName as setProjectNameAction } from '../../../store/reducers/SeedBedsSlice';
+import { ISeedBedSlice, setLMTAction, setProjectAction, setProjectIDAction, setProjectNameAction as setProjectNameAction } from '../../../store/reducers/SeedBedsSlice';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import DBManager from '../../../helpers/DBManager';
 
@@ -42,10 +42,10 @@ const ProjectDialog: React.FC<IProjectDialogProps> = (props) => {
 
     const projectClickedHandler = (clickedItem: IProjectInfos, index: any, event: React.MouseEvent) => {
         if (clickedItem && clickedItem?.projectName?.length) {
-            dispatch(hideProjectDialog());
+            dispatch(hideProjectDialogAction());
             const projectData = DBManager.getProjectByID(clickedItem?.projectID);
 
-            dispatch(setProject(projectData));
+            dispatch(setProjectAction(projectData));
         }
 
     }
@@ -54,18 +54,18 @@ const ProjectDialog: React.FC<IProjectDialogProps> = (props) => {
         let projectID = seedBedsReducer.projectID;
         if(seedBedsReducer.projectID == -1){
             projectID = DBManager.getUniqueProjectID();
-            dispatch(setProjectID(projectID))
+            dispatch(setProjectIDAction(projectID))
         }
 
         DBManager.saveProject({...seedBedsReducer, projectID}); // Dekomposition is used, becauce projectID can change (few lines above) and it is not possible to wait for store change
-        dispatch(setLMT(new Date().getTime()))
-        dispatch(hideProjectDialog());
+        dispatch(setLMTAction(new Date().getTime()))
+        dispatch(hideProjectDialogAction());
 
     }
 
     return (
         <ModalWindow position={{left: "50%", top: "50%"}} dimension={{width: "500px", height
-        : "500px"}} closeModalHandler={() => dispatch(hideProjectDialog())}>
+        : "500px"}} closeModalHandler={() => dispatch(hideProjectDialogAction())}>
             <ListPanel items={projects} header={header} />
             {props.state == ProjectDialogStates.SAVE_PROJECT && (
                 <div css={css`

@@ -36,17 +36,17 @@ const GUISlice = createSlice({
     name: "GUISlice",
     initialState,
     reducers: {
-        hideProjectDialog: (state: IGUISlice) => {
+        hideProjectDialogAction: (state: IGUISlice) => {
             state.ProjectDialog.show = false;
         },
-        setShowProjectDialog: (state: IGUISlice, action: PayloadAction<boolean>) => {
+        setShowProjectDialogAction: (state: IGUISlice, action: PayloadAction<boolean>) => {
             let showInput = action.payload;
             state.ProjectDialog = {
                 show: true,
                 state: showInput? ProjectDialogStates.SAVE_PROJECT : ProjectDialogStates.OPEN_PROJECT
             }
         },
-        setMessage: (state: IGUISlice, action: PayloadAction<string>) => {
+        setMessageAction: (state: IGUISlice, action: PayloadAction<string>) => {
             //state.message = action.payload;
         },
         changeTabAction: (state: IGUISlice, action: PayloadAction<number>) => {
@@ -55,5 +55,5 @@ const GUISlice = createSlice({
     }
 })
 
-export const { hideProjectDialog, setShowProjectDialog, setMessage, changeTabAction } = GUISlice.actions;
+export const { hideProjectDialogAction, setShowProjectDialogAction, setMessageAction: setMessage, changeTabAction } = GUISlice.actions;
 export default GUISlice.reducer;

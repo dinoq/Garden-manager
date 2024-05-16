@@ -38,7 +38,11 @@ __________________________________________________________
 
 __________________________________________________________
 ### Settings:
+-
+section ?
 [ ] month part (1/2/4, default: 2)
+-
+section object creation and manipulation
 [ ] snap objects to other objects
 [ ] snap objects to grid
 [ ] show grid
@@ -46,7 +50,11 @@ __________________________________________________________
 [ ] only vertical/horizontal plant sections (disable rotations)
 [ ] allow creation variety on-the-fly (without setting in manager)
 [ ] seedbed can have name
-
+-
+section tips (button open tips)
+[ ] show random tip at app start
+[ ] show random tips in application
+-
 [ ] Apply changes only on "save" button (actually saved automatically by change)
 __________________________________________________________
 ### FieldEditDialog:  

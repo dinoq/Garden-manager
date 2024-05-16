@@ -4,7 +4,7 @@
 import { css, jsx } from "@emotion/react";
 import React, { memo, useEffect, useState } from "react";
 import { useAppDispatch } from "../../../hooks/useAppDispatch";
-import { changePlant, changeVariety, updateSelectedSeedBed, updateSpacingAction } from "../../../store/reducers/SeedBedsSlice";
+import { changePlantAction, changeVarietyAction, updateSelectedSeedBedAction, updateSpacingAction } from "../../../store/reducers/SeedBedsSlice";
 import InputField from "../../GUI/InputField";
 import { useAppSelector } from "../../../hooks/useAppSelector";
 import Selectbox, { IOption } from "../../GUI/Selectbox";
@@ -61,14 +61,14 @@ const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
     const cropChanged = (e: React.MouseEvent) => {
         const newPlant = getArrEntryByIDAndIDName("id", e.currentTarget.id, plantsFromDB);
         if (newPlant) {
-            dispatch(changePlant(newPlant));
+            dispatch(changePlantAction(newPlant));
         }
     }
 
     const varietyChanged = (e: React.MouseEvent) => {
         const newVariety = getArrEntryByIDAndIDName("id_variety", e.currentTarget.id, actualSeedBed.plant.varieties);
         if (newVariety) {
-            dispatch(changeVariety(newVariety));
+            dispatch(changeVarietyAction(newVariety));
         }
     }
 
@@ -107,7 +107,7 @@ const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
             <ModalWindow position={{ left: "50%", top: "50%" }} dimension={{
                 width: (modalWidth + 30) + "px", height
                     : "initial"
-            }} closeModalHandler={() => { dispatch(updateSelectedSeedBed(-1)) }}>
+            }} closeModalHandler={() => { dispatch(updateSelectedSeedBedAction(-1)) }}>
                 <Label text={"Plant"}>
                     {plantOptions.length > 0 ? <SearchableSelectbox name="field-edit-dialog-crop-selectbox" allOptions={plantOptions} selectedValue={actualSeedBed.plant.id} onChange={cropChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
                 </Label>

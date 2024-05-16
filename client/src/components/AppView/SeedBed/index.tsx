@@ -7,7 +7,7 @@ import { zoomedFactory } from '../../../helpers/functions';
 import { Direction, IPosition, ISeedBed } from '../../../helpers/types';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../hooks/useAppSelector';
-import { changeRowsDirectionAction, updateHeightAction, updateSelectedSeedBed, updateWidthAction } from '../../../store/reducers/SeedBedsSlice';
+import { changeRowsDirectionAction, updateHeightAction, updateSelectedSeedBedAction, updateWidthAction } from '../../../store/reducers/SeedBedsSlice';
 import { setIsMovingAppViewAction } from '../../../store/reducers/ViewNavigationSlice';
 import DragPoint from './DragPoint';
 import Plant, { ROWDIRECTIONS } from './Plant';
@@ -134,7 +134,7 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
 
     const showAllSeeds = plantCount < 50;
     return (
-        <div onMouseEnter={mouseEnterHandler} onMouseLeave={mouseLeaveHandler} onClick={()=>{dispatch(updateSelectedSeedBed(props.id))}} css={css`
+        <div onMouseEnter={mouseEnterHandler} onMouseLeave={mouseLeaveHandler} onClick={()=>{dispatch(updateSelectedSeedBedAction(props.id))}} css={css`
                 border: 1px solid ${isSelected ? "#17ff00" : "green"};
                 width: ${seedBedWidth}px;
                 height: ${seedBedHeight}px;
