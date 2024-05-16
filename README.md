@@ -1,4 +1,5 @@
 TODO refactor:
+[ ] Maybe merge CalendarSlice and 
 [ ] nešly by nějak předělat reducery setLMT a setProjectName do setProject? Jakože nějak pomocí spread operátoru?
 [ ] zoom předělat taky na lokální a až po mouseup vložit do reduxu
 [ ] změnit "SeedBedsSlice->createNewSeedBedAction->rowsDirection" podle defaultního nastavení! (Aktuálně se tam prostě vkládá ROWDIRECTIONS.LEFT_TO_RIGHT)
@@ -42,6 +43,9 @@ __________________________________________________________
 [ ] snap objects to grid
 [ ] show grid
 [ ] show FieldEditDialog default by click on plant (vs doubleclick/some "info button" click)
+[ ] only vertical/horizontal plant sections (disable rotations)
+[ ] allow creation variety on-the-fly (without setting in manager)
+[ ] seedbed can have name
 
 [ ] Apply changes only on "save" button (actually saved automatically by change)
 __________________________________________________________
@@ -50,6 +54,7 @@ __________________________________________________________
 [x] Collapsible  
 [ ] Rozdělení na Settings/Info  
 #### Settings:  
+[ ] name + checkbox display name (in app view)
 [ ] název rostliny, - při změně "are you sure? Don't want to use succession plant?" -> I am sure/succession/cancel (+checkbox remember my choice and don't show again [not recommended]). Při "I am sure" YNC dialog jestli měnit spon podle defaultu plodiny
 [ ] odruda,  - při změně "are you sure?" -> Yes/cancel (+checkbox remember my choice and don't show again).při potvrzení YNC dialog jestli měnit spon defaultu odrudy
 [ ] orientace řádků,

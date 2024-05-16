@@ -20,14 +20,18 @@ const Plant: React.FC<ISeedCircle> = (props) => {
 
     const seedBed = useAppSelector(state => state.seedBedsReducer.seedBeds[props.id]);
 
+    
+    const plantSpacingMin = props.plantSpacingMin? props.plantSpacingMin : props.plant.PlantSpacingMin;
+    const RowSpacingMin = props.rowSpacingMin? props.rowSpacingMin : props.plant.RowSpacingMin;
+
     const plantSize = 45;
     let marginTB, marginLR;
     if(props.rowDirection === ROWDIRECTIONS.LEFT_TO_RIGHT){
-        marginTB = zoomed(props.plant.RowSpacingMin/2 - plantSize/2);
-        marginLR = zoomed(props.plant.PlantSpacingMin/2 - plantSize/2);
+        marginTB = zoomed(RowSpacingMin/2 - plantSize/2);
+        marginLR = zoomed(plantSpacingMin/2 - plantSize/2);
     }else{
-        marginLR = zoomed(props.plant.RowSpacingMin/2 - plantSize/2);
-        marginTB = zoomed(props.plant.PlantSpacingMin/2 - plantSize/2);
+        marginLR = zoomed(RowSpacingMin/2 - plantSize/2);
+        marginTB = zoomed(plantSpacingMin/2 - plantSize/2);
     }
     return (
         <div css={css`

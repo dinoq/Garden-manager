@@ -24,6 +24,7 @@ export interface ISeedBed extends IAppObject{
     rowSpacingMin?: number,
     isPlaced: boolean,
     rowsDirection: ROWDIRECTIONS;
+    inGround: IInGround
 }
 
 export interface IField extends IAppObject{
@@ -35,4 +36,10 @@ export type IRect = IDimensions & IPosition;
 export enum Direction {
     HORIZONTAL,
     VERTICAL
+}
+
+export type IInGround = {
+    yearRound: boolean,
+    from: {month: number, monthPart: number},
+    to: {month: number, monthPart: number}
 }

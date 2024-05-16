@@ -2,10 +2,6 @@ import { useEffect, useState } from "react";
 import { processPlants } from "../helpers/functions";
 import useDB from "./useDB";
 import { IPlant } from "../helpers/plant-types";
-import { useAppSelector } from "./useAppSelector";
-import { useAppDispatch } from "./useAppDispatch";
-import { setDBDataAction } from "../store/reducers/DBSlice";
-
 const usePlantsFromDB = () => {
     const {data: plantsFromDB, dataLoaded: plantsFetched} = useDB("crop");
     const {data: varietiesFromDB, dataLoaded: varietiesFetched} = useDB("variety");

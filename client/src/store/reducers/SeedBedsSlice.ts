@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ROWDIRECTIONS } from "../../components/AppView/SeedBed/Plant";
 import { IPlant, IVariety } from "../../helpers/plant-types";
-import { IPosition, ISeedBed } from "../../helpers/types";
+import { IInGround, IPosition, ISeedBed } from "../../helpers/types";
 
 export interface ISeedBedSlice {
     seedBeds: ISeedBed[],
@@ -52,8 +52,12 @@ const SeedBedsSlice = createSlice({
             const variety =  (plant.varieties && plant.varieties.length)? plant.varieties[0] : undefined;
             const width = plant.PlantSpacingMin ? plant.PlantSpacingMin : 50;
             const height = plant.RowSpacingMin ? plant.RowSpacingMin : 50;
-
-            state.seedBeds.push({ id, variety, width, height, plant, ...action.payload.position, isPlaced: false, name: id.toString(), rowsDirection: ROWDIRECTIONS.LEFT_TO_RIGHT })
+            const inGround: IInGround = {
+                yearRound: true,
+                from: {month: 0, monthPart: 0},
+                to: {month: 0, monthPart: 0}
+            }
+            state.seedBeds.push({ id, variety, width, height, plant, ...action.payload.position, isPlaced: false, name: id.toString(), rowsDirection: ROWDIRECTIONS.LEFT_TO_RIGHT, inGround })
             state.selectedSeedBed = id;
         },
         placeSeedBedAction: (state: ISeedBedSlice, action: PayloadAction<{ id: number, position: IPosition }>) => {

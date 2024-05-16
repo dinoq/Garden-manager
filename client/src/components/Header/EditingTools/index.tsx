@@ -3,7 +3,7 @@
 import { css, jsx } from '@emotion/react';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
-import { showProjectDialog } from '../../../store/reducers/GUISlice';
+import { setShowProjectDialog } from '../../../store/reducers/GUISlice';
 import DBManager from '../../../helpers/DBManager';
 import { setLMT } from '../../../store/reducers/SeedBedsSlice';
 import LabeledCard from '../../GUI/LabeledCard';
@@ -35,7 +35,7 @@ const EditingTools: React.FC<IEditingToolsProps> = (props) => {
                 background: url("./imgs/new.png");
                 `}></button>
                 <button onClick={(e) => {
-                    dispatch(showProjectDialog(false))
+                    dispatch(setShowProjectDialog(false))
                 }} css={css`
                 background: url("./imgs/open.png");
                 `}></button>
@@ -43,7 +43,7 @@ const EditingTools: React.FC<IEditingToolsProps> = (props) => {
 
                     let projectID = seedBedsReducer.projectID;
                     if (seedBedsReducer.projectID == -1) {
-                        dispatch(showProjectDialog(true))
+                        dispatch(setShowProjectDialog(true))
                     } else {
                         const lastModified = new Date().getTime();
                         dispatch(setLMT(lastModified))
@@ -53,7 +53,7 @@ const EditingTools: React.FC<IEditingToolsProps> = (props) => {
                 background: url("./imgs/save.png");
                 `}></button>
                 <button onClick={(e) => {
-                    dispatch(showProjectDialog(true))
+                    dispatch(setShowProjectDialog(true))
                 }} css={css`
                 background: url("./imgs/save-as.png");
                 `}></button>

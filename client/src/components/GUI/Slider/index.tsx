@@ -11,9 +11,8 @@ type ISliderProps = {
 }
 
 const Slider: FC<ISliderProps> = (props) => {
-    const [value, serValue] = useState(props.defaultVal);
-    const [min, setMin] = useState(props.minVal);
-    const [max, setMax] = useState(props.maxVal);
+    const [min] = useState(props.minVal);
+    const [max] = useState(props.maxVal);
 
     return (
         <div css={css`

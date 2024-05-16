@@ -17,12 +17,15 @@ import { RootState } from "../../../store";
 import { getArrEntryByIDAndIDName } from "../../../helpers/functions";
 import Slider from "../../GUI/Slider";
 import { actualSeedBedSelector } from "./selectors";
+import DoubleSlider from "../../GUI/DoubleSlider";
 export interface IFieldEditDialogProps {
 }
 
 const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
     const dispatch = useAppDispatch();
+    
     const actualSeedBed = useAppSelector(actualSeedBedSelector);
+    const inGround = actualSeedBed.inGround;
 
     const [plantOptions, setPlantOptions] = useState<IOption[]>([]);
     const [varietyOptions, setVarietyOptions] = useState<IOption[]>([]);
@@ -31,9 +34,9 @@ const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
     const [plantsFromDB, setPlantsFromDB] = useState<IPlant[]>([]);
 
     const plantSpacing: number = actualSeedBed.plantSpacingMin ? actualSeedBed.plantSpacingMin : actualSeedBed.plant.PlantSpacingMin;
-    const rowSpacing = actualSeedBed.plant.RowSpacingMin;
+    const rowSpacing = actualSeedBed.rowSpacingMin ? actualSeedBed.rowSpacingMin : actualSeedBed.plant.RowSpacingMin;
 
-    const spacingOptions: IOption[] = (actualSeedBed.variety && actualSeedBed.variety.PlantSpacingMin? ["From plant", "From variety", "Custom"] : ["From plant", "Custom"]).map((opt, index) => ({ name: opt, value: index }));
+    const spacingOptions: IOption[] = (actualSeedBed.variety && actualSeedBed.variety.PlantSpacingMin ? ["From plant", "From variety", "Custom"] : ["From plant", "Custom"]).map((opt, index) => ({ name: opt, value: index }));
     const [selectedSpacingOption, setSelectedSpacingOption] = useState(0);
 
     useEffect(() => {
@@ -80,39 +83,50 @@ const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
     const spacingTypeChangedEventHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const option = parseInt(e.currentTarget.value);
         setSelectedSpacingOption(option);
-        if(option === 0){
-            dispatch(updateSpacingAction({ id: actualSeedBed.id, plantSpacing: actualSeedBed.plant.PlantSpacingMin, rowSpacing: actualSeedBed.plant.RowSpacingMin}))
-        } else if(option === 1) {
-            const plantSpacing = actualSeedBed.variety?.PlantSpacingMin? actualSeedBed.variety?.PlantSpacingMin : actualSeedBed.plant.PlantSpacingMin;
-            const rowSpacing = actualSeedBed.variety?.RowSpacingMin? actualSeedBed.variety?.RowSpacingMin : actualSeedBed.plant.RowSpacingMin;
-            dispatch(updateSpacingAction({ id: actualSeedBed.id, plantSpacing, rowSpacing}))
-        } else{
-            dispatch(updateSpacingAction({ id: actualSeedBed.id, plantSpacing, rowSpacing}))
+        if (option === 0) {
+            dispatch(updateSpacingAction({ id: actualSeedBed.id, plantSpacing: actualSeedBed.plant.PlantSpacingMin, rowSpacing: actualSeedBed.plant.RowSpacingMin }))
+        } else if (option === 1) {
+            const plantSpacing = actualSeedBed.variety?.PlantSpacingMin ? actualSeedBed.variety?.PlantSpacingMin : actualSeedBed.plant.PlantSpacingMin;
+            const rowSpacing = actualSeedBed.variety?.RowSpacingMin ? actualSeedBed.variety?.RowSpacingMin : actualSeedBed.plant.RowSpacingMin;
+            dispatch(updateSpacingAction({ id: actualSeedBed.id, plantSpacing, rowSpacing }))
+        } else {
+            dispatch(updateSpacingAction({ id: actualSeedBed.id, plantSpacing, rowSpacing }))
         }
     }
 
+    const yearRoundPlantichChangedListener = (e: React.ChangeEvent) => {
+
+    }
+
     return (
-        <ModalWindow position={{ left: "50%", top: "50%" }} dimension={{
-            width: (modalWidth + 30) + "px", height
-                : "initial"
-        }} closeModalHandler={() => { dispatch(updateSelectedSeedBed(-1)) }}>
-            <Label text={"Plant"}>
-                {plantOptions.length > 0 ? <SearchableSelectbox name="field-edit-dialog-crop-selectbox" allOptions={plantOptions} selectedValue={actualSeedBed.plant.id} onChange={cropChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
-            </Label>
-            <Label text={"Variety"}>
-                {varietyOptions.length > 0 ? <SearchableSelectbox name="field-edit-dialog-variety-selectbox" allOptions={varietyOptions} selectedValue={actualSeedBed.variety?.id_variety || 0} onChange={varietyChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
-            </Label>
-            <Label text={"Spacing"}>
-                <Selectbox defaultValue={selectedSpacingOption} name="spacing-selectbox" onChange={spacingTypeChangedEventHandler} options={spacingOptions} />
-                <div css={css`
-                    display: flex;
-                    width: 100%;
-                `}>
-                    <Slider defaultVal={plantSpacing} minVal={plantSpacing / 2} maxVal={plantSpacing * 2} onChange={plantSpacingChanged} />
-                    <Slider defaultVal={rowSpacing} minVal={rowSpacing / 2} maxVal={rowSpacing * 2} onChange={rowSpacingChanged} />
-                </div>
-            </Label>
-        </ModalWindow>
+        <div css={css`
+            hr{
+                width: 100%;
+            }
+        `}>
+            <ModalWindow position={{ left: "50%", top: "50%" }} dimension={{
+                width: (modalWidth + 30) + "px", height
+                    : "initial"
+            }} closeModalHandler={() => { dispatch(updateSelectedSeedBed(-1)) }}>
+                <Label text={"Plant"}>
+                    {plantOptions.length > 0 ? <SearchableSelectbox name="field-edit-dialog-crop-selectbox" allOptions={plantOptions} selectedValue={actualSeedBed.plant.id} onChange={cropChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
+                </Label>
+                <Label text={"Variety"}>
+                    {varietyOptions.length > 0 ? <SearchableSelectbox name="field-edit-dialog-variety-selectbox" allOptions={varietyOptions} selectedValue={actualSeedBed.variety?.id_variety || 0} onChange={varietyChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
+                </Label>
+                <hr />
+                <Label text={"Spacing"}>
+                    <Selectbox defaultValue={selectedSpacingOption} name="spacing-selectbox" onChange={spacingTypeChangedEventHandler} options={spacingOptions} />
+                    <DoubleSlider defaultVals={{ A: plantSpacing, B: rowSpacing }} maxVals={{ A: (plantSpacing * 2), B: (rowSpacing * 2) }} minVals={{ A: (plantSpacing / 2), B: rowSpacing / 2 }} onChange={{ A: plantSpacingChanged, B: rowSpacingChanged }} />
+                </Label>
+                <hr />
+                <Label text={"In ground"}>
+                    <label>Year-round
+                        <input type="checkbox" checked={actualSeedBed.inGround.yearRound} onChange={yearRoundPlantichChangedListener}/>
+                    </label>
+                </Label>
+            </ModalWindow>
+        </div>
     )
 }
 
