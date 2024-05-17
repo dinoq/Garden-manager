@@ -1,14 +1,12 @@
-import { IProjectInfos } from "../components/AppView/ProjectDialog";
 import { ISeedBedSlice } from "../store/reducers/SeedBedsSlice";
-import { ISeedBed } from "./types";
 
 const PROJECTS_PATH = "projects";
-export default class{
+export default class DBManager{
 
     public static saveProject(project: ISeedBedSlice) {        
         const projects: Array<ISeedBedSlice> = this.getProjects();
-        let index = projects.findIndex(proj => proj.projectID == project.projectID);
-        if(index == -1){
+        let index = projects.findIndex(proj => proj.projectID === project.projectID);
+        if(index === -1){
             projects.push(project);
         }else{
             projects[index] = project;
@@ -19,7 +17,8 @@ export default class{
 
     public static getProjectByID(id: number): ISeedBedSlice {  
         const projects: Array<ISeedBedSlice> = this.getProjects();
-        const project = projects.find(p=>p.projectID == id);
+        const project = projects.find(p=>p.projectID === id);
+        console.log('project: ', project);
 
         return {
             projectID: project?.projectID || -1,

@@ -40,9 +40,7 @@ const EditingTools: React.FC<IEditingToolsProps> = (props) => {
                 background: url("./imgs/open.png");
                 `}></button>
                 <button onClick={(e) => {
-
-                    let projectID = seedBedsReducer.projectID;
-                    if (seedBedsReducer.projectID == -1) {
+                    if (seedBedsReducer.projectID === -1) {
                         dispatch(setShowProjectDialogAction(true))
                     } else {
                         const lastModified = new Date().getTime();

@@ -1,10 +1,10 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { DEPTH } from '../../../helpers/constants';
 import { zoomedFactory } from '../../../helpers/functions';
-import { Direction, IPosition, ISeedBed } from '../../../helpers/types';
+import { IPosition, ISeedBed } from '../../../helpers/types';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { changeRowsDirectionAction, updateHeightAction, updateSelectedSeedBedAction, updateWidthAction } from '../../../store/reducers/SeedBedsSlice';
@@ -30,8 +30,6 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
 
     const zoom = useAppSelector(selector => selector.navigationReducer.zoom);
     const zoomed = zoomedFactory(zoom);
-    const worldPos = useAppSelector(selector => selector.navigationReducer.position);
-    const mouseDownStartPosition = useAppSelector(selector => selector.navigationReducer.mouseDownStartPosition);
 
     const isSelected = useAppSelector((selector) => selector.seedBedsReducer.selectedSeedBed === props.id);
 
@@ -40,19 +38,6 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
 
     let seedBedX = zoomed((props.x + localSeedBedPosDiff.x));
     let seedBedY = zoomed((props.y + localSeedBedPosDiff.y));
-
-    const direction: Direction = Direction.HORIZONTAL;
-
-
-    let plants;
-
-    let initialSet = useRef(false);
-    useEffect(() => {
-        if (!props.isPlaced) {
-
-        }
-
-    }, [])
 
     // HANDLERS
     const moveStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
@@ -80,18 +65,6 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
         dispatch(updateWidthAction({ id: props.id, newWidth }))
         dispatch(updateHeightAction({ id: props.id, newHeight }))
     }
-
-    const moveSeedBedIfNotPlaced = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!props.isPlaced) {
-
-        }
-
-    }
-
-    const stopMoveSeedBed = (e: React.MouseEvent<HTMLDivElement>) => {
-
-    }
-
 
     const mouseEnterHandler = (e: React.MouseEvent<HTMLDivElement>) => {
         setShowDetailIcon(true);
@@ -125,7 +98,7 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
         }
     } else {
         for (let i = 0; i < 4; i++) {
-            seeds[i] = new Array();
+            seeds[i] = [];
             for (let j = 0; j < 3; j++) {
                 seeds[i].push(<Plant {...props} key={"sees-bed-" + i*10+j} rowDirection={props.rowsDirection} />)
             }

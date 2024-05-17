@@ -5,7 +5,6 @@ import { css, jsx } from "@emotion/react";
 import React, { memo, useEffect, useState } from "react";
 import { useAppDispatch } from "../../../hooks/useAppDispatch";
 import { changePlantAction, changeVarietyAction, updateSelectedSeedBedAction, updateSpacingAction } from "../../../store/reducers/SeedBedsSlice";
-import InputField from "../../GUI/InputField";
 import { useAppSelector } from "../../../hooks/useAppSelector";
 import Selectbox, { IOption } from "../../GUI/Selectbox";
 import usePlantsFromDB from "../../../hooks/usePlantsFromDB";
@@ -13,9 +12,7 @@ import { IPlant } from "../../../helpers/plant-types";
 import ModalWindow from "../../GUI/ModalWindow";
 import SearchableSelectbox from "../../GUI/SearchableSelectbox";
 import Label from "../../GUI/Label";
-import { RootState } from "../../../store";
 import { getArrEntryByIDAndIDName } from "../../../helpers/functions";
-import Slider from "../../GUI/Slider";
 import { actualSeedBedSelector } from "./selectors";
 import DoubleSlider from "../../GUI/DoubleSlider";
 export interface IFieldEditDialogProps {
@@ -122,7 +119,7 @@ const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
                 <hr />
                 <Label text={"In ground"}>
                     <label>Year-round
-                        <input type="checkbox" checked={actualSeedBed.inGround.yearRound} onChange={yearRoundPlantichChangedListener}/>
+                        <input type="checkbox" checked={inGround.yearRound} onChange={yearRoundPlantichChangedListener}/>
                     </label>
                 </Label>
             </ModalWindow>

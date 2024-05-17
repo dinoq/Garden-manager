@@ -29,7 +29,9 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     const worldZoom = useAppSelector(state => state.navigationReducer.zoom);
     const worldPosition = useAppSelector(state => state.navigationReducer.position);
     const isMovingAppView = useAppSelector(state => state.navigationReducer.isMovingAppView);
-    const seedBedsReducer = useAppSelector(state => state.seedBedsReducer);
+    const seedBeds = useAppSelector(state => state.seedBedsReducer.seedBeds);
+    console.log('seedBeds: ', seedBeds);
+    const selectedSeedBed = useAppSelector(state => state.seedBedsReducer.selectedSeedBed);
     const menuWidth = useAppSelector(state => state.guiReducer.menuWidth);
     const showProjectDialog = useAppSelector(state => state.guiReducer.ProjectDialog.show);
     const projectDialogState = useAppSelector(state => state.guiReducer.ProjectDialog.state);
@@ -48,7 +50,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
 
     const movingByWorld = (isMouseDown && isMovingAppView) || isMiddleMouseDown;
     const cursor = isMovingAppView ? (isMouseDown ? "grabbing" : "grab") : "default";
-    const unplacedBed = seedBedsReducer.seedBeds.find(seedBed => !seedBed.isPlaced);
+    const unplacedBed = seedBeds.find(seedBed => !seedBed.isPlaced);
 
     const zoom = (e: any) => dispatch(zoomAction({ zoomDirection: e.deltaY || 0, menuWidth }))
 
@@ -57,7 +59,11 @@ const AppView: React.FC<IAppViewProps> = (props) => {
         if (unplacedBed) {
             setMouseAppViewPosition({ x: unplacedBed.x, y: unplacedBed.y });
         }
-    }, [seedBedsReducer.seedBeds.length])
+    }, [unplacedBed])
+
+    useEffect(() => {
+        console.log('seedBedseff: ', seedBeds);
+    }, [seedBeds])
 
     /*
     const autoSave = setInterval(()=>{
@@ -99,7 +105,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     }
 
 
-    seedBedsReducer.seedBeds.map((seedBed, i) => {
+    seedBeds.map((seedBed, i) => {
         let position: IPosition = { x: seedBed.x, y: seedBed.y };
         if (!seedBed.isPlaced) {
             position = { x: mouseAppViewPosition.x - seedBed.width / 2, y: mouseAppViewPosition.y - seedBed.height / 2 };
@@ -137,10 +143,10 @@ const AppView: React.FC<IAppViewProps> = (props) => {
                         top: ${worldPos.y}px;
                         cursor: ${cursor};
                     `}>
-                        {<MemoSeedBeds beds={seedBedsReducer.seedBeds} mouseAppViewPosition={mouseAppViewPosition} />}
+                        {<MemoSeedBeds beds={seedBeds} mouseAppViewPosition={mouseAppViewPosition} />}
                         {!hideGUI && <Scale />}
                         <MessageBar />
-                        {seedBedsReducer.selectedSeedBed !== -1 && <MemoFieldEditDialog />}
+                        {selectedSeedBed !== -1 && <MemoFieldEditDialog />}
                         {showProjectDialog && <ProjectDialog state={projectDialogState} />}
                     </div>
                 </div>

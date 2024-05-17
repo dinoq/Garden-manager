@@ -81,7 +81,7 @@ const SeedBedsSlice = createSlice({
             state.selectedSeedBed = -1;
         }*/
         setProjectAction: (state: ISeedBedSlice, action: PayloadAction<ISeedBedSlice>) => {
-            state = action.payload;
+            return state = {...state, ...action.payload};
         },
         setProjectNameAction: (state: ISeedBedSlice, action: PayloadAction<string>) => {
             state.projectName = action.payload;

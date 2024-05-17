@@ -4,11 +4,11 @@ import { css, jsx } from '@emotion/react';
 import ModalWindow from '../../GUI/ModalWindow';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { ProjectDialogStates, hideProjectDialogAction } from '../../../store/reducers/GUISlice';
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import ListPanel from '../../GUI/ListPanel';
 import InputField from '../../GUI/InputField';
 import Button from '../../GUI/Button';
-import { ISeedBedSlice, setLMTAction, setProjectAction, setProjectIDAction, setProjectNameAction as setProjectNameAction } from '../../../store/reducers/SeedBedsSlice';
+import { ISeedBedSlice, setLMTAction, setProjectAction, setProjectIDAction, setProjectNameAction } from '../../../store/reducers/SeedBedsSlice';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import DBManager from '../../../helpers/DBManager';
 
@@ -29,18 +29,8 @@ const ProjectDialog: React.FC<IProjectDialogProps> = (props) => {
     const projectName = useAppSelector(state => state.seedBedsReducer.projectName);
 
     const header = [{ name: "Název", itemAttributeName: "projectName" }, { name: "Datum vytvoření", itemAttributeName: "createdDataTime" }, { name: "Datum změny", itemAttributeName: "lastModifiedDataTime" }]
-    useEffect(() => {
-        //fetch
-        const projectsFromDB = DBManager.getProjects() as IProjectInfos[];
-        projectsFromDB.map((p) => {
-            p.onClick = projectClickedHandler;
-        })
-
-        setProjects(projectsFromDB);
-
-    }, [])
-
-    const projectClickedHandler = (clickedItem: IProjectInfos, index: any, event: React.MouseEvent) => {
+    
+    const projectClickedHandler = useCallback((clickedItem: IProjectInfos) => {
         if (clickedItem && clickedItem?.projectName?.length) {
             dispatch(hideProjectDialogAction());
             const projectData = DBManager.getProjectByID(clickedItem?.projectID);
@@ -48,11 +38,23 @@ const ProjectDialog: React.FC<IProjectDialogProps> = (props) => {
             dispatch(setProjectAction(projectData));
         }
 
-    }
+    }, [dispatch])
+
+    useEffect(() => {
+        //fetch
+        const projectsFromDB = DBManager.getProjects() as IProjectInfos[];
+        projectsFromDB.forEach((p) => {
+            p.onClick = projectClickedHandler;
+        })
+
+        setProjects(projectsFromDB);
+
+    }, [projectClickedHandler])
+
 
     const saveProject = () => {
         let projectID = seedBedsReducer.projectID;
-        if(seedBedsReducer.projectID == -1){
+        if(seedBedsReducer.projectID === -1){
             projectID = DBManager.getUniqueProjectID();
             dispatch(setProjectIDAction(projectID))
         }
@@ -67,7 +69,7 @@ const ProjectDialog: React.FC<IProjectDialogProps> = (props) => {
         <ModalWindow position={{left: "50%", top: "50%"}} dimension={{width: "500px", height
         : "500px"}} closeModalHandler={() => dispatch(hideProjectDialogAction())}>
             <ListPanel items={projects} header={header} />
-            {props.state == ProjectDialogStates.SAVE_PROJECT && (
+            {props.state === ProjectDialogStates.SAVE_PROJECT && (
                 <div css={css`
                     display: flex;
                 `}>

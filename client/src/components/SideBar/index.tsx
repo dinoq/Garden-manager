@@ -4,7 +4,6 @@ import { css, jsx } from '@emotion/react';
 import React, { useEffect, useState } from 'react';
 import { IPlant } from '../../helpers/plant-types';
 import { createNewSeedBedAction } from '../../store/reducers/SeedBedsSlice';
-import { setMouseDownPositionAction } from '../../store/reducers/ViewNavigationSlice';
 import SearchFilter from './SearchFilter';
 import SearchList from './SearchList';
 import { IAppObject } from '../../helpers/types';
@@ -29,7 +28,7 @@ const SideBar: React.FC<{}> = () => {
     const [showFilter, setShowFilter] = useState(true);
     const [searchType, setSearchType] = useState<SEARCH_TYPE>(SEARCH_TYPE.PLANTS);
     //const [plants, setPlants] = useState<Array<IPlant>>([])
-    const [objects, setObject] = useState<Array<IAppObject>>([])
+    const [objects] = useState<Array<IAppObject>>([])
     const worldPos = useAppSelector(selector => selector.navigationReducer.position);
     //const [plantsFromDB, setPlantsFromDB] = useState<IPlant[]>([]);
     const [actualPlantList, setActualPlantList] = useState<IPlant[]>([]);
@@ -81,16 +80,9 @@ const SideBar: React.FC<{}> = () => {
         )
     }
 
-    const getPlantByName = async (name: string): Promise<IPlant | undefined> => {
-        return actualPlantList ? actualPlantList.find((plant: any) => plant.name == name) : undefined;
-    }
-
     const setNewUplacedSeedBed = (e: React.MouseEvent<HTMLLIElement>) => {
         const plant = getArrEntryByIDAndIDName("id", e.currentTarget.id, actualPlantList);
         if (plant) {
-            const width = plant.PlantSpacingMin ? plant.PlantSpacingMin : 50;
-            const height = plant.RowSpacingMin ? plant.RowSpacingMin : 50;
-            console.log('height: ', height);
             dispatch(createNewSeedBedAction({ position: { x: e.clientX - worldPos.x, y: e.clientY - worldPos.y - toolbarHeight  }, plant }))
         }
     }

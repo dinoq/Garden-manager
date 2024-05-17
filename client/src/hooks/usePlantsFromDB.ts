@@ -12,7 +12,7 @@ const usePlantsFromDB = () => {
             const a = processPlants(plantsFromDB, varietiesFromDB);
             setProcessedPlants(a);
         }
-    }, [plantsFetched, varietiesFetched]) // TODO add if fetched changed
+    }, [plantsFetched, plantsFromDB, processedPlants, varietiesFetched, varietiesFromDB]) // TODO add if fetched changed
 
     return processedPlants;
 }

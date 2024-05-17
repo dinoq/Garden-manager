@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IPlant } from "../../helpers/plant-types";
 import { IPosition } from "../../helpers/types";
 import { consoleError } from "../../helpers/functions";
 
@@ -36,10 +35,10 @@ const ViewNavigationSlice = createSlice(
                     return
                 }
                 const zoomDirection = action.payload.zoomDirection;
-                const menubarWidth = action.payload.menuWidth;
+                //const menubarWidth = action.payload.menuWidth;
 
-                let halfOfVisibleAppViewX = (window.innerWidth - menubarWidth) / 2 + menubarWidth;
-                let centerOfAppViewX = state.position.x - halfOfVisibleAppViewX;
+                //let halfOfVisibleAppViewX = (window.innerWidth - menubarWidth) / 2 + menubarWidth;
+                //let centerOfAppViewX = state.position.x - halfOfVisibleAppViewX;
 
                 if (zoomDirection > 0 && state.zoom >= 0.5) { // zoom out
                     state.zoom -= 0.1;
