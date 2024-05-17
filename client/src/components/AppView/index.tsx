@@ -7,7 +7,7 @@ import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import useLocalCoordinates from "../../hooks/useLocalCoordinates";
 import { placeSeedBedAction } from "../../store/reducers/SeedBedsSlice";
-import { zoomAction } from "../../store/reducers/ViewNavigationSlice";
+import { setIsMovingAppViewAction, zoomAction } from "../../store/reducers/ViewNavigationSlice";
 import MemoFieldEditDialog from "./FieldEditDialog";
 import MessageBar from "./MesageBar";
 import ProjectDialog from "./ProjectDialog";
@@ -30,7 +30,6 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     const worldPosition = useAppSelector(state => state.navigationReducer.position);
     const isMovingAppView = useAppSelector(state => state.navigationReducer.isMovingAppView);
     const seedBeds = useAppSelector(state => state.seedBedsReducer.seedBeds);
-    console.log('seedBeds: ', seedBeds);
     const selectedSeedBed = useAppSelector(state => state.seedBedsReducer.selectedSeedBed);
     const menuWidth = useAppSelector(state => state.guiReducer.menuWidth);
     const showProjectDialog = useAppSelector(state => state.guiReducer.ProjectDialog.show);
@@ -114,6 +113,19 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     })
 
 
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                dispatch(setIsMovingAppViewAction(false));
+            }
+        }
+
+        document.addEventListener('keydown', handleKeyDown);
+        return function cleanup() {
+            document.removeEventListener('keydown', handleKeyDown);
+        }
+    }, [dispatch]);
+    
     return (
         <React.Fragment>
             <div css={css`

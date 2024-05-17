@@ -4,7 +4,6 @@ import { jsx, css } from '@emotion/react';
 import AppView from "../AppView";
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useEffect } from 'react';
-import { setIsMovingAppViewAction } from '../../store/reducers/ViewNavigationSlice';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import TabBar from '../GUI/TabBar';
 import NotesView from '../NotesView';
@@ -18,25 +17,18 @@ function AppLayout() {
     const tabs = [<AppView />, <NotesView />, <SettingsView />];
     
     useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === "Escape") {
-                dispatch(setIsMovingAppViewAction(false));
-            }
-        }
-
         const preventMiddleButtonEventHandler = (e: MouseEvent) => {
-            if (e.button == 1) {
+            if (e.button === 1) {
                 e.preventDefault();
             }
         }
 
-        document.addEventListener('keydown', handleKeyDown);
         document.addEventListener('mousedown', preventMiddleButtonEventHandler);
 
         return function cleanup() {
-            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('mousedown', preventMiddleButtonEventHandler);
         }
-    }, []);
+    }, [dispatch]);
 
     return (
         <div css={css`
