@@ -1,13 +1,13 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import AppView from "../AppView";
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useEffect } from 'react';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import TabBar from '../GUI/TabBar';
-import NotesView from '../NotesView';
-import SettingsView from '../SettingsView';
+import TabBar from '../../components/GUI/TabBar';
+import AppView from '../../components/AppView';
+import SettingsView from '../../components/SettingsView';
+import NotesView from '../../components/NotesView';
 
 function AppLayout() {
     const dispatch = useAppDispatch();
