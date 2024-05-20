@@ -2,11 +2,9 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import React, { useState } from 'react';
-import { dragPointSize } from '.';
 import { zoomedFactory } from '../../../helpers/functions';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from "../../../hooks/useAppSelector";
-import { ROWDIRECTIONS } from './Plant';
 
 interface IResizePointsProps {
     dragHandler: Function,
@@ -18,6 +16,8 @@ interface IResizePointsProps {
     minimalHeight: number
 }
 
+export const resizePointSize = 12;
+
 const ResizePoints: React.FC<IResizePointsProps> = (props) => {
     const width = (props.objectWidth);
     const height = (props.objectHeight);
@@ -27,7 +27,7 @@ const ResizePoints: React.FC<IResizePointsProps> = (props) => {
             {/* <ResizePoint dragStartHandler={props.dragStartHandler} dragHandler={props.dragHandler} dragEndHandler={props.dragEndHandler} id={props.id} left={-dragPointSize / 2} top={-dragPointSize / 2} resizeCursor="nw-resize" />
             <ResizePoint dragStartHandler={props.dragStartHandler} dragHandler={props.dragHandler} dragEndHandler={props.dragEndHandler} id={props.id} left={width - dragPointSize / 2} top={-dragPointSize / 2} resizeCursor="ne-resize" />
             <ResizePoint dragStartHandler={props.dragStartHandler} dragHandler={props.dragHandler} dragEndHandler={props.dragEndHandler} id={props.id} left={-dragPointSize / 2} top={height - dragPointSize / 2} resizeCursor="sw-resize" /> */}
-            <ResizePoint dragStartHandler={props.dragStartHandler} dragHandler={props.dragHandler} dragEndHandler={props.dragEndHandler} left={width - dragPointSize / 2} top={height - dragPointSize / 2} resizeCursor="se-resize"  minimalWidth={props.minimalWidth} minimalHeight={props.minimalHeight} />
+            <ResizePoint dragStartHandler={props.dragStartHandler} dragHandler={props.dragHandler} dragEndHandler={props.dragEndHandler} left={width - resizePointSize / 2} top={height - resizePointSize / 2} resizeCursor="se-resize"  minimalWidth={props.minimalWidth} minimalHeight={props.minimalHeight} />
         </React.Fragment>
     )
 }
@@ -83,8 +83,8 @@ const ResizePoint: React.FC<IResizePointProps> = (props) => {
         <div draggable="true" onDrag={dragHandler} onDragStart={dragStartHandler} onDragEnd={dragEndHandler} css={css`
         background: #26262641;
         border: 1px solid #262626;
-        width: ${dragPointSize}px;
-        height: ${dragPointSize}px;
+        width: ${resizePointSize}px;
+        height: ${resizePointSize}px;
         position: absolute;
         left: ${props.left}px;
         top: ${props.top}px;

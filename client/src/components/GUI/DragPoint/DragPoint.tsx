@@ -2,7 +2,6 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { useState } from 'react';
-import { dragPointSize } from ".";
 import { useAppSelector } from "../../../hooks/useAppSelector";
 import { IPosition } from '../../../helpers/types';
 
@@ -16,6 +15,8 @@ interface IDragPointProps {
     objectX: number,
     objectY: number
 }
+
+export const dragPointSize = 12;
 
 const DragPoint: React.FC<IDragPointProps> = (props) => {    
     const dragCursorPos = { x: ((props.objectWidth) - dragPointSize) / 2, y: ((props.objectHeight) - dragPointSize) / 2 };

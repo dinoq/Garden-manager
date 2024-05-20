@@ -10,14 +10,12 @@ import { useAppSelector } from '../../../hooks/useAppSelector';
 import { changeRowsDirectionAction, updateHeightAction, updatePositionAction, updateSelectedSeedBedAction, updateWidthAction } from '../../../store/reducers/SeedBedsSlice';
 import { setIsMovingAppViewAction } from '../../../store/reducers/ViewNavigationSlice';
 import Plant, { ROWDIRECTIONS } from './Plant';
-import ResizePoints from './ResizePoints';
 import RotateRowDirectionIcon from './RotateRowDirectionIcon';
 import DragPoint from '../../GUI/DragPoint/DragPoint';
+import ResizePoints from '../../GUI/ResizePoints/ResizePoints';
 
 export interface ISeedBedProps extends ISeedBed {
 }
-
-export const dragPointSize = 12;
 
 const SeedBed: React.FC<ISeedBedProps> = (props) => {
     const dispatch = useAppDispatch();
