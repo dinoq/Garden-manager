@@ -12,7 +12,7 @@ import { setIsMovingAppViewAction } from '../../../store/reducers/ViewNavigation
 import Plant, { ROWDIRECTIONS } from './Plant';
 import ResizePoints from './ResizePoints';
 import RotateRowDirectionIcon from './RotateRowDirectionIcon';
-import DragPoint from './DragPoint';
+import DragPoint from '../../GUI/DragPoint/DragPoint';
 
 export interface ISeedBedProps extends ISeedBed {
 }
