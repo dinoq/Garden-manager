@@ -4,7 +4,7 @@ import { jsx, css } from '@emotion/react';
 import React, { useState } from "react";
 
 export interface IDetailIconProps {
-    seedBedWidth: number,
+    ObjectWidth: number,
     IconClicked: React.MouseEventHandler<HTMLDivElement>
 }
 
@@ -20,7 +20,7 @@ const DetailIcon: React.FC<IDetailIconProps> = (props) => {
                 border-radius: 7px;
                 position: absolute;
                 font-weight: bold;
-                left: ${props.seedBedWidth - 15}px;
+                left: ${props.ObjectWidth - 15}px;
                 
                 cursor: pointer;
             `}><div

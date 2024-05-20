@@ -7,12 +7,12 @@ import { zoomedFactory } from '../../../helpers/functions';
 import { IPosition, ISeedBed } from '../../../helpers/types';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../hooks/useAppSelector';
-import { changeRowsDirectionAction, updateHeightAction, updateSelectedSeedBedAction, updateWidthAction } from '../../../store/reducers/SeedBedsSlice';
+import { changeRowsDirectionAction, updateHeightAction, updatePositionAction, updateSelectedSeedBedAction, updateWidthAction } from '../../../store/reducers/SeedBedsSlice';
 import { setIsMovingAppViewAction } from '../../../store/reducers/ViewNavigationSlice';
-import DragPoint from './DragPoint';
 import Plant, { ROWDIRECTIONS } from './Plant';
 import ResizePoints from './ResizePoints';
 import RotateRowDirectionIcon from './RotateRowDirectionIcon';
+import DragPoint from './DragPoint';
 
 export interface ISeedBedProps extends ISeedBed {
 }
@@ -48,8 +48,9 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
         setLocalSeedBedPosDiff({ x: diffX, y: diffY });
     }
 
-    const moveEndHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+    const moveEndHandler = (e: React.DragEvent<HTMLDivElement>, position: IPosition) => {
         setLocalSeedBedPosDiff({ x: 0, y: 0 });
+        dispatch(updatePositionAction({ id: props.id, position }))
     }
 
     const resizeStartHandler = (e: React.DragEvent<HTMLDivElement>, diffX: any, diffY: any) => {
@@ -74,14 +75,14 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
         setShowDetailIcon(false);
     }
 
-    const plantSpacingMin = props.plantSpacingMin? props.plantSpacingMin : props.plant.PlantSpacingMin;
+    const plantSpacingMin = props.plantSpacingMin ? props.plantSpacingMin : props.plant.PlantSpacingMin;
     const seedBedWidthForCalculation = props.rowsDirection === ROWDIRECTIONS.LEFT_TO_RIGHT ? seedBedWidth : seedBedHeight;
     let inRowCountDecimal = seedBedWidthForCalculation / (zoomed(plantSpacingMin));
     let inRowCount = Math.floor(inRowCountDecimal);
     let inRowCountDecimalPart = inRowCountDecimal - inRowCount;
     const inRowSeedShift = (zoomed(plantSpacingMin) * inRowCountDecimalPart) / 2;
 
-    const RowSpacingMin = props.rowSpacingMin? props.rowSpacingMin : props.plant.RowSpacingMin;
+    const RowSpacingMin = props.rowSpacingMin ? props.rowSpacingMin : props.plant.RowSpacingMin;
     const seedBedHeightForCalculation = props.rowsDirection === ROWDIRECTIONS.LEFT_TO_RIGHT ? seedBedHeight : seedBedWidth;
     let rowsCountDecimal = seedBedHeightForCalculation / (zoomed(RowSpacingMin));
     let rowsCount = Math.floor(rowsCountDecimal);
@@ -90,6 +91,9 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
 
     const plantCount = rowsCount * inRowCount;
 
+    const seedBedDirection = props.rowsDirection;
+    const minimalWidth = (seedBedDirection == ROWDIRECTIONS.LEFT_TO_RIGHT) ? props.plant.PlantSpacingMin : props.plant.RowSpacingMin;
+    const minimalHeight = (seedBedDirection == ROWDIRECTIONS.LEFT_TO_RIGHT) ? props.plant.RowSpacingMin : props.plant.PlantSpacingMin;
 
     let seeds: Array<any> = [];
     if (plantCount < 50) {
@@ -100,14 +104,14 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
         for (let i = 0; i < 4; i++) {
             seeds[i] = [];
             for (let j = 0; j < 3; j++) {
-                seeds[i].push(<Plant {...props} key={"sees-bed-" + i*10+j} rowDirection={props.rowsDirection} />)
+                seeds[i].push(<Plant {...props} key={"sees-bed-" + i * 10 + j} rowDirection={props.rowsDirection} />)
             }
         }
     }
 
     const showAllSeeds = plantCount < 50;
     return (
-        <div onMouseEnter={mouseEnterHandler} onMouseLeave={mouseLeaveHandler} onClick={()=>{dispatch(updateSelectedSeedBedAction(props.id))}} css={css`
+        <div onMouseEnter={mouseEnterHandler} onMouseLeave={mouseLeaveHandler} onClick={() => { dispatch(updateSelectedSeedBedAction(props.id)) }} css={css`
                 border: 1px solid ${isSelected ? "#17ff00" : "green"};
                 width: ${seedBedWidth}px;
                 height: ${seedBedHeight}px;
@@ -156,8 +160,8 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
             `}>
                 ({plantCount})
             </div>
-            {draggable && <DragPoint seedBedX={seedBedX} seedBedY={seedBedY} seedBedWidth={seedBedWidth} seedBedHeight={seedBedHeight} id={props.id} dragHandler={moveHandler} dragStartHandler={moveStartHandler} dragEndHandler={moveEndHandler} />}
-            {resizable && <ResizePoints id={props.id} seedBedWidth={seedBedWidth} seedBedHeight={seedBedHeight} dragHandler={resizeHandler} dragStartHandler={resizeStartHandler} dragEndHandler={resizeEndHandler} />}
+            {draggable && <DragPoint objectX={seedBedX} objectY={seedBedY} objectWidth={seedBedWidth} objectHeight={seedBedHeight} id={props.id} dragHandler={moveHandler} dragStartHandler={moveStartHandler} dragEndHandler={moveEndHandler} />}
+            {resizable && <ResizePoints objectWidth={seedBedWidth} objectHeight={seedBedHeight} dragHandler={resizeHandler} dragStartHandler={resizeStartHandler} dragEndHandler={resizeEndHandler} minimalWidth={minimalWidth} minimalHeight={minimalHeight} />}
             {(showOnHoverIcon || false) && <RotateRowDirectionIcon seedBedWidth={seedBedWidth} IconClicked={() => { dispatch(changeRowsDirectionAction(props.id)) }} />}
         </div>
     )

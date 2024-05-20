@@ -23,7 +23,7 @@ const initialState: IGUISlice = {
     toolbarHeight: 150,
     toolbarMinimized: false,
     tabBarHeight: 50,
-    hideGUI: false,
+    hideGUI: true,
     message: "...",
     ProjectDialog: {
         show: false,

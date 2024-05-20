@@ -3,52 +3,48 @@
 import { jsx, css } from '@emotion/react';
 import { useState } from 'react';
 import { dragPointSize } from ".";
-import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from "../../../hooks/useAppSelector";
-import { updatePositionAction } from '../../../store/reducers/SeedBedsSlice';
+import { IPosition } from '../../../helpers/types';
 
 interface IDragPointProps {
     id: number,
     dragHandler: Function,
     dragStartHandler: React.DragEventHandler<HTMLDivElement>,
-    dragEndHandler: React.DragEventHandler<HTMLDivElement>,
-    seedBedWidth: number,
-    seedBedHeight: number,
-    seedBedX: number,
-    seedBedY: number
+    dragEndHandler: (e: React.DragEvent<HTMLDivElement>, position: IPosition) => void,
+    objectWidth: number,
+    objectHeight: number,
+    objectX: number,
+    objectY: number
 }
 
-const DragPoint: React.FC<IDragPointProps> = (props) => {
-    const dispatch = useAppDispatch();
-    
-    const dragCursorPos = { x: ((props.seedBedWidth) - dragPointSize) / 2, y: ((props.seedBedHeight) - dragPointSize) / 2 };
+const DragPoint: React.FC<IDragPointProps> = (props) => {    
+    const dragCursorPos = { x: ((props.objectWidth) - dragPointSize) / 2, y: ((props.objectHeight) - dragPointSize) / 2 };
 
     const [clickStart, setClickStart] = useState({ diffX: 0, diffY: 0 })
-    const [initialSeedBedPos, setInitialSeedBedPos] = useState({ x: 0, y: 0 })
+    const [initialObjectPos, setInitialObjectPos] = useState({ x: 0, y: 0 })
     const [isMoving, setIsMoving] = useState(false);
     
     const zoom = useAppSelector(selector => selector.navigationReducer.zoom);
 
     const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) =>{
         setIsMoving(true);
-        setClickStart({ diffX: e.clientX - props.seedBedX, diffY: e.clientY - props.seedBedY })
-        setInitialSeedBedPos({x: props.seedBedX, y: props.seedBedY})
+        setClickStart({ diffX: e.clientX - props.objectX, diffY: e.clientY - props.objectY })
+        setInitialObjectPos({x: props.objectX, y: props.objectY})
         props.dragStartHandler(e);
     }
     
     const dragHandler = (e: React.DragEvent<HTMLDivElement>) =>{
-        const localSeedBedPosDiffX = (e.clientX - clickStart.diffX - initialSeedBedPos.x)/zoom;
-        const localSeedBedPosDiffY = (e.clientY - clickStart.diffY - initialSeedBedPos.y)/zoom;
-        props.dragHandler(e, localSeedBedPosDiffX, localSeedBedPosDiffY);
+        const localObjectPosDiffX = (e.clientX - clickStart.diffX - initialObjectPos.x)/zoom;
+        const localObjectPosDiffY = (e.clientY - clickStart.diffY - initialObjectPos.y)/zoom;
+        props.dragHandler(e, localObjectPosDiffX, localObjectPosDiffY);
     }
     const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) =>{
         setIsMoving(false);
         const diffX = (e.clientX - clickStart.diffX)/zoom;
         const diffY = (e.clientY - clickStart.diffY)/zoom;
 
-        props.dragEndHandler(e);
-        
-        dispatch(updatePositionAction({ id: props.id, position: { x: diffX, y: diffY } }))
+        const position = { x: diffX, y: diffY }
+        props.dragEndHandler(e, position);        
     }
 
 
