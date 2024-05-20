@@ -6,7 +6,7 @@ interface IViewNavigationSlice {
     zoom: number,
     canZoom: boolean,
     position: IPosition,
-    isMovingAppView: boolean,
+    isMovingDesignPanel: boolean,
     mouseDownStartPosition: IPosition,
     worldWidth: number,
     worldHeight: number
@@ -19,7 +19,7 @@ const initialState: IViewNavigationSlice = {
         x: 0,
         y: 0
     },
-    isMovingAppView: false,
+    isMovingDesignPanel: false,
     mouseDownStartPosition: { x: 0, y: 0 },
     worldWidth: 4000,
     worldHeight: 4000
@@ -80,8 +80,8 @@ const ViewNavigationSlice = createSlice(
                 state.position = action.payload;
             },
 
-            setIsMovingAppViewAction: (state: IViewNavigationSlice, action: PayloadAction<boolean>) => {
-                state.isMovingAppView = action.payload;
+            setIsMovingDesignPanelAction: (state: IViewNavigationSlice, action: PayloadAction<boolean>) => {
+                state.isMovingDesignPanel = action.payload;
             },
 
             setMouseDownPositionAction: (state: IViewNavigationSlice, action: PayloadAction<IPosition>) => {
@@ -91,7 +91,7 @@ const ViewNavigationSlice = createSlice(
     }
 )
 
-export const { zoomAction, enableZoomAction, moveWorldByMouseAction, setIsMovingAppViewAction, setMouseDownPositionAction } = ViewNavigationSlice.actions;
+export const { zoomAction, enableZoomAction, moveWorldByMouseAction, setIsMovingDesignPanelAction, setMouseDownPositionAction } = ViewNavigationSlice.actions;
 export default ViewNavigationSlice.reducer;
 
 /*

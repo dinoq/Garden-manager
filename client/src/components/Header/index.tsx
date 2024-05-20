@@ -3,7 +3,6 @@
 import { jsx, css } from '@emotion/react';
 import { DEPTH } from '../../helpers/constants';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import { setIsMovingAppViewAction } from '../../store/reducers/ViewNavigationSlice';
 import Calendar from './Calendar';
 import ManipulationTools from './ManipulationTools';
 import EditingTools from './EditingTools';

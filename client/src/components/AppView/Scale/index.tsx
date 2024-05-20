@@ -3,8 +3,8 @@
 import { css, jsx } from '@emotion/react';
 import { useState } from 'react';
 import { useAppSelector } from '../../../hooks/useAppSelector';
-import MovePoint from '../MovePoint';
 import { DEPTH } from '../../../helpers/constants';
+import MovePoint from '../../GUI/MovePoint';
 
 const Scale: React.FC<{}> = () => {
     const [position, setPosition] = useState({ x: 0, y: 0 });

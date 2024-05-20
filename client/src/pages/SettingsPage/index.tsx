@@ -3,7 +3,7 @@
 import { css, jsx } from "@emotion/react";
 import { FC } from "react";
 import { useAppSelector } from "../../hooks/useAppSelector";
-import Selectbox, { IOption } from "../GUI/Selectbox";
+import Selectbox, { IOption } from "../../components/GUI/Selectbox";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { monthPartsCountType, setMonthPartsCountAction } from "../../store/reducers/SettingsSlice";
 

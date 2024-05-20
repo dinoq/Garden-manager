@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles/global.css';
-import AppLayout from './components/AppLayout';
 import { Provider } from 'react-redux';
 import store from "./store/index"
+import AppLayout from './layouts/AppLayout';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement

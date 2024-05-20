@@ -8,7 +8,7 @@ import { IPosition, ISeedBed } from '../../../helpers/types';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { changeRowsDirectionAction, updateHeightAction, updatePositionAction, updateSelectedSeedBedAction, updateWidthAction } from '../../../store/reducers/SeedBedsSlice';
-import { setIsMovingAppViewAction } from '../../../store/reducers/ViewNavigationSlice';
+import { setIsMovingDesignPanelAction } from '../../../store/reducers/ViewNavigationSlice';
 import Plant, { ROWDIRECTIONS } from './Plant';
 import DragPoint from '../../GUI/DragPoint';
 import ResizePoints from '../../GUI/ResizePoints';
@@ -39,7 +39,7 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
 
     // HANDLERS
     const moveStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
-        dispatch(setIsMovingAppViewAction(false));
+        dispatch(setIsMovingDesignPanelAction(false));
     }
 
     const moveHandler = (e: React.DragEvent<HTMLDivElement>, diffX: number, diffY: number) => {
@@ -52,7 +52,7 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
     }
 
     const resizeStartHandler = (e: React.DragEvent<HTMLDivElement>, diffX: any, diffY: any) => {
-        dispatch(setIsMovingAppViewAction(false));
+        dispatch(setIsMovingDesignPanelAction(false));
     }
 
     const resizeHandler = (e: React.DragEvent<HTMLDivElement>, newWidth: number, newHeight: number) => {

@@ -3,7 +3,7 @@
 import { css, jsx } from '@emotion/react';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from "../../../hooks/useAppSelector";
-import { setIsMovingAppViewAction } from '../../../store/reducers/ViewNavigationSlice';
+import { setIsMovingDesignPanelAction } from '../../../store/reducers/ViewNavigationSlice';
 import LabeledCard from '../../GUI/LabeledCard';
 
 
@@ -13,11 +13,11 @@ interface IManipulationToolsProps {
 
 const ManipulationTools: React.FC<IManipulationToolsProps> = (props) => {
     const dispatch = useAppDispatch();
-    const isMovingAppView = useAppSelector(selector => selector.navigationReducer.isMovingAppView)
+    const isMovingAppView = useAppSelector(selector => selector.navigationReducer.isMovingDesignPanel)
     return (
         <LabeledCard label="Manipulation tools">
             <button onClick={(e) => {
-                dispatch(setIsMovingAppViewAction(true));
+                dispatch(setIsMovingDesignPanelAction(true));
             }} css={css`
                 background-color: ${isMovingAppView ? "green" : "initial"};
             `}>M</button>

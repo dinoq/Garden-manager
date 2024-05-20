@@ -5,16 +5,16 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useEffect } from 'react';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import TabBar from '../../components/GUI/TabBar';
-import AppView from '../../components/AppView';
-import SettingsView from '../../components/SettingsView';
-import NotesView from '../../components/NotesView';
+import SettingsView from '../../pages/SettingsPage';
+import NotesView from '../../pages/NotesPage';
+import DesignPage from '../../pages/DesignPage';
 
 function AppLayout() {
     const dispatch = useAppDispatch();
     const tabBarHeight = useAppSelector(state => state.guiReducer.tabBarHeight);
 
     const selectedTab = useAppSelector(state => state.guiReducer.selectedTab);
-    const tabs = [<AppView />, <NotesView />, <SettingsView />];
+    const tabs = [<DesignPage />, <NotesView />, <SettingsView />];
     
     useEffect(() => {
         const preventMiddleButtonEventHandler = (e: MouseEvent) => {

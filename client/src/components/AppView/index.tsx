@@ -7,7 +7,7 @@ import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import useLocalCoordinates from "../../hooks/useLocalCoordinates";
 import { placeSeedBedAction } from "../../store/reducers/SeedBedsSlice";
-import { setIsMovingAppViewAction, zoomAction } from "../../store/reducers/ViewNavigationSlice";
+import { setIsMovingDesignPanelAction, zoomAction } from "../../store/reducers/ViewNavigationSlice";
 import MemoFieldEditDialog from "./FieldEditDialog";
 import MessageBar from "./MesageBar";
 import ProjectDialog from "./ProjectDialog";
@@ -15,20 +15,21 @@ import Scale from "./Scale";
 import SeedBed from "./SeedBed";
 import SideBar from "../SideBar";
 import Header from "../Header";
+import SeedBeds from "./SeedBeds";
 
 
-interface IAppViewProps {
-
+interface IDesignPanelProps {
+    mouseMove: React.MouseEvent<HTMLDivElement, MouseEvent> | undefined
 }
 
-const AppView: React.FC<IAppViewProps> = (props) => {
+const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
     const dispatch = useAppDispatch();
 
     const viewElement = useRef<HTMLDivElement>(null);
 
     const worldZoom = useAppSelector(state => state.navigationReducer.zoom);
     const worldPosition = useAppSelector(state => state.navigationReducer.position);
-    const isMovingAppView = useAppSelector(state => state.navigationReducer.isMovingAppView);
+    const isMovingDesignPanel = useAppSelector(state => state.navigationReducer.isMovingDesignPanel);
     const seedBeds = useAppSelector(state => state.seedBedsReducer.seedBeds);
     const selectedSeedBed = useAppSelector(state => state.seedBedsReducer.selectedSeedBed);
     const menuWidth = useAppSelector(state => state.guiReducer.menuWidth);
@@ -42,13 +43,13 @@ const AppView: React.FC<IAppViewProps> = (props) => {
 
     const [isMouseDown, setIsMouseDown] = useState(false);
     const [isMiddleMouseDown, setIsMiddleMouseDown] = useState(false);
-    const [mouseAppViewPosition, setMouseAppViewPosition] = useState<IPosition>({ x: 0, y: 0 })
+    const [mouseDesignPanelPosition, setMouseDesignPanelPosition] = useState<IPosition>({ x: 0, y: 0 })
 
 
     const { pos: worldPos, updateLocal, updateGlobal, setMouseStartDiffPosition } = useLocalCoordinates(state => state.navigationReducer.position);
 
-    const movingByWorld = (isMouseDown && isMovingAppView) || isMiddleMouseDown;
-    const cursor = isMovingAppView ? (isMouseDown ? "grabbing" : "grab") : "default";
+    const movingByWorld = (isMouseDown && isMovingDesignPanel) || isMiddleMouseDown;
+    const cursor = isMovingDesignPanel ? (isMouseDown ? "grabbing" : "grab") : "default";
     const unplacedBed = seedBeds.find(seedBed => !seedBed.isPlaced);
 
     const zoom = (e: any) => dispatch(zoomAction({ zoomDirection: e.deltaY || 0, menuWidth }))
@@ -56,7 +57,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
 
     useEffect(() => {
         if (unplacedBed) {
-            setMouseAppViewPosition({ x: unplacedBed.x, y: unplacedBed.y });
+            setMouseDesignPanelPosition({ x: unplacedBed.x, y: unplacedBed.y });
         }
     }, [unplacedBed])
 
@@ -64,6 +65,11 @@ const AppView: React.FC<IAppViewProps> = (props) => {
         console.log('seedBedseff: ', seedBeds);
     }, [seedBeds])
 
+    useEffect(()=>{
+        if(props.mouseMove){
+            mouseMove(props.mouseMove);
+        }
+    }, [props.mouseMove])
     /*
     const autoSave = setInterval(()=>{
         consoleWarn("autosave off");
@@ -78,10 +84,10 @@ const AppView: React.FC<IAppViewProps> = (props) => {
         setIsMiddleMouseDown(e.button === 1);
 
         if (unplacedBed) {
-            let position: IPosition = { x: mouseAppViewPosition.x - unplacedBed.width / 2, y: mouseAppViewPosition.y - unplacedBed.height / 2 };
+            let position: IPosition = { x: mouseDesignPanelPosition.x - unplacedBed.width / 2, y: mouseDesignPanelPosition.y - unplacedBed.height / 2 };
 
             dispatch(placeSeedBedAction({ id: unplacedBed.id, position }));
-            setMouseAppViewPosition({ x: 0, y: 0 });
+            setMouseDesignPanelPosition({ x: 0, y: 0 });
         }
     }
 
@@ -91,7 +97,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
         }
 
         if (unplacedBed) {
-            setMouseAppViewPosition({ x: ((e.clientX - worldPosition.x) / worldZoom), y: (((e.clientY - worldPosition.y) - toolbarHeight - tabBarHeight) / worldZoom) });
+            setMouseDesignPanelPosition({ x: ((e.clientX - worldPosition.x) / worldZoom), y: (((e.clientY - worldPosition.y) - toolbarHeight - tabBarHeight) / worldZoom) });
         }
     }
 
@@ -107,7 +113,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     seedBeds.map((seedBed, i) => {
         let position: IPosition = { x: seedBed.x, y: seedBed.y };
         if (!seedBed.isPlaced) {
-            position = { x: mouseAppViewPosition.x - seedBed.width / 2, y: mouseAppViewPosition.y - seedBed.height / 2 };
+            position = { x: mouseDesignPanelPosition.x - seedBed.width / 2, y: mouseDesignPanelPosition.y - seedBed.height / 2 };
         }
         return <SeedBed key={"seed-bed-" + i} {...seedBed} {...position} />
     })
@@ -116,7 +122,7 @@ const AppView: React.FC<IAppViewProps> = (props) => {
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") {
-                dispatch(setIsMovingAppViewAction(false));
+                dispatch(setIsMovingDesignPanelAction(false));
             }
         }
 
@@ -125,64 +131,23 @@ const AppView: React.FC<IAppViewProps> = (props) => {
             document.removeEventListener('keydown', handleKeyDown);
         }
     }, [dispatch]);
-    
-    return (
-        <React.Fragment>
-            <div css={css`
-                height: ${toolbarHeight}px;
-                width: 100vw;
-                background-color: #00182e;
-            `}>
-                <Header />
-            </div>
-            <div css={css`
-                width: 100vw;
-            `} onMouseMove={mouseMove}>
-                {<SideBar />}
-                <div css={css`
-                    overflow: hidden;
-                    width: 100%;
-                    height: 100%;
-                    position: relative;
-                    left: 0;
-                    top: 0;
-                `}>
-                    <div ref={viewElement} onDragOver={e => e.preventDefault()} onWheel={zoom} onMouseDown={mouseDown} onMouseUp={mouseUp} css={css`
-                        position: relative;
-                        width: ${worldWidth}px;
-                        height: ${worldHeight}px;
-                        left: ${worldPos.x}px;
-                        top: ${worldPos.y}px;
-                        cursor: ${cursor};
-                    `}>
-                        {<MemoSeedBeds beds={seedBeds} mouseAppViewPosition={mouseAppViewPosition} />}
-                        {!hideGUI && <Scale />}
-                        <MessageBar />
-                        {selectedSeedBed !== -1 && <MemoFieldEditDialog />}
-                        {showProjectDialog && <ProjectDialog state={projectDialogState} />}
-                    </div>
-                </div>
-            </div>
 
-        </React.Fragment>
+    return (
+        <div ref={viewElement} onDragOver={e => e.preventDefault()} onWheel={zoom} onMouseDown={mouseDown} onMouseUp={mouseUp} css={css`
+            position: relative;
+            width: ${worldWidth}px;
+            height: ${worldHeight}px;
+            left: ${worldPos.x}px;
+            top: ${worldPos.y}px;
+            cursor: ${cursor};
+        `}>
+            {<SeedBeds beds={seedBeds} mouseDesignPanelPosition={mouseDesignPanelPosition} />}
+            {!hideGUI && <Scale />}
+            <MessageBar />
+            {selectedSeedBed !== -1 && <MemoFieldEditDialog />}
+            {showProjectDialog && <ProjectDialog state={projectDialogState} />}
+        </div>
     )
 }
 
-
-const seedBeds: React.FunctionComponent<{ beds: ISeedBed[], mouseAppViewPosition: IPosition }> = ({ beds, mouseAppViewPosition }) => {
-    return (
-        <React.Fragment>
-            {beds.map((seedBed, i) => {
-                let position: IPosition = { x: seedBed.x, y: seedBed.y };
-                if (!seedBed.isPlaced) {
-                    position = { x: mouseAppViewPosition.x - seedBed.width / 2, y: mouseAppViewPosition.y - seedBed.height / 2 };
-                }
-                return <SeedBed key={"seed-bed-" + i} {...seedBed} {...position} />
-            })}
-        </ React.Fragment>
-    )
-}
-
-
-const MemoSeedBeds = React.memo(seedBeds);
-export default AppView;
+export default DesignPanel;
