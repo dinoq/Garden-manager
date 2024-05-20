@@ -10,9 +10,9 @@ import { useAppSelector } from '../../../hooks/useAppSelector';
 import { changeRowsDirectionAction, updateHeightAction, updatePositionAction, updateSelectedSeedBedAction, updateWidthAction } from '../../../store/reducers/SeedBedsSlice';
 import { setIsMovingAppViewAction } from '../../../store/reducers/ViewNavigationSlice';
 import Plant, { ROWDIRECTIONS } from './Plant';
-import RotateRowDirectionIcon from './RotateRowDirectionIcon';
-import DragPoint from '../../GUI/DragPoint/DragPoint';
-import ResizePoints from '../../GUI/ResizePoints/ResizePoints';
+import DragPoint from '../../GUI/DragPoint';
+import ResizePoints from '../../GUI/ResizePoints';
+import RotateRowDirectionIcon from '../../GUI/RotateRowDirectionIcon';
 
 export interface ISeedBedProps extends ISeedBed {
 }
@@ -160,7 +160,7 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
             </div>
             {draggable && <DragPoint objectX={seedBedX} objectY={seedBedY} objectWidth={seedBedWidth} objectHeight={seedBedHeight} id={props.id} dragHandler={moveHandler} dragStartHandler={moveStartHandler} dragEndHandler={moveEndHandler} />}
             {resizable && <ResizePoints objectWidth={seedBedWidth} objectHeight={seedBedHeight} dragHandler={resizeHandler} dragStartHandler={resizeStartHandler} dragEndHandler={resizeEndHandler} minimalWidth={minimalWidth} minimalHeight={minimalHeight} />}
-            {(showOnHoverIcon || false) && <RotateRowDirectionIcon seedBedWidth={seedBedWidth} IconClicked={() => { dispatch(changeRowsDirectionAction(props.id)) }} />}
+            {(showOnHoverIcon || false) && <RotateRowDirectionIcon ObjectWidth={seedBedWidth} IconClicked={() => { dispatch(changeRowsDirectionAction(props.id)) }} />}
         </div>
     )
 

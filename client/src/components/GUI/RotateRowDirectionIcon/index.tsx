@@ -1,10 +1,10 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import React, { useState } from "react";
+import React from "react";
 
 export interface IRotateRowDirectionIconProps {
-    seedBedWidth: number,
+    ObjectWidth: number,
     IconClicked: React.MouseEventHandler<HTMLDivElement>
 }
 
@@ -19,7 +19,7 @@ const RotateRowDirectionIcon: React.FC<IRotateRowDirectionIconProps> = (props) =
                 background-size: contain;
                 position: absolute;
                 font-weight: bold;
-                left: ${props.seedBedWidth - bgSize - 5}px;
+                left: ${props.ObjectWidth - bgSize - 5}px;
                 
                 cursor: pointer;
             `}><div
