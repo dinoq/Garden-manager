@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { FC } from "react";
 import SideBar from "../../components/SideBar";
 import Header from "../../components/Header";
-import DesignPanel from "../../components/AppView";
+import DesignPanel from "../../components/DesignPanel";
 import { useAppSelector } from "../../hooks/useAppSelector";
 
 type IDesignPageProps = {

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ROWDIRECTIONS } from "../../components/AppView/SeedBed/Plant";
+import { ROWDIRECTIONS } from "../../components/DesignPanel/SeedBed/Plant";
 import { IPlant, IVariety } from "../../helpers/plant-types";
 import { IInGround, IPosition, ISeedBed } from "../../helpers/types";
 
