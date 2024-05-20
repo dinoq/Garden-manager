@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ROWDIRECTIONS } from "../../components/DesignPanel/SeedBed/Plant";
 import { IPlant, IVariety } from "../../helpers/plant-types";
 import { IInGround, IPosition, ISeedBed } from "../../helpers/types";
+import { ROWDIRECTIONS } from "../../features/DesignPanel/SeedBed/Plant";
 
 export interface ISeedBedSlice {
     seedBeds: ISeedBed[],

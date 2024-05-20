@@ -6,7 +6,7 @@ import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { setShowProjectDialogAction } from '../../../store/reducers/GUISlice';
 import DBManager from '../../../helpers/DBManager';
 import { setLMTAction } from '../../../store/reducers/SeedBedsSlice';
-import LabeledCard from '../../GUI/LabeledCard';
+import LabeledCard from '../../../components/UI/LabeledCard';
 
 
 export interface IEditingToolsProps {

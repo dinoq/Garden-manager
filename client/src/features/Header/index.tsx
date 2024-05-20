@@ -6,7 +6,7 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 import Calendar from './Calendar';
 import ManipulationTools from './ManipulationTools';
 import EditingTools from './EditingTools';
-import Button from '../GUI/Button';
+import Button from '../../components/UI/Button';
 
 
 const Header: React.FC<{}> = () => {

@@ -3,9 +3,9 @@
 import { css, jsx } from "@emotion/react";
 import React, { useState } from "react";
 import { FC } from "react";
-import SideBar from "../../components/SideBar";
-import Header from "../../components/Header";
-import DesignPanel from "../../components/DesignPanel";
+import SideBar from "../../features/SideBar";
+import Header from "../../features/Header";
+import DesignPanel from "../../features/DesignPanel";
 import { useAppSelector } from "../../hooks/useAppSelector";
 
 type IDesignPageProps = {

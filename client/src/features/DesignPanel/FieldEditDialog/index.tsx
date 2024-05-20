@@ -6,15 +6,15 @@ import React, { memo, useEffect, useState } from "react";
 import { useAppDispatch } from "../../../hooks/useAppDispatch";
 import { changePlantAction, changeVarietyAction, updateSelectedSeedBedAction, updateSpacingAction } from "../../../store/reducers/SeedBedsSlice";
 import { useAppSelector } from "../../../hooks/useAppSelector";
-import Selectbox, { IOption } from "../../GUI/Selectbox";
 import usePlantsFromDB from "../../../hooks/usePlantsFromDB";
 import { IPlant } from "../../../helpers/plant-types";
-import ModalWindow from "../../GUI/ModalWindow";
-import SearchableSelectbox from "../../GUI/SearchableSelectbox";
-import Label from "../../GUI/Label";
 import { getArrEntryByIDAndIDName } from "../../../helpers/functions";
 import { actualSeedBedSelector } from "./selectors";
-import DoubleSlider from "../../GUI/DoubleSlider";
+import SearchableSelectbox, { IOption } from "../../../components/UI/SearchableSelectbox";
+import Label from "../../../components/UI/Label";
+import ModalWindow from "../../../components/UI/ModalWindow";
+import DoubleSlider from "../../../components/UI/DoubleSlider";
+import Selectbox from "../../../components/UI/Selectbox";
 export interface IFieldEditDialogProps {
 }
 

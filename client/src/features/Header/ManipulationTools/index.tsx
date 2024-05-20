@@ -4,7 +4,7 @@ import { css, jsx } from '@emotion/react';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from "../../../hooks/useAppSelector";
 import { setIsMovingDesignPanelAction } from '../../../store/reducers/ViewNavigationSlice';
-import LabeledCard from '../../GUI/LabeledCard';
+import LabeledCard from '../../../components/UI/LabeledCard';
 
 
 interface IManipulationToolsProps {

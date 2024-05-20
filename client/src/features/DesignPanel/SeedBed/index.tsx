@@ -10,9 +10,9 @@ import { useAppSelector } from '../../../hooks/useAppSelector';
 import { changeRowsDirectionAction, updateHeightAction, updatePositionAction, updateSelectedSeedBedAction, updateWidthAction } from '../../../store/reducers/SeedBedsSlice';
 import { setIsMovingDesignPanelAction } from '../../../store/reducers/ViewNavigationSlice';
 import Plant, { ROWDIRECTIONS } from './Plant';
-import DragPoint from '../../GUI/DragPoint';
-import ResizePoints from '../../GUI/ResizePoints';
-import RotateRowDirectionIcon from '../../GUI/RotateRowDirectionIcon';
+import RotateRowDirectionIcon from '../../../components/UI/RotateRowDirectionIcon';
+import ResizePoints from '../../../components/UI/ResizePoints';
+import DragPoint from '../../../components/UI/DragPoint';
 
 export interface ISeedBedProps extends ISeedBed {
 }

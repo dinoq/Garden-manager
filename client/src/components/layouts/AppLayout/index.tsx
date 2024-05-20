@@ -1,13 +1,13 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useEffect } from 'react';
-import { useAppSelector } from '../../hooks/useAppSelector';
-import TabBar from '../../components/GUI/TabBar';
-import SettingsView from '../../pages/SettingsPage';
-import NotesView from '../../pages/NotesPage';
-import DesignPage from '../../pages/DesignPage';
+import NotesView from '../../../pages/NotesPage';
+import SettingsView from '../../../pages/SettingsPage';
+import { useAppSelector } from '../../../hooks/useAppSelector';
+import DesignPage from '../../../pages/DesignPage';
+import { useAppDispatch } from '../../../hooks/useAppDispatch';
+import TabBar from '../../UI/TabBar';
 
 function AppLayout() {
     const dispatch = useAppDispatch();

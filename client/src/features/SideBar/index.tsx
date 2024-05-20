@@ -10,9 +10,9 @@ import { IAppObject } from '../../helpers/types';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { DEPTH } from "../../helpers/constants";
-import InputField from '../GUI/InputField';
 import usePlantsFromDB from '../../hooks/usePlantsFromDB';
 import { getArrEntryByIDAndIDName } from '../../helpers/functions';
+import InputField from '../../components/UI/InputField';
 
 enum SEARCH_TYPE {
     PLANTS,

@@ -3,9 +3,10 @@
 import { css, jsx } from "@emotion/react";
 import { FC } from "react";
 import { useAppSelector } from "../../hooks/useAppSelector";
-import Selectbox, { IOption } from "../../components/GUI/Selectbox";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { monthPartsCountType, setMonthPartsCountAction } from "../../store/reducers/SettingsSlice";
+import { IOption } from "../../components/UI/SearchableSelectbox";
+import Selectbox from "../../components/UI/Selectbox";
 
 type ISettingsViewProps = {
 }

@@ -6,11 +6,9 @@ import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import { setMonthAction, setMonthPartAction, setShowAllMonthsAction, setYearAction } from '../../../store/reducers/CalendarSlice';
 import { DEPTH } from '../../../helpers/constants';
-import Selectbox, { IOption } from '../../GUI/Selectbox';
-import LabeledCard from '../../GUI/LabeledCard';
-
-
-
+import { IOption } from '../../../components/UI/SearchableSelectbox';
+import LabeledCard from '../../../components/UI/LabeledCard';
+import Selectbox from '../../../components/UI/Selectbox';
 
 interface ICalendarProps {
 

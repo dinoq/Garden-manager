@@ -1,16 +1,16 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from '@emotion/react';
-import ModalWindow from '../../GUI/ModalWindow';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { ProjectDialogStates, hideProjectDialogAction } from '../../../store/reducers/GUISlice';
 import { useState, useEffect, useCallback } from "react"
-import ListPanel from '../../GUI/ListPanel';
-import InputField from '../../GUI/InputField';
-import Button from '../../GUI/Button';
 import { ISeedBedSlice, setLMTAction, setProjectAction, setProjectIDAction, setProjectNameAction } from '../../../store/reducers/SeedBedsSlice';
 import { useAppSelector } from '../../../hooks/useAppSelector';
 import DBManager from '../../../helpers/DBManager';
+import ModalWindow from '../../../components/UI/ModalWindow';
+import ListPanel from '../../../components/UI/ListPanel';
+import InputField from '../../../components/UI/InputField';
+import Button from '../../../components/UI/Button';
 
 export interface IProjectInfos extends ISeedBedSlice{
     onClick?: any
