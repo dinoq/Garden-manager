@@ -1,5 +1,6 @@
 TODO refactor:
-[ ] Maybe merge CalendarSlice and seedbeds+rename
+[ ] zoom - use css transform: scale() instead recomputation?
+[ ] plant with dashed border?
 [ ] zoom předělat taky na lokální a až po mouseup vložit do reduxu
 [ ] změnit "SeedBedsSlice->createNewSeedBedAction->rowsDirection" podle defaultního nastavení! (Aktuálně se tam prostě vkládá ROWDIRECTIONS.LEFT_TO_RIGHT)
 Lint

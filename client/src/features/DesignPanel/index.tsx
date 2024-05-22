@@ -17,6 +17,7 @@ import SeedBeds from "./components/SeedBeds";
 import { hideGUISelector, isMovingDesignPanelSelector, positionSelector, projectDialogShowSelector, projectDialogStateSelector, seedBedsSelector, selectedSeedBedIDSelector, worldHeightSelector, worldWidthSelector, zoomSelector } from "./selectors";
 import { tabBarHeightSelector } from "../../components/layouts/AppLayout/selectors";
 import { menuWidthSelector } from "../SideBar/selectors";
+import { toolbarHeightSelector } from "../Header/selectors";
 
 
 interface IDesignPanelProps {
@@ -40,7 +41,7 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
     const menuWidth = useAppSelector(menuWidthSelector);
     const showProjectDialog = useAppSelector(projectDialogShowSelector);
     const projectDialogState = useAppSelector(projectDialogStateSelector);
-    const toolbarHeight = useAppSelector(tabBarHeightSelector);
+    const toolbarHeight = useAppSelector(toolbarHeightSelector);
     const tabBarHeight = useAppSelector(tabBarHeightSelector);
     const hideGUI = useAppSelector(hideGUISelector);
 
@@ -63,10 +64,6 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
             setMouseDesignPanelPosition({ x: unplacedBed.x, y: unplacedBed.y });
         }
     }, [unplacedBed])
-
-    useEffect(() => {
-        console.log('seedBedseff: ', seedBeds);
-    }, [seedBeds])
 
     useEffect(()=>{
         if(props.mouseMove){

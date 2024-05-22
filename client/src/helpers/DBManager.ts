@@ -20,7 +20,6 @@ export default class DBManager{
     public static getProjectByID(id: number): IAppSlice {  
         const savedApps: Array<IAppSlice> = this.getProjects();
         const app = savedApps.find(p=>p.project.projectID === id);
-        console.log('project: ', app);
 
         return {
             objects:{
