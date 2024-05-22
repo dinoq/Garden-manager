@@ -3,8 +3,7 @@
 import { css, jsx } from '@emotion/react';
 import React, { useEffect, useState } from 'react';
 import { IPlant } from '../../helpers/plant-types';
-import { createNewSeedBedAction } from '../../store/reducers/SeedBedsSlice';
-import SearchFilter from './SearchFilter';
+import { appActions } from '../../store/reducers/AppSlice';
 import SearchList from './SearchList';
 import { IAppObject } from '../../helpers/types';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
@@ -13,6 +12,10 @@ import { DEPTH } from "../../helpers/constants";
 import usePlantsFromDB from '../../hooks/usePlantsFromDB';
 import { getArrEntryByIDAndIDName } from '../../helpers/functions';
 import InputField from '../../components/UI/InputField';
+import SearchFilter from './components/SearchFilter';
+import { menuWidthSelector } from './selectors';
+import { toolbarHeightSelector } from '../Header/selectors';
+import { tabBarHeightSelector } from '../../components/layouts/AppLayout/selectors';
 
 enum SEARCH_TYPE {
     PLANTS,
@@ -20,9 +23,9 @@ enum SEARCH_TYPE {
 }
 const SideBar: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
-    const menuWidth = useAppSelector(state => state.guiReducer.menuWidth);
-    const toolbarHeight = useAppSelector(state => state.guiReducer.toolbarHeight);
-    const tabBarHeight = useAppSelector(state => state.guiReducer.tabBarHeight);
+    const menuWidth = useAppSelector(menuWidthSelector);
+    const toolbarHeight = useAppSelector(toolbarHeightSelector);
+    const tabBarHeight = useAppSelector(tabBarHeightSelector);
 
     const [inputSearch, setInputSearch] = useState("")
     const [showFilter, setShowFilter] = useState(true);
@@ -83,7 +86,7 @@ const SideBar: React.FC<{}> = () => {
     const setNewUplacedSeedBed = (e: React.MouseEvent<HTMLLIElement>) => {
         const plant = getArrEntryByIDAndIDName("id", e.currentTarget.id, actualPlantList);
         if (plant) {
-            dispatch(createNewSeedBedAction({ position: { x: e.clientX - worldPos.x, y: e.clientY - worldPos.y - toolbarHeight  }, plant }))
+            dispatch(appActions.createNewSeedBedAction({ position: { x: e.clientX - worldPos.x, y: e.clientY - worldPos.y - toolbarHeight  }, plant }))
         }
     }
 

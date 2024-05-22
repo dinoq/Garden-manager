@@ -1,0 +1,4 @@
+export enum ROWDIRECTIONS{
+    LEFT_TO_RIGHT,
+    TOP_TO_DOWN
+}

@@ -3,6 +3,7 @@
 import { css, jsx } from "@emotion/react";
 import { FC } from "react";
 import { useAppSelector } from "../../../../hooks/useAppSelector";
+import { selectedTabSelector } from "../../../layouts/AppLayout/selectors";
 
 type ITabProps = {
     name: string,
@@ -11,7 +12,8 @@ type ITabProps = {
 }
 
 const Tab: FC<ITabProps> = (props) => {
-    const selectedTab = useAppSelector(state => state.guiReducer.selectedTab);
+    const selectedTab = useAppSelector(selectedTabSelector);
+    
     const selectedColor = "#c2c2c2";
 
     return (

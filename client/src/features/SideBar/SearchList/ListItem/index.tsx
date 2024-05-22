@@ -5,6 +5,7 @@ import { MouseEventHandler } from 'react';
 import { IPlant } from '../../../../helpers/plant-types';
 import { IAppObject } from '../../../../helpers/types';
 import { useAppSelector } from '../../../../hooks/useAppSelector';
+import { hideGUISelector } from '../../../DesignPanel/selectors';
 
 interface IListItem{
     item: IPlant | IAppObject,
@@ -12,7 +13,7 @@ interface IListItem{
     isLastItem: boolean
 }
 const ListItem: React.FC<IListItem> = (props) => {
-    const hideGUI = useAppSelector(state=> state.guiReducer.hideGUI);
+    const hideGUI = useAppSelector(hideGUISelector);
     const name = hideGUI? props.item.name.substring(0,2) : props.item.name;
     return (<
         li key={"plant-" + props.item.id} id={"plant-" + props.item.id} draggable="false" onClick={props.setNewUplacedSeedBed} css={css`

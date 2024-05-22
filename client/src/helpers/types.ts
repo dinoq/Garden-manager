@@ -1,4 +1,4 @@
-import { ROWDIRECTIONS } from "../features/DesignPanel/SeedBed/Plant";
+import { ROWDIRECTIONS } from "../features/DesignPanel/types";
 import { IPlant, IVariety } from "./plant-types";
 
 export interface IDimensions{

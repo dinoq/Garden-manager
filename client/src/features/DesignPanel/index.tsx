@@ -2,20 +2,21 @@
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
 import React, { useEffect, useRef, useState } from "react";
-import { IPosition, ISeedBed } from "../../helpers/types";
+import { IPosition } from "../../helpers/types";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import useLocalCoordinates from "../../hooks/useLocalCoordinates";
-import { placeSeedBedAction } from "../../store/reducers/SeedBedsSlice";
+import { appActions } from "../../store/reducers/AppSlice";
 import { setIsMovingDesignPanelAction, zoomAction } from "../../store/reducers/ViewNavigationSlice";
-import MemoFieldEditDialog from "./FieldEditDialog";
-import MessageBar from "./MesageBar";
-import ProjectDialog from "./ProjectDialog";
-import Scale from "./Scale";
-import SeedBed from "./SeedBed";
-import SideBar from "../SideBar";
-import Header from "../Header";
-import SeedBeds from "./SeedBeds";
+import MemoFieldEditDialog from "./components/FieldEditDialog";
+import MessageBar from "./components/MesageBar";
+import ProjectDialog from "../Project/ProjectDialog";
+import Scale from "./components/Scale";
+import SeedBed from "./components/SeedBed";
+import SeedBeds from "./components/SeedBeds";
+import { hideGUISelector, isMovingDesignPanelSelector, positionSelector, projectDialogShowSelector, projectDialogStateSelector, seedBedsSelector, selectedSeedBedIDSelector, worldHeightSelector, worldWidthSelector, zoomSelector } from "./selectors";
+import { tabBarHeightSelector } from "../../components/layouts/AppLayout/selectors";
+import { menuWidthSelector } from "../SideBar/selectors";
 
 
 interface IDesignPanelProps {
@@ -27,19 +28,21 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
 
     const viewElement = useRef<HTMLDivElement>(null);
 
-    const worldZoom = useAppSelector(state => state.navigationReducer.zoom);
-    const worldPosition = useAppSelector(state => state.navigationReducer.position);
-    const isMovingDesignPanel = useAppSelector(state => state.navigationReducer.isMovingDesignPanel);
-    const seedBeds = useAppSelector(state => state.seedBedsReducer.seedBeds);
-    const selectedSeedBed = useAppSelector(state => state.seedBedsReducer.selectedSeedBed);
-    const menuWidth = useAppSelector(state => state.guiReducer.menuWidth);
-    const showProjectDialog = useAppSelector(state => state.guiReducer.ProjectDialog.show);
-    const projectDialogState = useAppSelector(state => state.guiReducer.ProjectDialog.state);
-    const toolbarHeight = useAppSelector(state => state.guiReducer.toolbarHeight);
-    const tabBarHeight = useAppSelector(state => state.guiReducer.tabBarHeight);
-    const worldWidth = useAppSelector(state => state.navigationReducer.worldWidth) * worldZoom;
-    const worldHeight = useAppSelector(state => state.navigationReducer.worldHeight) * worldZoom;
-    const hideGUI = useAppSelector(state => state.guiReducer.hideGUI);
+    const seedBeds = useAppSelector(seedBedsSelector);
+    const selectedSeedBed = useAppSelector(selectedSeedBedIDSelector);
+
+    const worldZoom = useAppSelector(zoomSelector);
+    const worldPosition = useAppSelector(positionSelector);
+    const isMovingDesignPanel = useAppSelector(isMovingDesignPanelSelector);
+    const worldWidth = useAppSelector(worldWidthSelector) * worldZoom;
+    const worldHeight = useAppSelector(worldHeightSelector) * worldZoom;
+    
+    const menuWidth = useAppSelector(menuWidthSelector);
+    const showProjectDialog = useAppSelector(projectDialogShowSelector);
+    const projectDialogState = useAppSelector(projectDialogStateSelector);
+    const toolbarHeight = useAppSelector(tabBarHeightSelector);
+    const tabBarHeight = useAppSelector(tabBarHeightSelector);
+    const hideGUI = useAppSelector(hideGUISelector);
 
     const [isMouseDown, setIsMouseDown] = useState(false);
     const [isMiddleMouseDown, setIsMiddleMouseDown] = useState(false);
@@ -86,7 +89,7 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
         if (unplacedBed) {
             let position: IPosition = { x: mouseDesignPanelPosition.x - unplacedBed.width / 2, y: mouseDesignPanelPosition.y - unplacedBed.height / 2 };
 
-            dispatch(placeSeedBedAction({ id: unplacedBed.id, position }));
+            dispatch(appActions.placeSeedBedAction({ id: unplacedBed.id, position }));
             setMouseDesignPanelPosition({ x: 0, y: 0 });
         }
     }

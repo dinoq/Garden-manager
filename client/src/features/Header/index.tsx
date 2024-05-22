@@ -3,16 +3,17 @@
 import { jsx, css } from '@emotion/react';
 import { DEPTH } from '../../helpers/constants';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import Calendar from './Calendar';
-import ManipulationTools from './ManipulationTools';
-import EditingTools from './EditingTools';
+import Calendar from './components/Calendar';
+import ManipulationTools from './components/ManipulationTools';
+import EditingTools from './components/EditingTools';
 import Button from '../../components/UI/Button';
+import { hideGUISelector } from '../DesignPanel/selectors';
+import { toolBarMinimizedSelector, toolbarHeightSelector } from './selectors';
 
 
 const Header: React.FC<{}> = () => {
-    const toolbarMinimized = useAppSelector(state => state.guiReducer.toolbarMinimized);
-    const toolbarHeight = useAppSelector(state => state.guiReducer.toolbarHeight);
-    const hideGUI = useAppSelector(state=> state.guiReducer.hideGUI);
+    const toolbarMinimized = useAppSelector(toolBarMinimizedSelector);
+    const hideGUI = useAppSelector(hideGUISelector);
 
     return (
         <div css={css`

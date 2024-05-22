@@ -7,12 +7,13 @@ import SideBar from "../../features/SideBar";
 import Header from "../../features/Header";
 import DesignPanel from "../../features/DesignPanel";
 import { useAppSelector } from "../../hooks/useAppSelector";
+import { toolbarHeightSelector } from "../../features/Header/selectors";
 
 type IDesignPageProps = {
 }
 
 const DesignPage: FC<IDesignPageProps> = (props) => {
-    const toolbarHeight = useAppSelector(state => state.guiReducer.toolbarHeight);
+    const toolbarHeight = useAppSelector(toolbarHeightSelector);
     
     const [mouseMove, setMouseMove] = useState<React.MouseEvent<HTMLDivElement, MouseEvent>>();
     return (

@@ -8,12 +8,13 @@ import { useAppSelector } from '../../../hooks/useAppSelector';
 import DesignPage from '../../../pages/DesignPage';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import TabBar from '../../UI/TabBar';
+import { selectedTabSelector, tabBarHeightSelector } from './selectors';
 
 function AppLayout() {
     const dispatch = useAppDispatch();
-    const tabBarHeight = useAppSelector(state => state.guiReducer.tabBarHeight);
-
-    const selectedTab = useAppSelector(state => state.guiReducer.selectedTab);
+    const tabBarHeight = useAppSelector(tabBarHeightSelector);
+    const selectedTab = useAppSelector(selectedTabSelector);
+    
     const tabs = [<DesignPage />, <NotesView />, <SettingsView />];
     
     useEffect(() => {

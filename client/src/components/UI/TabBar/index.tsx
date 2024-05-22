@@ -6,13 +6,13 @@ import Tab from "./Tab";
 import { useAppSelector } from "../../../hooks/useAppSelector";
 import { changeTabAction } from "../../../store/reducers/GUISlice";
 import { useAppDispatch } from "../../../hooks/useAppDispatch";
+import { selectedTabSelector } from "../../layouts/AppLayout/selectors";
 
 type ITabBarProps = {
 }
 
 const TabBar: FC<ITabBarProps> = () => {
     const dispatch = useAppDispatch();
-    const selectedTab = useAppSelector(state => state.guiReducer.selectedTab);
 
     const tabs = ["Design", "notes", "settings"]
     //const tabs = ["Design", "plants/parts list", "notes", "planning calendar", "settings","Crop and varieties manager", "control garden (IoT)", "shop", "report bug/request feature"]
