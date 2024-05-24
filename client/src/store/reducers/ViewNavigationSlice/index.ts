@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IPosition } from "../../helpers/types";
-import { consoleError } from "../../helpers/functions";
+import { IPosition } from "../../../helpers/types";
+import { consoleError } from "../../../helpers/functions";
 
 interface IViewNavigationSlice {
     zoom: number,

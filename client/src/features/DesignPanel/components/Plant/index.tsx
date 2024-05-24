@@ -3,9 +3,10 @@
 import { css, jsx } from '@emotion/react';
 import { zoomedFactory } from '../../../../helpers/functions';
 import { useAppSelector } from '../../../../hooks/useAppSelector';
-import { seedBedSelector } from '../../selectors';
 import { ISeedBedProps } from '../SeedBed';
 import { ROWDIRECTIONS } from '../../types';
+import { seedBedSelector } from '../../../../store/reducers/DesignSlice/selectors';
+import { zoomSelector } from '../../../../store/reducers/ViewNavigationSlice/selectors';
 
 
 interface ISeedCircle extends ISeedBedProps{
@@ -14,7 +15,7 @@ interface ISeedCircle extends ISeedBedProps{
 }
 const Plant: React.FC<ISeedCircle> = (props) => {
     
-    const zoom = useAppSelector(selector => selector.navigationReducer.zoom);
+    const zoom = useAppSelector(zoomSelector);
     const zoomed = zoomedFactory(zoom);
 
     const seedBed = useAppSelector(state => seedBedSelector(state, props.id));

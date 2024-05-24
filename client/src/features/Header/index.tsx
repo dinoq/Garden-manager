@@ -7,8 +7,7 @@ import Calendar from './components/Calendar';
 import ManipulationTools from './components/ManipulationTools';
 import EditingTools from './components/EditingTools';
 import Button from '../../components/UI/Button';
-import { hideGUISelector } from '../DesignPanel/selectors';
-import { toolBarMinimizedSelector, toolbarHeightSelector } from './selectors';
+import { toolBarMinimizedSelector, hideGUISelector } from '../../store/reducers/GUISlice/selectors';
 
 
 const Header: React.FC<{}> = () => {
@@ -26,7 +25,7 @@ const Header: React.FC<{}> = () => {
 
             {!hideGUI && <EditingTools />}
             {!hideGUI && <ManipulationTools />}
-            {!hideGUI && <Calendar />}
+            {/*!hideGUI && */<Calendar />}
             <div css={css`
                 /* margin-left: auto;*/
             `}><Button text={toolbarMinimized? "↓" : "↑"} onClick={()=>{}} /></div>

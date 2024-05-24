@@ -4,8 +4,8 @@ import { css, jsx } from "@emotion/react";
 import { useAppDispatch } from "../../../../hooks/useAppDispatch";
 import { useAppSelector } from "../../../../hooks/useAppSelector";
 import { DEPTH } from "../../../../helpers/constants";
-import { messageSelector, zoomSelector } from "../../selectors";
-import { menuWidthSelector } from "../../../SideBar/selectors";
+import { messageSelector, menuWidthSelector } from "../../../../store/reducers/GUISlice/selectors";
+import { zoomSelector } from "../../../../store/reducers/ViewNavigationSlice/selectors";
 
 
 interface IMessageBarProps {

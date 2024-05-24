@@ -7,14 +7,15 @@ import { zoomedFactory } from '../../../../helpers/functions';
 import { IPosition, ISeedBed } from '../../../../helpers/types';
 import { useAppDispatch } from '../../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../../hooks/useAppSelector';
-import { appActions } from '../../../../store/reducers/AppSlice';
+import { designActions } from '../../../../store/reducers/DesignSlice';
 import { setIsMovingDesignPanelAction } from '../../../../store/reducers/ViewNavigationSlice';
 import RotateRowDirectionIcon from '../../../../components/UI/RotateRowDirectionIcon';
 import ResizePoints from '../../../../components/UI/ResizePoints';
 import DragPoint from '../../../../components/UI/DragPoint';
-import { isSeedBedSelectedSelector } from '../../selectors';
 import Plant from '../Plant';
 import { ROWDIRECTIONS } from '../../types';
+import { isSeedBedSelectedSelector, calendarSelector } from '../../../../store/reducers/DesignSlice/selectors';
+import { zoomSelector } from '../../../../store/reducers/ViewNavigationSlice/selectors';
 
 export interface ISeedBedProps extends ISeedBed {
 }
@@ -23,8 +24,9 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
     const dispatch = useAppDispatch();
 
     const isSelected = useAppSelector(state => isSeedBedSelectedSelector(state, props.id));
-    const zoom = useAppSelector(selector => selector.navigationReducer.zoom);
-    
+    const zoom = useAppSelector(zoomSelector);
+    const calendar = useAppSelector(calendarSelector);
+
     const [showOnHoverIcon, setShowDetailIcon] = useState(false);
     const [localSeedBedPosDiff, setLocalSeedBedPosDiff] = useState<IPosition>({ x: 0, y: 0 })
     const [localSeedBedSize, setLocalSeedBedSize] = useState({ width: 0, height: 0 });
@@ -50,7 +52,7 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
 
     const moveEndHandler = (e: React.DragEvent<HTMLDivElement>, position: IPosition) => {
         setLocalSeedBedPosDiff({ x: 0, y: 0 });
-        dispatch(appActions.updatePositionAction({ id: props.id, position }))
+        dispatch(designActions.updatePositionAction({ id: props.id, position }))
     }
 
     const resizeStartHandler = (e: React.DragEvent<HTMLDivElement>, diffX: any, diffY: any) => {
@@ -63,8 +65,8 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
 
     const resizeEndHandler = (e: React.MouseEvent<HTMLDivElement>, newWidth: number, newHeight: number) => {
         setLocalSeedBedSize({ width: 0, height: 0 });
-        dispatch(appActions.updateWidthAction({ id: props.id, newWidth }))
-        dispatch(appActions.updateHeightAction({ id: props.id, newHeight }))
+        dispatch(designActions.updateWidthAction({ id: props.id, newWidth }))
+        dispatch(designActions.updateHeightAction({ id: props.id, newHeight }))
     }
 
     const mouseEnterHandler = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -110,8 +112,21 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
     }
 
     const showAllSeeds = plantCount < 50;
+
+    if(!props.inGround.yearRoundPlanting){
+        console.log('calendar.actualMonth: ', calendar.actualMonth);
+        console.log('props.inGround.from.month: ', props.inGround.from.month);
+        console.log('props.inGround.to.month: ', props.inGround.to.month);
+        const showInActualMonth = props.inGround.from.month <= calendar.actualMonth && props.inGround.to.month >= calendar.actualMonth;
+        if(!showInActualMonth){
+            return <React.Fragment>
+    
+            </React.Fragment>
+        }
+
+    }
     return (
-        <div onMouseEnter={mouseEnterHandler} onMouseLeave={mouseLeaveHandler} onClick={() => { dispatch(appActions.updateSelectedSeedBedAction(props.id)) }} css={css`
+        <div onMouseEnter={mouseEnterHandler} onMouseLeave={mouseLeaveHandler} onClick={() => { dispatch(designActions.updateSelectedSeedBedAction(props.id)) }} css={css`
                 border: 1px solid ${isSelected ? "#17ff00" : "green"};
                 width: ${seedBedWidth}px;
                 height: ${seedBedHeight}px;
@@ -162,7 +177,7 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
             </div>
             {draggable && <DragPoint objectX={seedBedX} objectY={seedBedY} objectWidth={seedBedWidth} objectHeight={seedBedHeight} id={props.id} dragHandler={moveHandler} dragStartHandler={moveStartHandler} dragEndHandler={moveEndHandler} />}
             {resizable && <ResizePoints objectWidth={seedBedWidth} objectHeight={seedBedHeight} dragHandler={resizeHandler} dragStartHandler={resizeStartHandler} dragEndHandler={resizeEndHandler} minimalWidth={minimalWidth} minimalHeight={minimalHeight} />}
-            {(showOnHoverIcon || false) && <RotateRowDirectionIcon ObjectWidth={seedBedWidth} IconClicked={() => { dispatch(appActions.changeRowsDirectionAction(props.id)) }} />}
+            {(showOnHoverIcon || false) && <RotateRowDirectionIcon ObjectWidth={seedBedWidth} IconClicked={() => { dispatch(designActions.changeRowsDirectionAction(props.id)) }} />}
         </div>
     )
 

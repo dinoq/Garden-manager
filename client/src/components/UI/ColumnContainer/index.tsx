@@ -1,24 +1,22 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
+import { FC } from "react";
+import { flexColumn } from "../../../styles/mixins";
 
-export interface ILabelProps {
-    text: string,
+type IColumnContainerProps = {
     children: JSX.Element[] | JSX.Element
 }
 
-const Label: React.FC<ILabelProps> = (props) => {
+const ColumnContainer: FC<IColumnContainerProps> = (props) => {
     
     return (
         <div css={css`
-            width: 100%;
+            ${flexColumn}
         `}>
-            <h3>{props.text}</h3>
             {props.children}
         </div>
     )
 }
 
-
-
-export default Label;
+export default ColumnContainer;

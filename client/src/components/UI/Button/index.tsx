@@ -13,6 +13,8 @@ const Button: React.FC<IButtonProps> = (props) => {
             padding: 5px;
             border: 1px solid black;
             cursor: pointer;
+            width: 100%;
+            text-align: center;
         `}>
             {props.text}
         </div>

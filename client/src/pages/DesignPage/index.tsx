@@ -7,7 +7,7 @@ import SideBar from "../../features/SideBar";
 import Header from "../../features/Header";
 import DesignPanel from "../../features/DesignPanel";
 import { useAppSelector } from "../../hooks/useAppSelector";
-import { toolbarHeightSelector } from "../../features/Header/selectors";
+import { toolbarHeightSelector } from "../../store/reducers/GUISlice/selectors";
 
 type IDesignPageProps = {
 }

@@ -5,10 +5,10 @@ import { useAppSelector } from '../../../../hooks/useAppSelector';
 import { useAppDispatch } from '../../../../hooks/useAppDispatch';
 import { setShowProjectDialogAction } from '../../../../store/reducers/GUISlice';
 import DBManager from '../../../../helpers/DBManager';
-import { appActions } from '../../../../store/reducers/AppSlice';
+import { designActions } from '../../../../store/reducers/DesignSlice';
 import LabeledCard from '../../../../components/UI/LabeledCard';
 import { useEffect } from 'react';
-import { lastModifiedSelector, projectIDSelector } from '../../../Project/selectors';
+import { lastModifiedSelector, projectIDSelector } from '../../../../store/reducers/DesignSlice/selectors';
 
 
 export interface IEditingToolsProps {
@@ -26,7 +26,7 @@ const EditingTools: React.FC<IEditingToolsProps> = (props) => {
             dispatch(setShowProjectDialogAction(true))
         } else {
             const lastModified = new Date().getTime();
-            dispatch(appActions.setLMTAction(lastModified))
+            dispatch(designActions.setLMTAction(lastModified))
         }
     }
 

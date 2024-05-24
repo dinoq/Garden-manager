@@ -39,7 +39,7 @@ export enum Direction {
 }
 
 export type IInGround = {
-    yearRound: boolean,
+    yearRoundPlanting: boolean,
     from: {month: number, monthPart: number},
     to: {month: number, monthPart: number}
 }

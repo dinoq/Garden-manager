@@ -1,16 +1,16 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { IAppSlice } from "../../../store/reducers/AppSlice";
+import { IDesignSlice } from "../../../store/reducers/DesignSlice";
 
-export const setProjectAction = (state: IAppSlice, action: PayloadAction<IAppSlice>) => {
+export const setProjectAction = (state: IDesignSlice, action: PayloadAction<IDesignSlice>) => {
     return state = {...state, ...action.payload};
 }
-export const setProjectNameAction = (state: IAppSlice, action: PayloadAction<string>) => {
+export const setProjectNameAction = (state: IDesignSlice, action: PayloadAction<string>) => {
     state.project.projectName = action.payload;
 }
-export const setLMTAction = (state: IAppSlice, action: PayloadAction<number>) => {
+export const setLMTAction = (state: IDesignSlice, action: PayloadAction<number>) => {
     state.project.lastModified = action.payload;
 }
-export const setProjectIDAction = (state: IAppSlice, action: PayloadAction<number>) => {
+export const setProjectIDAction = (state: IDesignSlice, action: PayloadAction<number>) => {
     state.project.projectID = action.payload;
 }
 

@@ -5,6 +5,7 @@ import { useAppDispatch } from '../../../../hooks/useAppDispatch';
 import { useAppSelector } from "../../../../hooks/useAppSelector";
 import { setIsMovingDesignPanelAction } from '../../../../store/reducers/ViewNavigationSlice';
 import LabeledCard from '../../../../components/UI/LabeledCard';
+import { isMovingDesignPanelSelector } from '../../../../store/reducers/ViewNavigationSlice/selectors';
 
 
 interface IManipulationToolsProps {
@@ -13,7 +14,7 @@ interface IManipulationToolsProps {
 
 const ManipulationTools: React.FC<IManipulationToolsProps> = (props) => {
     const dispatch = useAppDispatch();
-    const isMovingAppView = useAppSelector(selector => selector.navigationReducer.isMovingDesignPanel)
+    const isMovingAppView = useAppSelector(isMovingDesignPanelSelector)
     return (
         <LabeledCard label="Manipulation tools">
             <button onClick={(e) => {

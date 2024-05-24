@@ -27,11 +27,11 @@ __________________________________________________________
 ### Levé menu (pro vytváření objektů)
 [ ] hideable (with transition)
 __________________________________________________________
-### AppView
+### DesignView
 [ ] přidat kompas + rotace celého view
 [ ] Scale přesunovatelné, ale bez funkce zoomu (jestli tak ted funguje)
 [ ] metr do tools
-[ ] field splitter, joiner
+[ ] field splitter, joiner, clipper (css clip path to change to different shape)
 
 [ ] solve click on multiple plant section (which will be selected if they are stacked?)
 
@@ -71,6 +71,7 @@ __________________________________________________________
 [ ] spon(selectbox [from plant, from variety, variety X..., variety Y..., custom] -> input underneath ( two slider and input underneath)). On change in slider/input automatically change selectbox value to custom. Remember custom when change in selectox from custom to another.
 
 #### Basic Info:
+[ ] undo - redo button
 [ ] Button advanced info (opens big modal with all info [and setting]? about plant)
 [ ] vegetační doba
 [ ] vypočítaná doba fieldu(sow out+harvest time), 

@@ -5,7 +5,7 @@ import { IRect } from "../../../../helpers/types";
 import { useAppSelector } from "../../../../hooks/useAppSelector";
 import { DEPTH } from "../../../../helpers/constants";
 import { zoomedFactory } from "../../../../helpers/functions";
-import { zoomSelector } from "../../selectors";
+import { zoomSelector } from "../../../../store/reducers/ViewNavigationSlice/selectors";
 
 
 interface IFIeldProps extends IRect {

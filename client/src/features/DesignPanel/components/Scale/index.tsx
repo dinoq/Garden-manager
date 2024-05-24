@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useAppSelector } from '../../../../hooks/useAppSelector';
 import { DEPTH } from '../../../../helpers/constants';
 import MovePoint from '../../../../components/UI/MovePoint';
-import { zoomSelector } from '../../selectors';
+import { zoomSelector } from '../../../../store/reducers/ViewNavigationSlice/selectors';
 
 const Scale: React.FC<{}> = () => {
     const [position, setPosition] = useState({ x: 0, y: 0 });

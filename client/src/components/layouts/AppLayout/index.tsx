@@ -8,7 +8,7 @@ import { useAppSelector } from '../../../hooks/useAppSelector';
 import DesignPage from '../../../pages/DesignPage';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import TabBar from '../../UI/TabBar';
-import { selectedTabSelector, tabBarHeightSelector } from './selectors';
+import { tabBarHeightSelector, selectedTabSelector } from '../../../store/reducers/GUISlice/selectors';
 
 function AppLayout() {
     const dispatch = useAppDispatch();

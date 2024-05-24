@@ -8,8 +8,9 @@ import { DEPTH } from '../../../../helpers/constants';
 import { IOption } from '../../../../components/UI/SearchableSelectbox';
 import LabeledCard from '../../../../components/UI/LabeledCard';
 import Selectbox from '../../../../components/UI/Selectbox';
-import { actualMonthPartSelector, actualMonthSelector, actualYearSelector, monthPartsCountSelector, showAllMonthsSelector } from '../../selectors';
-import { appActions } from '../../../../store/reducers/AppSlice';
+import { designActions } from '../../../../store/reducers/DesignSlice';
+import { actualYearSelector, actualMonthSelector, actualMonthPartSelector, showAllMonthsSelector } from '../../../../store/reducers/DesignSlice/selectors';
+import { monthPartsCountSelector } from '../../../../store/reducers/SettingsSlice/selectors';
 
 interface ICalendarProps {
 
@@ -19,6 +20,7 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
     const dispatch = useAppDispatch();
     const year = useAppSelector(actualYearSelector)
     const month = useAppSelector(actualMonthSelector)
+    console.log('month: ', month);
     const monthPart = useAppSelector(actualMonthPartSelector)
     const showAllMonths = useAppSelector(showAllMonthsSelector)
 
@@ -52,8 +54,8 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
     const setMonth = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const newMonth = parseInt(e.currentTarget.value);
         if (newMonth !== month) {
-            dispatch(appActions.setMonthAction(newMonth));
-            dispatch(appActions.setMonthPartAction(0));
+            dispatch(designActions.setMonthAction(newMonth));
+            dispatch(designActions.setMonthPartAction(0));
             setTimelineX(initialTimelineX - (monthPartWidth * newMonth * monthPartCount));
         }
     }
@@ -62,33 +64,33 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
         const newMonthPart = parseInt(e.currentTarget.value);
         if (newMonthPart !== monthPart) {
             setTimelineX(initialTimelineX - (monthPartWidth * month * monthPartCount) - (newMonthPart * monthPartWidth));
-            dispatch(appActions.setMonthPartAction(newMonthPart));
+            dispatch(designActions.setMonthPartAction(newMonthPart));
         }
     }
     const setPrevYear = () => {
-        dispatch(appActions.setYearAction(year - 1));
-        dispatch(appActions.setMonthAction(0));
-        dispatch(appActions.setMonthPartAction(0));
+        dispatch(designActions.setYearAction(year - 1));
+        dispatch(designActions.setMonthAction(0));
+        dispatch(designActions.setMonthPartAction(0));
         setTimelineX(initialTimelineX);
     }
 
     const setNextYear = () => {
-        dispatch(appActions.setYearAction(year + 1));
-        dispatch(appActions.setMonthAction(0));
-        dispatch(appActions.setMonthPartAction(0));
+        dispatch(designActions.setYearAction(year + 1));
+        dispatch(designActions.setMonthAction(0));
+        dispatch(designActions.setMonthPartAction(0));
         setTimelineX(initialTimelineX);
     }
 
     const setPrevMonth = () => {
         setTimelineX(initialTimelineX - monthPartWidth * ((month - 1) * monthPartCount + (monthPart)));
-        dispatch(appActions.setMonthAction(month - 1));
-        dispatch(appActions.setMonthPartAction(0));
+        dispatch(designActions.setMonthAction(month - 1));
+        dispatch(designActions.setMonthPartAction(0));
     }
 
     const setNextMonth = () => {
         setTimelineX(initialTimelineX - monthPartWidth * ((month + 1) * monthPartCount + (monthPart)));
-        dispatch(appActions.setMonthAction(month + 1));
-        dispatch(appActions.setMonthPartAction(0));
+        dispatch(designActions.setMonthAction(month + 1));
+        dispatch(designActions.setMonthPartAction(0));
     }
 
     const mouseDown = (e: React.MouseEvent) => {
@@ -104,8 +106,8 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
                 const monthsPartShiftedCount = Math.floor((initialTimelineX - newX - halfMonthPartWidth) / monthPartWidth) + 1;
                 const newMonth = Math.floor(monthsPartShiftedCount / monthPartCount);
                 const newMonthPart = monthsPartShiftedCount % monthPartCount;
-                dispatch(appActions.setMonthPartAction(newMonthPart));
-                dispatch(appActions.setMonthAction(newMonth));
+                dispatch(designActions.setMonthPartAction(newMonthPart));
+                dispatch(designActions.setMonthAction(newMonth));
             }
         }
     }
@@ -157,7 +159,7 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
                     <label>
                         <input type="checkbox"
                             defaultChecked={showAllMonths}
-                            onChange={() => dispatch(appActions.setShowAllMonthsAction(!showAllMonths))}
+                            onChange={() => dispatch(designActions.setShowAllMonthsAction(!showAllMonths))}
                         />
                         Year round
                     </label>

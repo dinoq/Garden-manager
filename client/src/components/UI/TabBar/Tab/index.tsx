@@ -3,7 +3,7 @@
 import { css, jsx } from "@emotion/react";
 import { FC } from "react";
 import { useAppSelector } from "../../../../hooks/useAppSelector";
-import { selectedTabSelector } from "../../../layouts/AppLayout/selectors";
+import { selectedTabSelector } from "../../../../store/reducers/GUISlice/selectors";
 
 type ITabProps = {
     name: string,

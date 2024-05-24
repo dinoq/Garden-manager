@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import NavigationReducer from "./reducers/ViewNavigationSlice";
-import AppReducer from "./reducers/AppSlice";
+import DesignReducer from "./reducers/DesignSlice";
 import GUIReducer from "./reducers/GUISlice";
 import DBSlice from "./reducers/DBSlice";
 import SettingsSlice from "./reducers/SettingsSlice";
@@ -9,7 +9,7 @@ import SettingsSlice from "./reducers/SettingsSlice";
 const store = configureStore({
     reducer: {
         navigationReducer: NavigationReducer,
-        appReducer: AppReducer,
+        designReducer: DesignReducer,
         guiReducer: GUIReducer,
         dbReducer: DBSlice,
         settingsReducer: SettingsSlice

@@ -3,10 +3,8 @@
 import { css, jsx } from "@emotion/react";
 import { FC } from "react";
 import Tab from "./Tab";
-import { useAppSelector } from "../../../hooks/useAppSelector";
 import { changeTabAction } from "../../../store/reducers/GUISlice";
 import { useAppDispatch } from "../../../hooks/useAppDispatch";
-import { selectedTabSelector } from "../../layouts/AppLayout/selectors";
 
 type ITabBarProps = {
 }

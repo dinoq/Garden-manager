@@ -3,10 +3,11 @@ import { consoleError, consoleWarn } from "../helpers/functions";
 import { useAppSelector } from "./useAppSelector";
 import { useAppDispatch } from "./useAppDispatch";
 import { setDBDataAction, setFetchedAction } from "../store/reducers/DBSlice";
+import { dbSelector } from "../store/reducers/DBSlice/selectors";
 
 const useDB = (query: string) => {
     const dispatch = useAppDispatch();
-    const cache = useAppSelector(state => state.dbReducer.db);
+    const cache = useAppSelector(dbSelector);
     const currentCache = cache[query];
     const [data, setData] = useState([]);
     const [dataLoaded, setDataLoaded] = useState(false);

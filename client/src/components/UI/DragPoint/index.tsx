@@ -4,6 +4,7 @@ import { jsx, css } from '@emotion/react';
 import { useState } from 'react';
 import { useAppSelector } from "../../../hooks/useAppSelector";
 import { IPosition } from '../../../helpers/types';
+import { zoomSelector } from '../../../store/reducers/ViewNavigationSlice/selectors';
 
 interface IDragPointProps {
     id: number,
@@ -25,7 +26,7 @@ const DragPoint: React.FC<IDragPointProps> = (props) => {
     const [initialObjectPos, setInitialObjectPos] = useState({ x: 0, y: 0 })
     const [isMoving, setIsMoving] = useState(false);
     
-    const zoom = useAppSelector(selector => selector.navigationReducer.zoom);
+    const zoom = useAppSelector(zoomSelector);
 
     const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) =>{
         setIsMoving(true);

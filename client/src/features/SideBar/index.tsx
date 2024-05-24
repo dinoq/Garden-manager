@@ -3,7 +3,7 @@
 import { css, jsx } from '@emotion/react';
 import React, { useEffect, useState } from 'react';
 import { IPlant } from '../../helpers/plant-types';
-import { appActions } from '../../store/reducers/AppSlice';
+import { designActions } from '../../store/reducers/DesignSlice';
 import SearchList from './SearchList';
 import { IAppObject } from '../../helpers/types';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
@@ -13,9 +13,8 @@ import usePlantsFromDB from '../../hooks/usePlantsFromDB';
 import { getArrEntryByIDAndIDName } from '../../helpers/functions';
 import InputField from '../../components/UI/InputField';
 import SearchFilter from './components/SearchFilter';
-import { menuWidthSelector } from './selectors';
-import { toolbarHeightSelector } from '../Header/selectors';
-import { tabBarHeightSelector } from '../../components/layouts/AppLayout/selectors';
+import { menuWidthSelector, toolbarHeightSelector, tabBarHeightSelector } from '../../store/reducers/GUISlice/selectors';
+import { worldPositionSelector } from '../../store/reducers/ViewNavigationSlice/selectors';
 
 enum SEARCH_TYPE {
     PLANTS,
@@ -32,7 +31,7 @@ const SideBar: React.FC<{}> = () => {
     const [searchType, setSearchType] = useState<SEARCH_TYPE>(SEARCH_TYPE.PLANTS);
     //const [plants, setPlants] = useState<Array<IPlant>>([])
     const [objects] = useState<Array<IAppObject>>([])
-    const worldPos = useAppSelector(selector => selector.navigationReducer.position);
+    const worldPos = useAppSelector(worldPositionSelector);
     //const [plantsFromDB, setPlantsFromDB] = useState<IPlant[]>([]);
     const [actualPlantList, setActualPlantList] = useState<IPlant[]>([]);
 
@@ -84,9 +83,10 @@ const SideBar: React.FC<{}> = () => {
     }
 
     const setNewUplacedSeedBed = (e: React.MouseEvent<HTMLLIElement>) => {
+        console.log('setNewUplacedSeedBed: ');
         const plant = getArrEntryByIDAndIDName("id", e.currentTarget.id, actualPlantList);
         if (plant) {
-            dispatch(appActions.createNewSeedBedAction({ position: { x: e.clientX - worldPos.x, y: e.clientY - worldPos.y - toolbarHeight - tabBarHeight }, plant }))
+            dispatch(designActions.createNewSeedBedAction({ position: { x: e.clientX - worldPos.x, y: e.clientY - worldPos.y - toolbarHeight - tabBarHeight }, plant }))
         }
     }
 

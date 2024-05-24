@@ -6,7 +6,7 @@ import { IPlant } from '../../../helpers/plant-types';
 import { IAppObject } from '../../../helpers/types';
 import ListItem from './ListItem';
 import { useAppSelector } from '../../../hooks/useAppSelector';
-import { hideGUISelector } from '../../DesignPanel/selectors';
+import { hideGUISelector } from '../../../store/reducers/GUISlice/selectors';
 
 interface ICategory {
     items: Array<IPlant | IAppObject>,

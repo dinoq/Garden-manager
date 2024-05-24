@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { zoomedFactory } from '../../../helpers/functions';
 import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAppSelector } from "../../../hooks/useAppSelector";
+import { zoomSelector } from '../../../store/reducers/ViewNavigationSlice/selectors';
 
 interface IResizePointsProps {
     dragHandler: Function,
@@ -45,7 +46,7 @@ interface IResizePointProps {
 const ResizePoint: React.FC<IResizePointProps> = (props) => {
     const dispatch = useAppDispatch();
 
-    const zoom = useAppSelector(selector => selector.navigationReducer.zoom);
+    const zoom = useAppSelector(zoomSelector);
     const zoomed = zoomedFactory(zoom);
 
     const [isMoving, setIsMoving] = useState(false);

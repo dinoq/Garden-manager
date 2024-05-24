@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ISeedBed } from "../../helpers/types";
-import { seedBedActions } from "../../features/DesignPanel/actions";
-import { projectActions } from "../../features/Project/actions";
-import { calendarActions } from "../../features/Header/actions";
+import { ISeedBed } from "../../../helpers/types";
+import { seedBedActions } from "../../../features/DesignPanel/actions";
+import { projectActions } from "../../../features/Project/actions";
+import { calendarActions } from "../../../features/Header/actions";
 
 interface ICalendarSlice{
     actualYear: number,
@@ -23,13 +23,13 @@ interface IObjectsSlice {
     selectedSeedBedID: number,
 }
 
-export interface IAppSlice {
+export interface IDesignSlice {
     objects: IObjectsSlice,
     project: IProjectSlice
     calendar: ICalendarSlice
 }
 
-const initialState: IAppSlice = {
+const initialState: IDesignSlice = {
     objects: {
         seedBeds: [],
         selectedSeedBedID: -1,
@@ -48,8 +48,8 @@ const initialState: IAppSlice = {
     }
 }
 
-const AppSlice = createSlice({
-    name: "AppSlice",
+const DesignSlice = createSlice({
+    name: "DesignSlice",
     initialState,
     reducers: {
         ...projectActions,
@@ -58,5 +58,5 @@ const AppSlice = createSlice({
     }
 })
 
-export const appActions = AppSlice.actions;
-export default AppSlice.reducer;
+export const designActions = DesignSlice.actions;
+export default DesignSlice.reducer;
