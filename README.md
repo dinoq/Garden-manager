@@ -1,5 +1,6 @@
 TODO refactor:
 [ ] zoom - use css transform: scale() instead recomputation?
+[ ] divide DesignSlice into 3 independent slices (objects, project, calendar)?
 [ ] plant with dashed border?
 [ ] zoom předělat taky na lokální a až po mouseup vložit do reduxu
 [ ] změnit "SeedBedsSlice->createNewSeedBedAction->rowsDirection" podle defaultního nastavení! (Aktuálně se tam prostě vkládá ROWDIRECTIONS.LEFT_TO_RIGHT)

@@ -17,6 +17,7 @@ import SeedBeds from "./components/SeedBeds";
 import { seedBedsSelector, selectedSeedBedIDSelector } from "../../store/reducers/DesignSlice/selectors";
 import { menuWidthSelector, projectDialogShowSelector, projectDialogStateSelector, toolbarHeightSelector, tabBarHeightSelector, hideGUISelector } from "../../store/reducers/GUISlice/selectors";
 import { zoomSelector, worldPositionSelector, isMovingDesignPanelSelector, worldWidthSelector, worldHeightSelector } from "../../store/reducers/ViewNavigationSlice/selectors";
+import { unplacedPlantSectionSelector } from "./selectors";
 
 
 interface IDesignPanelProps {
@@ -53,10 +54,11 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
 
     const movingByWorld = (isMouseDown && isMovingDesignPanel) || isMiddleMouseDown;
     const cursor = isMovingDesignPanel ? (isMouseDown ? "grabbing" : "grab") : "default";
-    const unplacedBed = seedBeds.find(seedBed => !seedBed.isPlaced);
+    const unplacedBed = useAppSelector(state => unplacedPlantSectionSelector(state))
 
     const zoom = (e: any) => dispatch(zoomAction({ zoomDirection: e.deltaY || 0, menuWidth }))
 
+    const [skipNextPlantSectionsRotation, setSkipNextPlantSectionsRotation] = useState(false); // Because after click is firstly new plant section placed so we use this helper state - without that would be plantSections rotate z-Index even when new plant section is placed (so it will automatically be put below other plant section)
 
     useEffect(() => {
         if (unplacedBed) {
@@ -83,6 +85,7 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
         setIsMiddleMouseDown(e.button === 1);
 
         if (unplacedBed) {
+            setSkipNextPlantSectionsRotation(true);
             let position: IPosition = { x: mouseDesignPanelPosition.x - unplacedBed.width / 2, y: mouseDesignPanelPosition.y - unplacedBed.height / 2 };
 
             dispatch(designActions.placeSeedBedAction({ id: unplacedBed.id, position }));
@@ -131,8 +134,27 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
         }
     }, [dispatch]);
 
+    const rotatePlantSectionsZIndexes = (e: React.MouseEvent<HTMLDivElement>)=>{
+        if(skipNextPlantSectionsRotation){
+            setSkipNextPlantSectionsRotation(false);
+        }else{
+            const elements = document.elementsFromPoint(e.clientX, e.clientY);
+            const plantSectionsToRotate: number[] = [];
+            elements.forEach((element) => {
+              if (element instanceof HTMLDivElement && element.hasAttribute('data-plant-section-id') && element.hasAttribute('data-z-index')) {
+                const plantSectionID = element.getAttribute('data-plant-section-id');
+                if(plantSectionID !== null){
+                    plantSectionsToRotate.push(parseInt(plantSectionID));
+                }
+              }
+            });
+    
+            dispatch(designActions.rotatePlantSectionsZIndex(plantSectionsToRotate));
+        }
+    }
+
     return (
-        <div ref={viewElement} onDragOver={e => e.preventDefault()} onWheel={zoom} onMouseDown={mouseDown} onMouseUp={mouseUp} css={css`
+        <div ref={viewElement} onClick={rotatePlantSectionsZIndexes} onDragOver={e => e.preventDefault()} onWheel={zoom} onMouseDown={mouseDown} onMouseUp={mouseUp} css={css`
             position: relative;
             width: ${worldWidth}px;
             height: ${worldHeight}px;

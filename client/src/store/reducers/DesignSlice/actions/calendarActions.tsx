@@ -1,5 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { IDesignSlice } from "../../../store/reducers/DesignSlice";
+import { IDesignSlice } from "..";
 
 const setYearAction = (state: IDesignSlice, action: PayloadAction<number>)=>{
     state.calendar.actualYear = action.payload;

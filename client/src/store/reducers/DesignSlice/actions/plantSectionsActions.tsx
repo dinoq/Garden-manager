@@ -1,8 +1,8 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { IPlant, IVariety } from "../../../helpers/plant-types";
-import { IDesignSlice } from "../../../store/reducers/DesignSlice";
-import { IInGround, IPosition } from "../../../helpers/types";
-import { ROWDIRECTIONS } from "../types";
+import { IPlant, IVariety } from "../../../../helpers/plant-types";
+import { IDesignSlice } from "..";
+import { IInGround, IPosition } from "../../../../helpers/types";
+import { ROWDIRECTIONS } from "../../../../features/DesignPanel/types";
 
 export const changePlantAction = (state: IDesignSlice, action: PayloadAction<IPlant>) => {
     const actualSeedbed = state.objects.seedBeds[state.objects.selectedSeedBedID];
@@ -69,7 +69,8 @@ export const createNewSeedBedAction = (state: IDesignSlice, action: PayloadActio
         from: { month: state.calendar.actualMonth, monthPart: 0 },
         to: { month: state.calendar.actualMonth + (plant.growingPeriod? Math.floor(plant.growingPeriod/30) : 3), monthPart: 0 }
     }
-    state.objects.seedBeds.push({ id, variety, width, height, plant, ...action.payload.position, isPlaced: false, name: id.toString(), rowsDirection: ROWDIRECTIONS.LEFT_TO_RIGHT, inGround })
+    const zIndex = state.objects.seedBeds.length? Math.max(...state.objects.seedBeds.map(obj => obj.zIndex)) + 1: 1; // Biggest zIndex + 1 or 1 if it is first seedBed
+    state.objects.seedBeds.push({ id, variety, width, height, plant, ...action.payload.position, isPlaced: false, name: id.toString(), rowsDirection: ROWDIRECTIONS.LEFT_TO_RIGHT, inGround, zIndex })
     state.objects.selectedSeedBedID = id;
 }
 
@@ -91,7 +92,7 @@ export const setSeedbedInGroundToMonth = (state: IDesignSlice, action: PayloadAc
     state.objects.seedBeds[seedBedID].inGround.to.month = toMonth;
 }
 
-export const seedBedActions = {
+export const plantSectionActions = {
     changePlantAction,
     updateWidthAction,
     updateHeightAction,

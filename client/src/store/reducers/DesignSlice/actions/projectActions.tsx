@@ -1,5 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { IDesignSlice } from "../../../store/reducers/DesignSlice";
+import { IDesignSlice } from "..";
 
 export const setProjectAction = (state: IDesignSlice, action: PayloadAction<IDesignSlice>) => {
     return state = {...state, ...action.payload};

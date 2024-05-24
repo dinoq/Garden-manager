@@ -16,6 +16,7 @@ import Plant from '../Plant';
 import { ROWDIRECTIONS } from '../../types';
 import { isSeedBedSelectedSelector, calendarSelector } from '../../../../store/reducers/DesignSlice/selectors';
 import { zoomSelector } from '../../../../store/reducers/ViewNavigationSlice/selectors';
+import { plantSectionZIndexSelector } from '../../selectors';
 
 export interface ISeedBedProps extends ISeedBed {
 }
@@ -26,7 +27,7 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
     const isSelected = useAppSelector(state => isSeedBedSelectedSelector(state, props.id));
     const zoom = useAppSelector(zoomSelector);
     const calendar = useAppSelector(calendarSelector);
-
+    const plantSectionZIndex = useAppSelector(state => plantSectionZIndexSelector(state, props.id))
     const [showOnHoverIcon, setShowDetailIcon] = useState(false);
     const [localSeedBedPosDiff, setLocalSeedBedPosDiff] = useState<IPosition>({ x: 0, y: 0 })
     const [localSeedBedSize, setLocalSeedBedSize] = useState({ width: 0, height: 0 });
@@ -114,9 +115,6 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
     const showAllSeeds = plantCount < 50;
 
     if(!props.inGround.yearRoundPlanting){
-        console.log('calendar.actualMonth: ', calendar.actualMonth);
-        console.log('props.inGround.from.month: ', props.inGround.from.month);
-        console.log('props.inGround.to.month: ', props.inGround.to.month);
         const showInActualMonth = props.inGround.from.month <= calendar.actualMonth && props.inGround.to.month >= calendar.actualMonth;
         if(!showInActualMonth){
             return <React.Fragment>
@@ -126,16 +124,16 @@ const SeedBed: React.FC<ISeedBedProps> = (props) => {
 
     }
     return (
-        <div onMouseEnter={mouseEnterHandler} onMouseLeave={mouseLeaveHandler} onClick={() => { dispatch(designActions.updateSelectedSeedBedAction(props.id)) }} css={css`
+        <div onMouseEnter={mouseEnterHandler} onMouseLeave={mouseLeaveHandler} onClick={(e) => { dispatch(designActions.updateSelectedSeedBedAction(props.id))}} css={css`
                 border: 1px solid ${isSelected ? "#17ff00" : "green"};
                 width: ${seedBedWidth}px;
                 height: ${seedBedHeight}px;
                 position: absolute;
                 left: ${seedBedX}px;
                 top: ${seedBedY}px;
-                z-index: ${props.isPlaced ? DEPTH.SEEDBED : DEPTH.UNPLACED_SEEDBED};
+                z-index: ${plantSectionZIndex};
                 box-sizing: content-box; 
-            `}>
+            `} data-plant-section-id={props.id} data-z-index={plantSectionZIndex}>
             {showAllSeeds && <div css={css`
                 display: flex;
                 flex-wrap: wrap;

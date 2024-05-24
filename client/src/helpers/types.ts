@@ -24,7 +24,8 @@ export interface ISeedBed extends IAppObject{
     rowSpacingMin?: number,
     isPlaced: boolean,
     rowsDirection: ROWDIRECTIONS;
-    inGround: IInGround
+    inGround: IInGround,
+    zIndex: number
 }
 
 export interface IField extends IAppObject{

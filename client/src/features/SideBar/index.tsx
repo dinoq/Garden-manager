@@ -83,7 +83,6 @@ const SideBar: React.FC<{}> = () => {
     }
 
     const setNewUplacedSeedBed = (e: React.MouseEvent<HTMLLIElement>) => {
-        console.log('setNewUplacedSeedBed: ');
         const plant = getArrEntryByIDAndIDName("id", e.currentTarget.id, actualPlantList);
         if (plant) {
             dispatch(designActions.createNewSeedBedAction({ position: { x: e.clientX - worldPos.x, y: e.clientY - worldPos.y - toolbarHeight - tabBarHeight }, plant }))

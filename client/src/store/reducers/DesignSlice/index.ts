@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ISeedBed } from "../../../helpers/types";
-import { seedBedActions } from "../../../features/DesignPanel/actions";
-import { projectActions } from "../../../features/Project/actions";
-import { calendarActions } from "../../../features/Header/actions";
+import { plantSectionActions } from "./actions/plantSectionsActions";
+import { projectActions } from "./actions/projectActions";
+import { calendarActions } from "./actions/calendarActions";
+import { DesignPanelPlantSectionActions } from "../../../features/DesignPanel/actions";
 
 interface ICalendarSlice{
     actualYear: number,
@@ -42,7 +43,7 @@ const initialState: IDesignSlice = {
     },
     calendar: {
         actualYear: new Date().getFullYear(),
-        actualMonth: 0,
+        actualMonth: new Date().getMonth(),
         actualMonthPart: 0,
         showAllMonths: false
     }
@@ -53,8 +54,9 @@ const DesignSlice = createSlice({
     initialState,
     reducers: {
         ...projectActions,
-        ...seedBedActions,
-        ...calendarActions
+        ...plantSectionActions,
+        ...calendarActions,
+        ...DesignPanelPlantSectionActions
     }
 })
 

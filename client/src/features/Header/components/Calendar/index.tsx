@@ -20,7 +20,6 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
     const dispatch = useAppDispatch();
     const year = useAppSelector(actualYearSelector)
     const month = useAppSelector(actualMonthSelector)
-    console.log('month: ', month);
     const monthPart = useAppSelector(actualMonthPartSelector)
     const showAllMonths = useAppSelector(showAllMonthsSelector)
 
@@ -38,7 +37,7 @@ const Calendar: React.FC<ICalendarProps> = (props) => {
     const monthPartWidth = timelineWidth / linesCount;
     const halfMonthPartWidth = 0.5 * monthPartWidth;
     const calendarWidth = 150;
-    const initialTimelineX = (calendarWidth / 2) + 5 - halfMonthPartWidth;
+    const initialTimelineX = (calendarWidth / 2) + 5 - monthPartWidth * month - halfMonthPartWidth;
     const [isMouseDown, setIsMouseDown] = useState(false);
     const [timelineX, setTimelineX] = useState(initialTimelineX);
     const [mouseDownX, setMouseDownX] = useState(0)
