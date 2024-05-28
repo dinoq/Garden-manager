@@ -15,7 +15,7 @@ import ModalWindow from "../../../../components/UI/ModalWindow";
 import DoubleSlider from "../../../../components/UI/DoubleSlider";
 import Selectbox from "../../../../components/UI/Selectbox";
 import { designActions } from "../../../../store/reducers/DesignSlice";
-import { selectedSeedBedSelector, actualYearSelector } from "../../../../store/reducers/DesignSlice/selectors";
+import { selectedPlantSectionSelector, actualYearSelector } from "../../../../store/reducers/DesignSlice/selectors";
 import { IOption } from "../../../../components/types";
 export interface IFieldEditDialogProps {
 }
@@ -23,10 +23,10 @@ export interface IFieldEditDialogProps {
 const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
     const dispatch = useAppDispatch();
 
-    const selectedSeedBed = useAppSelector(selectedSeedBedSelector);
+    const selectedPlantSection = useAppSelector(selectedPlantSectionSelector);
     const actualYear = useAppSelector(actualYearSelector);
 
-    const inGround = selectedSeedBed.inGround;
+    const inGround = selectedPlantSection.inGround;
 
     const [plantOptions, setPlantOptions] = useState<IOption[]>([]);
     const [varietyOptions, setVarietyOptions] = useState<IOption[]>([]);
@@ -34,18 +34,18 @@ const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
 
     const [plantsFromDB, setPlantsFromDB] = useState<IPlant[]>([]);
 
-    const plantSpacing: number = selectedSeedBed.plantSpacingMin ? selectedSeedBed.plantSpacingMin : selectedSeedBed.plant.PlantSpacingMin;
-    const rowSpacing = selectedSeedBed.rowSpacingMin ? selectedSeedBed.rowSpacingMin : selectedSeedBed.plant.RowSpacingMin;
+    const plantSpacing: number = selectedPlantSection.plantSpacingMin ? selectedPlantSection.plantSpacingMin : selectedPlantSection.plant.PlantSpacingMin;
+    const rowSpacing = selectedPlantSection.rowSpacingMin ? selectedPlantSection.rowSpacingMin : selectedPlantSection.plant.RowSpacingMin;
 
-    const spacingOptions: IOption[] = (selectedSeedBed.variety && selectedSeedBed.variety.PlantSpacingMin ? ["From plant", "From variety", "Custom"] : ["From plant", "Custom"]).map((opt, index) => ({ name: opt, value: index }));
+    const spacingOptions: IOption[] = (selectedPlantSection.variety && selectedPlantSection.variety.PlantSpacingMin ? ["From plant", "From variety", "Custom"] : ["From plant", "Custom"]).map((opt, index) => ({ name: opt, value: index }));
     const [selectedSpacingOption, setSelectedSpacingOption] = useState(0);
 
     useEffect(() => {
-        let varietyOps: Array<IOption> = selectedSeedBed.plant.varieties.map(variety => {
+        let varietyOps: Array<IOption> = selectedPlantSection.plant.varieties.map(variety => {
             return { name: variety.name, value: variety.id_variety }
         })
         setVarietyOptions(varietyOps);
-    }, [selectedSeedBed.plant.varieties])
+    }, [selectedPlantSection.plant.varieties])
 
     const pl: Array<IPlant> = usePlantsFromDB();
     useEffect(() => {
@@ -67,46 +67,46 @@ const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
     }
 
     const varietyChanged = (e: React.MouseEvent) => {
-        const newVariety = getArrEntryByIDAndIDName("id_variety", e.currentTarget.id, selectedSeedBed.plant.varieties);
+        const newVariety = getArrEntryByIDAndIDName("id_variety", e.currentTarget.id, selectedPlantSection.plant.varieties);
         if (newVariety) {
             dispatch(designActions.changeVarietyAction(newVariety));
         }
     }
 
     const plantSpacingChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch(designActions.updateSpacingAction({ id: selectedSeedBed.id, plantSpacing: parseInt(e.currentTarget.value), rowSpacing }))
+        dispatch(designActions.updateSpacingAction({ id: selectedPlantSection.id, plantSpacing: parseInt(e.currentTarget.value), rowSpacing }))
     }
 
     const rowSpacingChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch(designActions.updateSpacingAction({ id: selectedSeedBed.id, plantSpacing, rowSpacing: parseInt(e.currentTarget.value) }))
+        dispatch(designActions.updateSpacingAction({ id: selectedPlantSection.id, plantSpacing, rowSpacing: parseInt(e.currentTarget.value) }))
     }
 
     const spacingTypeChangedEventHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const option = parseInt(e.currentTarget.value);
         setSelectedSpacingOption(option);
         if (option === 0) {
-            dispatch(designActions.updateSpacingAction({ id: selectedSeedBed.id, plantSpacing: selectedSeedBed.plant.PlantSpacingMin, rowSpacing: selectedSeedBed.plant.RowSpacingMin }))
+            dispatch(designActions.updateSpacingAction({ id: selectedPlantSection.id, plantSpacing: selectedPlantSection.plant.PlantSpacingMin, rowSpacing: selectedPlantSection.plant.RowSpacingMin }))
         } else if (option === 1) {
-            const plantSpacing = selectedSeedBed.variety?.PlantSpacingMin ? selectedSeedBed.variety?.PlantSpacingMin : selectedSeedBed.plant.PlantSpacingMin;
-            const rowSpacing = selectedSeedBed.variety?.RowSpacingMin ? selectedSeedBed.variety?.RowSpacingMin : selectedSeedBed.plant.RowSpacingMin;
-            dispatch(designActions.updateSpacingAction({ id: selectedSeedBed.id, plantSpacing, rowSpacing }))
+            const plantSpacing = selectedPlantSection.variety?.PlantSpacingMin ? selectedPlantSection.variety?.PlantSpacingMin : selectedPlantSection.plant.PlantSpacingMin;
+            const rowSpacing = selectedPlantSection.variety?.RowSpacingMin ? selectedPlantSection.variety?.RowSpacingMin : selectedPlantSection.plant.RowSpacingMin;
+            dispatch(designActions.updateSpacingAction({ id: selectedPlantSection.id, plantSpacing, rowSpacing }))
         } else {
-            dispatch(designActions.updateSpacingAction({ id: selectedSeedBed.id, plantSpacing, rowSpacing }))
+            dispatch(designActions.updateSpacingAction({ id: selectedPlantSection.id, plantSpacing, rowSpacing }))
         }
     }
 
     const yearRoundPlantingChangedListener = (e: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch(designActions.setYearRound({ id: selectedSeedBed.id, yearRoundPlanting: e.currentTarget.checked }));
+        dispatch(designActions.setYearRoundPlanting({ id: selectedPlantSection.id, yearRoundPlanting: e.currentTarget.checked }));
     }
 
     const fromMonthChangedListener = (e: React.ChangeEvent<HTMLInputElement>) => {
         const fromMonth = parseInt(e.currentTarget.value.substring(e.currentTarget.value.indexOf("-") + 1)) - 1;
-        dispatch(designActions.setSeedbedInGroundFromMonth({ id: selectedSeedBed.id, fromMonth }));
+        dispatch(designActions.setPlantSectionInGroundFromMonth({ id: selectedPlantSection.id, fromMonth }));
     }
 
     const toMonthChangedListener = (e: React.ChangeEvent<HTMLInputElement>) => {
         const toMonth = parseInt(e.currentTarget.value.substring(e.currentTarget.value.indexOf("-") + 1)) - 1;
-        dispatch(designActions.setSeedbedInGroundToMonth({ id: selectedSeedBed.id, fromMonth: toMonth }));
+        dispatch(designActions.setPlantSectionInGroundToMonth({ id: selectedPlantSection.id, fromMonth: toMonth }));
     }
 
     return (
@@ -123,12 +123,12 @@ const FieldEditDialog: React.FC<IFieldEditDialogProps> = (props) => {
             <ModalWindow position={{ left: "50%", top: "50%" }} dimension={{
                 width: (modalWidth + 30) + "px", height
                     : "initial"
-            }} closeModalHandler={() => { dispatch(designActions.updateSelectedSeedBedAction(-1)) }}>
+            }} closeModalHandler={() => { dispatch(designActions.updateSelectedPlantSectionAction(-1)) }}>
                 <Label text={"Plant"}>
-                    {plantOptions.length > 0 ? <SearchableSelectbox name="field-edit-dialog-crop-selectbox" allOptions={plantOptions} selectedValue={selectedSeedBed.plant.id} onChange={cropChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
+                    {plantOptions.length > 0 ? <SearchableSelectbox name="field-edit-dialog-crop-selectbox" allOptions={plantOptions} selectedValue={selectedPlantSection.plant.id} onChange={cropChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
                 </Label>
                 <Label text={"Variety"}>
-                    {varietyOptions.length > 0 ? <SearchableSelectbox name="field-edit-dialog-variety-selectbox" allOptions={varietyOptions} selectedValue={selectedSeedBed.variety?.id_variety || 0} onChange={varietyChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
+                    {varietyOptions.length > 0 ? <SearchableSelectbox name="field-edit-dialog-variety-selectbox" allOptions={varietyOptions} selectedValue={selectedPlantSection.variety?.id_variety || 0} onChange={varietyChanged} modalWidth={modalWidth} /> : <div>loading...</div>}
                 </Label>
                 <hr />
                 <Label text={"Spacing"}>

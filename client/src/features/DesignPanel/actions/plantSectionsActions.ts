@@ -7,7 +7,7 @@ const rotatePlantSectionsZIndex = (state: IDesignSlice, action: PayloadAction<nu
         return;
     }
 
-    const sortedPlantSectionsToRotateZIndex = state.objects.seedBeds.filter(sb => plantSectionsIDs.includes(sb.id)).sort((a, b) => a.zIndex - b.zIndex);
+    const sortedPlantSectionsToRotateZIndex = state.objects.plantSections.filter(sb => plantSectionsIDs.includes(sb.id)).sort((a, b) => a.zIndex - b.zIndex);
 
     const RotatedZIndexes = sortedPlantSectionsToRotateZIndex.map(section => section.zIndex);
     const lastZIndex = RotatedZIndexes.pop();

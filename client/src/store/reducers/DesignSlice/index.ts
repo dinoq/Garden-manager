@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ISeedBed } from "../../../helpers/types";
 import { plantSectionActions } from "./actions/plantSectionsActions";
 import { projectActions } from "./actions/projectActions";
 import { calendarActions } from "./actions/calendarActions";
 import { DesignPanelPlantSectionActions } from "../../../features/DesignPanel/actions";
+import { IPlantSection } from "../../../features/DesignPanel/types";
 
 interface ICalendarSlice{
     actualYear: number,
@@ -20,8 +20,8 @@ export interface IProjectSlice{
 }
 
 interface IObjectsSlice {    
-    seedBeds: ISeedBed[],
-    selectedSeedBedID: number,
+    plantSections: IPlantSection[],
+    selectedPlantSectionID: number,
 }
 
 export interface IDesignSlice {
@@ -32,8 +32,8 @@ export interface IDesignSlice {
 
 const initialState: IDesignSlice = {
     objects: {
-        seedBeds: [],
-        selectedSeedBedID: -1,
+        plantSections: [],
+        selectedPlantSectionID: -1,
     },
     project:{
         projectID: -1,

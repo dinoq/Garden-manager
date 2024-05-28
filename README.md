@@ -4,7 +4,7 @@ TODO refactor:
 [ ] divide DesignSlice into 3 independent slices (objects, project, calendar)?
 [ ] plant with dashed border?
 [ ] zoom předělat taky na lokální a až po mouseup vložit do reduxu
-[ ] změnit "SeedBedsSlice->createNewSeedBedAction->rowsDirection" podle defaultního nastavení! (Aktuálně se tam prostě vkládá ROWDIRECTIONS.LEFT_TO_RIGHT)
+[ ] změnit "PlantSectionsSlice->createNewPlantSectionAction->rowsDirection" podle defaultního nastavení! (Aktuálně se tam prostě vkládá ROWDIRECTIONS.LEFT_TO_RIGHT)
 Lint
 rename all reducers to end with word Action
 
@@ -13,7 +13,7 @@ __________________________________________________________
 [ ] autosave
 __________________________________________________________
 ### Object creation
-[ ] mód pokládání plant pomocí více klikání (uživatel vybere plant a kliká všude kam se mají vkládat jednotlivé rostliny) - nemusí po každé pokládce znovu vybírat rostlinu; mohlo by být realizováno při výběru plants switchem mezi módy - Pozn: jednotlivé rostliny by asi neměli mít FieldEditDialog? Minimálně ne tak podrobný... - možná switch mezi create plant/seedbed
+[ ] mód pokládání plant pomocí více klikání (uživatel vybere plant a kliká všude kam se mají vkládat jednotlivé rostliny) - nemusí po každé pokládce znovu vybírat rostlinu; mohlo by být realizováno při výběru plants switchem mezi módy - Pozn: jednotlivé rostliny by asi neměli mít FieldEditDialog? Minimálně ne tak podrobný... - možná switch mezi create plant/plant section
 [ ] Možnost kliknutí i táhnutí v seznamu
 [ ] při pokládání při kliknutí vložit velikost o jedné rostlině (tak aby se zobrazil move handler i size handler), příp nějaká minimální u malých crop. Možná při resize nastavit minimální velikost na jednu rostlinu?
 #### Object types
@@ -51,7 +51,7 @@ section object creation and manipulation
 [ ] show FieldEditDialog default by click on plant (vs doubleclick/some "info button" click)
 [ ] only vertical/horizontal plant sections (disable rotations)
 [ ] allow creation variety on-the-fly (without setting in manager)
-[ ] seedbed can have name
+[ ] plant section can have name
 -
 section tips (button open tips)
 [ ] show random tip at app start
@@ -65,12 +65,13 @@ __________________________________________________________
 [ ] Rozdělení na Settings/Info  
 #### Settings:  
 [ ] name + checkbox display name (in app view)
-[ ] název rostliny, - při změně "are you sure? Don't want to use succession plant?" -> I am sure/succession/cancel (+checkbox remember my choice and don't show again [not recommended]). Při "I am sure" YNC dialog jestli měnit spon podle defaultu plodiny
+[ ] název rostliny, - při změně "are you sure? Don't want to use succession plant instead?" -> I am sure/succession/cancel (+checkbox remember my choice and don't show again [not recommended]). Při "I am sure" YNC dialog jestli měnit spon podle defaultu plodiny
 [ ] odruda,  - při změně "are you sure?" -> Yes/cancel (+checkbox remember my choice and don't show again).při potvrzení YNC dialog jestli měnit spon defaultu odrudy
 [ ] orientace řádků,
 [ ] umístění fieldu od-do (měsíc) (+tlačítko create succesion)
 [ ] rozměry fieldu 
 [ ] spon(selectbox [from plant, from variety, variety X..., variety Y..., custom] -> input underneath ( two slider and input underneath)). On change in slider/input automatically change selectbox value to custom. Remember custom when change in selectox from custom to another.
+[ ] join with other fields (=> will set them into group and will share properties except width/height)
 
 #### Basic Info:
 [ ] undo - redo button
@@ -105,7 +106,7 @@ V horním menu:
 [ ] calendar (add arrow before and after months [two arrow - one for moving by 1 part, one form jumping between months]), 
 [ ] manipulation tools (move, zoom, rectangle select, free select), 
 [ ] create? (plant, object, paths, field, shapes, text) - as selection of shapes in ms word - maybe open left menu on select there with pre-filtered [which was selected]
-[ ] seedbed creation tools (horizontal split, vertical split, path?, merge),
+[ ] plant section creation tools (horizontal split, vertical split, path?, merge),
 [ ] layers (plants, object, irrigation, all, lock all), help
 [ ] tools (meter)
 [ ] group objects

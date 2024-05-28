@@ -6,11 +6,11 @@ export const actualMonthSelector = (state: RootState) => state.designReducer.cal
 export const actualMonthPartSelector = (state: RootState) => state.designReducer.calendar.actualMonthPart;
 export const showAllMonthsSelector = (state: RootState) => state.designReducer.calendar.showAllMonths;
 
-export const seedBedsSelector = (state: RootState) => state.designReducer.objects.seedBeds;
-export const isSeedBedSelectedSelector = (state: RootState, id: number) => state.designReducer.objects.selectedSeedBedID === id;
-export const seedBedSelector = (state: RootState, id: number) => state.designReducer.objects.seedBeds[id];
-export const selectedSeedBedSelector = (state: RootState) => state.designReducer.objects.seedBeds[state.designReducer.objects.selectedSeedBedID];
-export const selectedSeedBedIDSelector = (state: RootState) => state.designReducer.objects.selectedSeedBedID;
+export const plantSectionsSelector = (state: RootState) => state.designReducer.objects.plantSections;
+export const isPlantSectionSelectedSelector = (state: RootState, id: number) => state.designReducer.objects.selectedPlantSectionID === id;
+export const plantSectionSelector = (state: RootState, id: number) => state.designReducer.objects.plantSections[id];
+export const selectedPlantSectionSelector = (state: RootState) => state.designReducer.objects.plantSections[state.designReducer.objects.selectedPlantSectionID];
+export const selectedPlantSectionIDSelector = (state: RootState) => state.designReducer.objects.selectedPlantSectionID;
 
 export const projectNameSelector = (state: RootState) => state.designReducer.project.projectName;
 export const projectIDSelector = (state: RootState) => state.designReducer.project.projectID;

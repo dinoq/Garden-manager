@@ -1,13 +1,13 @@
 import { DEPTH } from "../../../helpers/constants";
 import { RootState } from "../../../store";
-import { seedBedSelector, seedBedsSelector } from "../../../store/reducers/DesignSlice/selectors";
+import { plantSectionSelector, plantSectionsSelector } from "../../../store/reducers/DesignSlice/selectors";
 
 export const plantSectionZIndexSelector = (state: RootState, id: number) => {
-    const plantSection = seedBedSelector(state, id);
-    return plantSection.isPlaced ? (DEPTH.SEEDBED + plantSection.zIndex) : DEPTH.UNPLACED_SEEDBED
+    const plantSection = plantSectionSelector(state, id);
+    return plantSection.isPlaced ? (DEPTH.PLANTSECTION + plantSection.zIndex) : DEPTH.UNPLACED_PLANTSECTION
 }
 
 export const unplacedPlantSectionSelector = (state: RootState) => {
-    const seedBeds = seedBedsSelector(state);
-    return seedBeds.find(seedBed => !seedBed.isPlaced);
+    const plantSections = plantSectionsSelector(state);
+    return plantSections.find(plantSection => !plantSection.isPlaced);
 }

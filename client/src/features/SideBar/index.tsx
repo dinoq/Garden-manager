@@ -82,10 +82,10 @@ const SideBar: React.FC<{}> = () => {
         )
     }
 
-    const setNewUplacedSeedBed = (e: React.MouseEvent<HTMLLIElement>) => {
+    const setNewUplacedPlantSection = (e: React.MouseEvent<HTMLLIElement>) => {
         const plant = getArrEntryByIDAndIDName("id", e.currentTarget.id, actualPlantList);
         if (plant) {
-            dispatch(designActions.createNewSeedBedAction({ position: { x: e.clientX - worldPos.x, y: e.clientY - worldPos.y - toolbarHeight - tabBarHeight }, plant }))
+            dispatch(designActions.createNewPlantSectionAction({ position: { x: e.clientX - worldPos.x, y: e.clientY - worldPos.y - toolbarHeight - tabBarHeight }, plant }))
         }
     }
 
@@ -116,7 +116,7 @@ const SideBar: React.FC<{}> = () => {
                     overflow: hidden;
                     `}>
                     {searchType === SEARCH_TYPE.PLANTS && actualPlantList !== undefined && actualPlantList.length > 0 &&
-                        <SearchList items={searchType === SEARCH_TYPE.PLANTS ? actualPlantList : objects} setNewUplacedSeedBed={setNewUplacedSeedBed} />
+                        <SearchList items={searchType === SEARCH_TYPE.PLANTS ? actualPlantList : objects} setNewUplacedPlantSection={setNewUplacedPlantSection} />
                     }
                 </div>
             </div>

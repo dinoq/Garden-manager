@@ -13,20 +13,11 @@ export interface IPosition{
 
 export interface IAppObject extends IDimensions, IPosition{
     id: number,
-    name: string
-}
-
-export interface ISeedBed extends IAppObject{
-    id: number, 
-    plant: IPlant,
-    variety?: IVariety,
-    plantSpacingMin?: number,
-    rowSpacingMin?: number,
-    isPlaced: boolean,
-    rowsDirection: ROWDIRECTIONS;
-    inGround: IInGround,
+    name: string,
     zIndex: number
 }
+
+
 
 export interface IField extends IAppObject{
     id: number, 

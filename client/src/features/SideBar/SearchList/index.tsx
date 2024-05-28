@@ -10,7 +10,7 @@ import { hideGUISelector } from '../../../store/reducers/GUISlice/selectors';
 
 interface ICategory {
     items: Array<IPlant | IAppObject>,
-    setNewUplacedSeedBed: MouseEventHandler<HTMLLIElement>,
+    setNewUplacedPlantSection: MouseEventHandler<HTMLLIElement>,
 }
 const SearchList: React.FC<ICategory> = (props) => {
     const hideGUI = useAppSelector(hideGUISelector);
@@ -24,7 +24,7 @@ const SearchList: React.FC<ICategory> = (props) => {
             overflow-y: scroll;
     `}>
             {items.map((item, i) => {
-                return <ListItem key={"search-list-item-" + item.id} isLastItem={i === props.items.length - 1} item={item} setNewUplacedSeedBed={props.setNewUplacedSeedBed} />
+                return <ListItem key={"search-list-item-" + item.id} isLastItem={i === props.items.length - 1} item={item} setNewUplacedPlantSection={props.setNewUplacedPlantSection} />
             })}
         </ul>
     )

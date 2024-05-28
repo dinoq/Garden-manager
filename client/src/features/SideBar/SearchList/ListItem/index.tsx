@@ -9,14 +9,14 @@ import { hideGUISelector } from '../../../../store/reducers/GUISlice/selectors';
 
 interface IListItem{
     item: IPlant | IAppObject,
-    setNewUplacedSeedBed: MouseEventHandler<HTMLLIElement>,
+    setNewUplacedPlantSection: MouseEventHandler<HTMLLIElement>,
     isLastItem: boolean
 }
 const ListItem: React.FC<IListItem> = (props) => {
     const hideGUI = useAppSelector(hideGUISelector);
     const name = hideGUI? props.item.name.substring(0,2) : props.item.name;
     return (<
-        li key={"plant-" + props.item.id} id={"plant-" + props.item.id} draggable="false" onClick={props.setNewUplacedSeedBed} css={css`
+        li key={"plant-" + props.item.id} id={"plant-" + props.item.id} draggable="false" onClick={props.setNewUplacedPlantSection} css={css`
     cursor: pointer;
     padding: 15px;
     margin: 5px 0;

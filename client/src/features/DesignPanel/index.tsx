@@ -12,9 +12,8 @@ import MemoFieldEditDialog from "./components/FieldEditDialog";
 import MessageBar from "./components/MesageBar";
 import ProjectDialog from "../Project/ProjectDialog";
 import Scale from "./components/Scale";
-import SeedBed from "./components/SeedBed";
-import SeedBeds from "./components/SeedBeds";
-import { seedBedsSelector, selectedSeedBedIDSelector } from "../../store/reducers/DesignSlice/selectors";
+import PlantSection from "./components/PlantSection";
+import { plantSectionsSelector, selectedPlantSectionIDSelector } from "../../store/reducers/DesignSlice/selectors";
 import { menuWidthSelector, projectDialogShowSelector, projectDialogStateSelector, toolbarHeightSelector, tabBarHeightSelector, hideGUISelector } from "../../store/reducers/GUISlice/selectors";
 import { zoomSelector, worldPositionSelector, isMovingDesignPanelSelector, worldWidthSelector, worldHeightSelector } from "../../store/reducers/ViewNavigationSlice/selectors";
 import { unplacedPlantSectionSelector } from "./selectors";
@@ -23,6 +22,7 @@ import { autosaveEnabledSelector, autosaveFrequencySelector } from "../../store/
 import DBManager from "../../helpers/DBManager";
 import { IOption } from "../../components/types";
 import useClickOutside from "../../hooks/useClickOutside";
+import PlantSections from "./components/PlantSections";
 
 
 interface IDesignPanelProps {
@@ -34,8 +34,8 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
 
     const viewElement = useRef<HTMLDivElement>(null);
 
-    const seedBeds = useAppSelector(seedBedsSelector);
-    const selectedSeedBedID = useAppSelector(selectedSeedBedIDSelector);
+    const plantSections = useAppSelector(plantSectionsSelector);
+    const selectedPlantSectionID = useAppSelector(selectedPlantSectionIDSelector);
 
     const worldZoom = useAppSelector(zoomSelector);
     const worldPosition = useAppSelector(worldPositionSelector);
@@ -114,7 +114,7 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
             setSkipNextPlantSectionsRotation(true);
             let position: IPosition = { x: designPanelMousePosition.x - unplacedBed.width / 2, y: designPanelMousePosition.y - unplacedBed.height / 2 };
 
-            dispatch(designActions.placeSeedBedAction({ id: unplacedBed.id, position }));
+            dispatch(designActions.placePlantSectionAction({ id: unplacedBed.id, position }));
             setDesignPanelMousePosition({ x: 0, y: 0 });
         }
     }
@@ -138,12 +138,12 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
     }
 
 
-    seedBeds.map((seedBed, i) => {
-        let position: IPosition = { x: seedBed.x, y: seedBed.y };
-        if (!seedBed.isPlaced) {
-            position = { x: designPanelMousePosition.x - seedBed.width / 2, y: designPanelMousePosition.y - seedBed.height / 2 };
+    plantSections.map((plantSection, i) => {
+        let position: IPosition = { x: plantSection.x, y: plantSection.y };
+        if (!plantSection.isPlaced) {
+            position = { x: designPanelMousePosition.x - plantSection.width / 2, y: designPanelMousePosition.y - plantSection.height / 2 };
         }
-        return <SeedBed key={"seed-bed-" + i} {...seedBed} {...position} />
+        return <PlantSection key={"seed-bed-" + i} {...plantSection} {...position} />
     })
 
 
@@ -177,27 +177,27 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
                         }
                     }
                 });
-                if (e.type === 'click' && e.button === 0 && selectedSeedBedID !== -1 && !isContextMenuVisible) {  // Event is click & was right clicked & actually already is selected plant section (so we need toggle for any other) & context menu is not visible -> rotate plant sections depth  
+                if (e.type === 'click' && e.button === 0 && selectedPlantSectionID !== -1 && !isContextMenuVisible) {  // Event is click & was right clicked & actually already is selected plant section (so we need toggle for any other) & context menu is not visible -> rotate plant sections depth  
                     dispatch(designActions.rotatePlantSectionsDepth(plantSectionsToRotateDepthIDs));
                 } else if (e.type === 'contextmenu' && e.button === 2) {
                     e.preventDefault(); // Prevent the context menu from appearing
                     setContextMenuPosition({x: e.clientX, y: e.clientY - toolbarHeight - tabBarHeight}); // ContextMEnu is common ui component, so we need to correct y (by  - toolbarHeight - tabBarHeight) here
-                    setContextMenuItems(plantSectionsToRotateDepthIDs.map(plantSectionID => ({name: seedBeds[plantSectionID].name, value: plantSectionID})))
+                    setContextMenuItems(plantSectionsToRotateDepthIDs.map(plantSectionID => ({name: plantSections[plantSectionID].name, value: plantSectionID})))
                 }
             }
         }
     }
 
     const onDesignPanelContextMenuItemClicked = useCallback((selectedItem: IOption) => {
-        const selectedPlantSection = seedBeds[selectedItem.value];
-        const plantSectionsInContextMenu = contextMenuItems.map(item => seedBeds[item.value]);
+        const selectedPlantSection = plantSections[selectedItem.value];
+        const plantSectionsInContextMenu = contextMenuItems.map(item => plantSections[item.value]);
         let maxZIndexItem = plantSectionsInContextMenu.reduce((max, plantSection) => max.zIndex > plantSection.zIndex ? max : plantSection);
         if (maxZIndexItem !== selectedPlantSection) {
             const plantSectionsToRotateDepth = [maxZIndexItem.id, selectedPlantSection.id];
             dispatch(designActions.rotatePlantSectionsDepth(plantSectionsToRotateDepth));
         }
         setContextMenuPosition({ x: -1, y: -1 });
-    }, [seedBeds, contextMenuItems, dispatch])
+    }, [plantSections, contextMenuItems, dispatch])
     
     return (
         <div ref={viewElement} onClick={rotatePlantSectionsZIndexes} onContextMenu={rotatePlantSectionsZIndexes} onDragOver={e => e.preventDefault()} onWheel={zoom} onMouseDown={mouseDown} onMouseUp={mouseUp} css={css`
@@ -208,10 +208,10 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
             top: ${worldPos.y}px;
             cursor: ${cursor};
         `}>
-            {<SeedBeds beds={seedBeds} mouseDesignPanelPosition={designPanelMousePosition} />}
+            {<PlantSections sections={plantSections} mouseDesignPanelPosition={designPanelMousePosition} />}
             {!hideGUI && <Scale />}
             <MessageBar />
-            {selectedSeedBedID !== -1 && <MemoFieldEditDialog />}
+            {selectedPlantSectionID !== -1 && <MemoFieldEditDialog />}
             {isContextMenuVisible && <ContextMenu ref={contextMenuRef} position={contextMenuPosition} name="object-selection-context-menu" items={contextMenuItems} onItemClickHandler={onDesignPanelContextMenuItemClicked} />}
             {showProjectDialog && <ProjectDialog state={projectDialogState} />}
         </div>

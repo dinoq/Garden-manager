@@ -26,8 +26,8 @@ export default class DBManager {
 
         return {
             objects: {
-                selectedSeedBedID: -1,
-                seedBeds: app?.objects?.seedBeds || []
+                selectedPlantSectionID: -1,
+                plantSections: app?.objects?.plantSections || []
             },
             project: {
                 projectID: app?.project?.projectID || -1,
