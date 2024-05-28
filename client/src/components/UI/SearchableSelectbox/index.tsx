@@ -1,10 +1,12 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import InputField from "../InputField";
 import { useAppDispatch } from "../../../hooks/useAppDispatch";
 import { enableZoomAction } from "../../../store/reducers/ViewNavigationSlice";
+import { IOption } from "../../types";
+import useClickOutside from "../../../hooks/useClickOutside";
 
 export interface ISelectboxProps {
     name: string,
@@ -14,19 +16,17 @@ export interface ISelectboxProps {
     modalWidth: number
 }
 
-export interface IOption {
-    name: string,
-    value: number
-}
-
-
 const SearchableSelectbox: React.FC<ISelectboxProps> = (props) => {
     const dispatch = useAppDispatch();
     const [searchText, setSearchText] = useState(props.allOptions.find(option => option.value === props.selectedValue)?.name || "");
     const [options, setOptions] = useState<IOption[]>(props.allOptions);
     const [optionsVisible, setOptionsVisible] = useState(false);
-    
-    const optionsRef = useRef<HTMLDivElement>(null);
+
+    const optionsRef = useClickOutside((e: MouseEvent) => {
+       if (optionsRef.current && !optionsRef.current.contains(e.target as HTMLDivElement)) {
+            setOptionsVisible(false);
+        }
+    })
 
     useEffect(() => {
         setSearchText(props.allOptions.find(option => option.value === props.selectedValue)?.name || "");
@@ -36,20 +36,6 @@ const SearchableSelectbox: React.FC<ISelectboxProps> = (props) => {
         setOptions(props.allOptions);
     }, [props.allOptions])
 
-    useEffect(() => {
-        function handleClickOutside(e: MouseEvent) {
-          if (optionsRef.current && !optionsRef.current.contains(e.target as HTMLDivElement)) {
-            setOptionsVisible(false);
-          }
-        }
-        // Bind the event listener
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-          // Unbind the event listener on clean up
-          document.removeEventListener("mousedown", handleClickOutside);
-        };
-      }, [optionsRef]);
-    
     const inputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
         const text = e.currentTarget.value;
         setSearchText(text);
@@ -62,7 +48,7 @@ const SearchableSelectbox: React.FC<ISelectboxProps> = (props) => {
         setOptionsVisible(true);
     }
 
-    const optionSelected = (e: React.MouseEvent<HTMLDivElement>) => {        
+    const optionSelected = (e: React.MouseEvent<HTMLDivElement>) => {
         setOptionsVisible(false);
         props.onChange(e);
     }
@@ -77,7 +63,7 @@ const SearchableSelectbox: React.FC<ISelectboxProps> = (props) => {
                 cursor: pointer;
                 background-color: #6e6e6e;
                 position: absolute;
-                display: ${optionsVisible? "block" : "none"};
+                display: ${optionsVisible ? "block" : "none"};
             `} onMouseEnter={() => dispatch(enableZoomAction(false))} onMouseLeave={() => dispatch(enableZoomAction(true))} ref={optionsRef}>
                 {options.map(option => {
                     return (

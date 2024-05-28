@@ -1,5 +1,5 @@
 export enum DEPTH {
-    APP_VIEW,
+    DESING_PANEL,
     FIELD,
     SEEDBED,
     SIDEBAR,
@@ -9,12 +9,14 @@ export enum DEPTH {
     SCALE,
     FIELD_EDITS,
 
+
     SEARCH_FILTER_SWITCH_SELECTOR,
     SEARCH_FILTER_SWITCH_OPTION,
 
 
     HEADER,
     CALENDAR,
-    MODAL_WINDOW
+    MODAL_WINDOW,
+    CONTEXT_MENU,
 }
 

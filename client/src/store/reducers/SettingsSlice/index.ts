@@ -1,5 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
-import DBManager from "../../../helpers/DBManager";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { settingsAutosaveActions, settingsCalendarActions } from "./actions";
 import { DEFAULT_AUTOSAVE_FREQUENCY, monthPartsCountType } from "./types";
 
@@ -8,16 +7,16 @@ export interface ISettingsSlice {
     calendar: {
         monthPartsCount: monthPartsCountType;
     },
-    autosave:{
+    autosave: {
         enabled: boolean,
         frequency: number // Frequency in seconds
     }
 }
-export const settingsInitialState: ISettingsSlice = {
+export const initialState: ISettingsSlice = {
     calendar: {
         monthPartsCount: 4
     },
-    autosave:{
+    autosave: {
         enabled: true,
         frequency: DEFAULT_AUTOSAVE_FREQUENCY
     }
@@ -25,8 +24,11 @@ export const settingsInitialState: ISettingsSlice = {
 
 const SettingsSlice = createSlice({
     name: "SettingsSlice",
-    initialState: DBManager.getSettings(),
+    initialState,
     reducers: {
+        hydrate: (state: ISettingsSlice, action: PayloadAction<ISettingsSlice>) => {
+            state = action.payload;
+        },
         ...settingsAutosaveActions,
         ...settingsCalendarActions
     }

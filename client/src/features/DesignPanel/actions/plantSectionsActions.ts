@@ -21,5 +21,5 @@ const rotatePlantSectionsZIndex = (state: IDesignSlice, action: PayloadAction<nu
 }
 
 export const DesignPanelPlantSectionActions = {
-    rotatePlantSectionsZIndex
+    rotatePlantSectionsDepth: rotatePlantSectionsZIndex
 }

@@ -1,6 +1,6 @@
 import store from "../store";
 import { IDesignSlice, IProjectSlice } from "../store/reducers/DesignSlice";
-import { ISettingsSlice, settingsInitialState } from "../store/reducers/SettingsSlice";
+import { ISettingsSlice } from "../store/reducers/SettingsSlice";
 
 const PROJECTS_PATH = "projects";
 const SETTINGS_PATH = "settings";
@@ -63,6 +63,6 @@ export default class DBManager {
 
     public static getSettings(): ISettingsSlice {
         const settingsStr = localStorage.getItem(SETTINGS_PATH);
-        return settingsStr?.length ? JSON.parse(settingsStr) : settingsInitialState;
+        return settingsStr?.length ? JSON.parse(settingsStr) : undefined;
     }
 }

@@ -1,5 +1,6 @@
 TODO refactor:
 [ ] zoom - use css transform: scale() instead recomputation?
+[ ] useLocalCoordinates - rewrite? Or change moving logic completly?
 [ ] divide DesignSlice into 3 independent slices (objects, project, calendar)?
 [ ] plant with dashed border?
 [ ] zoom předělat taky na lokální a až po mouseup vložit do reduxu

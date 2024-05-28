@@ -5,7 +5,6 @@ import { FC } from "react";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { settingsActions } from "../../store/reducers/SettingsSlice";
-import { IOption } from "../../components/UI/SearchableSelectbox";
 import Selectbox from "../../components/UI/Selectbox";
 import DBManager from "../../helpers/DBManager";
 import Button from "../../components/UI/Button";
@@ -14,6 +13,7 @@ import { flexColumn } from "../../styles/mixins";
 import ColumnContainer from "../../components/UI/ColumnContainer";
 import { monthPartsCountType } from "../../store/reducers/SettingsSlice/types";
 import { monthPartsCountSelector, autosaveEnabledSelector, autosaveFrequencySelector } from "../../store/reducers/SettingsSlice/selectors";
+import { IOption } from "../../components/types";
 
 type ISettingsViewProps = {
 }

@@ -5,11 +5,11 @@ import { moveWorldByMouseAction } from "../store/reducers/ViewNavigationSlice";
 import { useAppDispatch } from "./useAppDispatch";
 import { useAppSelector } from "./useAppSelector";
 
-const useLocalCoordinates = (/*coord: IPosition,*/ reduxLocation: (state: RootState)=>IPosition): {pos: IPosition, updateLocal: any, updateGlobal: any, setMouseStartDiffPosition: any} => {
+const useLocalCoordinates = (reduxLocationSelector: (state: RootState)=>IPosition): {pos: IPosition, updateLocal: any, updateGlobal: any, setMouseStartDiffPosition: any} => {
     const dispatch = useAppDispatch();
     const [localPosDiff, setLocalPosDiff] = useState<IPosition>({x: 0, y: 0});
     const [mouseStartDiffPosition, setMouseStartDiffPosition] = useState({ diffX: 0, diffY: 0 })
-    const reduxPosition: IPosition = useAppSelector(state => reduxLocation(state))
+    const reduxPosition: IPosition = useAppSelector(reduxLocationSelector)
     
     const posX = reduxPosition.x + localPosDiff.x;
     const posY = reduxPosition.y + localPosDiff.y;

@@ -16,6 +16,7 @@ const DesignPage: FC<IDesignPageProps> = (props) => {
     const toolbarHeight = useAppSelector(toolbarHeightSelector);
     
     const [mouseMove, setMouseMove] = useState<React.MouseEvent<HTMLDivElement, MouseEvent>>();
+
     return (
         <React.Fragment>
             <div css={css`

@@ -5,12 +5,12 @@ import React, { useState } from 'react';
 import { useAppDispatch } from '../../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../../hooks/useAppSelector';
 import { DEPTH } from '../../../../helpers/constants';
-import { IOption } from '../../../../components/UI/SearchableSelectbox';
 import LabeledCard from '../../../../components/UI/LabeledCard';
 import Selectbox from '../../../../components/UI/Selectbox';
 import { designActions } from '../../../../store/reducers/DesignSlice';
 import { actualYearSelector, actualMonthSelector, actualMonthPartSelector, showAllMonthsSelector } from '../../../../store/reducers/DesignSlice/selectors';
 import { monthPartsCountSelector } from '../../../../store/reducers/SettingsSlice/selectors';
+import { IOption } from '../../../../components/types';
 
 interface ICalendarProps {
 

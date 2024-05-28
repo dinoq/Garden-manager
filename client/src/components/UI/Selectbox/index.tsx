@@ -1,17 +1,13 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { css, jsx } from "@emotion/react";
+import { IOption } from "../../types";
 
 export interface ISelectboxProps {
     name: string,
     defaultValue: number,
     options: IOption[],
     onChange: React.ChangeEventHandler
-}
-
-export interface IOption {
-    name: string,
-    value: number
 }
 
 const Selectbox: React.FC<ISelectboxProps> = (props) => {

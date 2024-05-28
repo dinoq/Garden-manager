@@ -9,13 +9,14 @@ import { useAppSelector } from "../../../../hooks/useAppSelector";
 import usePlantsFromDB from "../../../../hooks/usePlantsFromDB";
 import { IPlant } from "../../../../helpers/plant-types";
 import { getArrEntryByIDAndIDName } from "../../../../helpers/functions";
-import SearchableSelectbox, { IOption } from "../../../../components/UI/SearchableSelectbox";
+import SearchableSelectbox from "../../../../components/UI/SearchableSelectbox";
 import Label from "../../../../components/UI/Label";
 import ModalWindow from "../../../../components/UI/ModalWindow";
 import DoubleSlider from "../../../../components/UI/DoubleSlider";
 import Selectbox from "../../../../components/UI/Selectbox";
 import { designActions } from "../../../../store/reducers/DesignSlice";
 import { selectedSeedBedSelector, actualYearSelector } from "../../../../store/reducers/DesignSlice/selectors";
+import { IOption } from "../../../../components/types";
 export interface IFieldEditDialogProps {
 }
 
