@@ -3,7 +3,7 @@
 import { css, jsx } from '@emotion/react';
 import React, { useState } from "react";
 import { DEPTH } from '../../../../helpers/constants';
-import { zoomedFactory } from '../../../../helpers/functions';
+import { cmToPX, zoomedFactory } from '../../../../helpers/functions';
 import { IPosition } from '../../../../helpers/types';
 import { useAppDispatch } from '../../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../../hooks/useAppSelector';
@@ -36,10 +36,11 @@ const PlantSection: React.FC<IPlantSectionProps> = (props) => {
     const zoomed = zoomedFactory(zoom);
     const resizable = true, draggable = true;
 
-    const width = zoomed((localSize.width > 0) ? localSize.width : props.width);
-    const height = zoomed((localSize.height > 0) ? localSize.height : props.height);
+    const width = cmToPX(zoomed((localSize.width > 0) ? localSize.width : props.width),zoom);
+    const height = cmToPX(zoomed((localSize.height > 0) ? localSize.height : props.height),zoom);
 
     let x = zoomed((props.x + localPosDiff.x));
+    console.log('x: ', x);
     let y = zoomed((props.y + localPosDiff.y));
 
     // HANDLERS
@@ -80,14 +81,15 @@ const PlantSection: React.FC<IPlantSectionProps> = (props) => {
 
     const plantSpacingMin = props.plantSpacingMin ? props.plantSpacingMin : props.plant.PlantSpacingMin;
     const widthForCalculation = props.rowsDirection === ROWDIRECTIONS.LEFT_TO_RIGHT ? width : height;
-    let inRowCountDecimal = widthForCalculation / (zoomed(plantSpacingMin));
+    let inRowCountDecimal = widthForCalculation / (cmToPX(zoomed(plantSpacingMin), zoom));
+    //console.log('inRowCountDecimal: ', inRowCountDecimal);
     let inRowCount = Math.floor(inRowCountDecimal);
     let inRowCountDecimalPart = inRowCountDecimal - inRowCount;
     const inRowPlantShift = (zoomed(plantSpacingMin) * inRowCountDecimalPart) / 2;
 
     const RowSpacingMin = props.rowSpacingMin ? props.rowSpacingMin : props.plant.RowSpacingMin;
     const heightForCalculation = props.rowsDirection === ROWDIRECTIONS.LEFT_TO_RIGHT ? height : width;
-    let rowsCountDecimal = heightForCalculation / (zoomed(RowSpacingMin));
+    let rowsCountDecimal = heightForCalculation / (cmToPX(zoomed(RowSpacingMin), zoom));
     let rowsCount = Math.floor(rowsCountDecimal);
     let rowCountDecimalPart = rowsCountDecimal - rowsCount;
     const rowPlantShift = (zoomed(RowSpacingMin) * rowCountDecimalPart) / 2;
@@ -99,20 +101,20 @@ const PlantSection: React.FC<IPlantSectionProps> = (props) => {
     const minimalHeight = (direction == ROWDIRECTIONS.LEFT_TO_RIGHT) ? props.plant.RowSpacingMin : props.plant.PlantSpacingMin;
 
     let plants: Array<any> = [];
-    if (plantCount < 50) {
+    if (plantCount < 5000) {
         for (let i = 0; i < plantCount; i++) {
-            plants.push(<Plant {...props} key={"sees-bed-" + i} rowDirection={props.rowsDirection} />)
+            plants.push(<Plant {...props} key={"plant-section-" + i} rowDirection={props.rowsDirection} />)
         }
     } else {
         for (let i = 0; i < 4; i++) {
             plants[i] = [];
             for (let j = 0; j < 3; j++) {
-                plants[i].push(<Plant {...props} key={"sees-bed-" + i * 10 + j} rowDirection={props.rowsDirection} />)
+                plants[i].push(<Plant {...props} key={"plant-section-" + i * 10 + j} rowDirection={props.rowsDirection} />)
             }
         }
     }
 
-    const showAllPlants = plantCount < 50;
+    const showAllPlants = plantCount < 500;
 
     if(!props.inGround.yearRoundPlanting){
         const showInActualMonth = props.inGround.from.month <= calendar.actualMonth && props.inGround.to.month >= calendar.actualMonth;
@@ -144,32 +146,13 @@ const PlantSection: React.FC<IPlantSectionProps> = (props) => {
                 `}>
                 {plants}
             </div>}
-            {!showAllPlants && <div css={css`                
-                padding-left: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? rowPlantShift : inRowPlantShift)}px;
-                //padding-top: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? inRowPlantShift : rowPlantShift)}px;
-            `}>
-                <div css={css`
-                    position: absolute;
-                    top: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? inRowPlantShift : rowPlantShift)}px;
-                    left: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? rowPlantShift : inRowPlantShift)}px;
-                `}>{plants[0]}</div>
-                <div css={css`
-                    position: absolute;
-                    bottom: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? inRowPlantShift : rowPlantShift)}px;
-                    left: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? rowPlantShift : inRowPlantShift)}px;
-                `}>{plants[1]}</div>
-                <div css={css`
-                    position: absolute;
-                    top: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? inRowPlantShift : rowPlantShift)}px;
-                    right: ${zoomed(ROWDIRECTIONS.LEFT_TO_RIGHT ? rowPlantShift : inRowPlantShift)}px;
-                `}>{plants[2]}</div>
-            </div>}
 
             <div css={css`
                 background-color: #dddddd;
                 left: ${(width - 25) / 2}px;
                 top: ${(height - 70) / 2}px;
                 position: absolute;
+                user-select: none;
             `}>
                 ({plantCount})
             </div>

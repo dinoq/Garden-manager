@@ -1,15 +1,24 @@
 import { config } from "./config";
 import { GrowthType, IPlant, IVariety } from "./plant-types";
 
-/*
-
+const PX_RECALC = 5;
+/**
+ * 
+ * @param zoom Recalculate pixels to cm in actual zoom. If zoom is default (1.0), then 1cm correspond to 5px
+ * @returns 
+ */
 export const pxToCM = (px: number, zoom: number)=>{
-    return px/zoom;
+    return (px / PX_RECALC) * zoom;
 }
 
+/**
+ * 
+ * @param zoom Recalculate cm to pixels in actual zoom. If zoom is default (1.0), then 1cm correspond to 5px
+ * @returns 
+ */
 export const cmToPX = (cm: number, zoom: number)=>{
-    return cm*zoom;
-}*/
+    return cm * PX_RECALC *zoom;
+}
 
 export const zoomedFactory = (zoom: number) => { return (size: number) => zoom * size; }
 

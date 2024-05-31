@@ -8,7 +8,7 @@ import { useAppSelector } from "../../hooks/useAppSelector";
 import useLocalCoordinates from "../../hooks/useLocalCoordinates";
 import { designActions } from "../../store/reducers/DesignSlice";
 import { setIsMovingDesignPanelAction, zoomAction } from "../../store/reducers/ViewNavigationSlice";
-import MemoFieldEditDialog from "./components/FieldEditDialog";
+import FieldEditDialog from "./components/FieldEditDialog";
 import MessageBar from "./components/MesageBar";
 import ProjectDialog from "../Project/ProjectDialog";
 import Scale from "./components/Scale";
@@ -69,7 +69,7 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
 
     const movingByWorld = (isMouseDown && isMovingDesignPanel) || isMiddleMouseDown;
     const cursor = isMovingDesignPanel ? (isMouseDown ? "grabbing" : "grab") : "default";
-    const unplacedBed = useAppSelector(unplacedPlantSectionSelector)
+    const unplacedPlantSection = useAppSelector(unplacedPlantSectionSelector)
     const isContextMenuVisible = contextMenuPosition.x !== -1;
 
     const zoom = (e: any) => dispatch(zoomAction({ zoomDirection: e.deltaY || 0, menuWidth }))
@@ -77,10 +77,10 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
     const [skipNextPlantSectionsRotation, setSkipNextPlantSectionsRotation] = useState(false); // Because after click is firstly new plant section placed so we use this helper state - without that would be plantSections rotate z-Index even when new plant section is placed (so it will automatically be put below other plant section)
 
     useEffect(() => {
-        if (unplacedBed) {
-            setDesignPanelMousePosition({ x: unplacedBed.x, y: unplacedBed.y });
+        if (unplacedPlantSection) {
+            setDesignPanelMousePosition({ x: unplacedPlantSection.x, y: unplacedPlantSection.y });
         }
-    }, [unplacedBed])
+    }, [unplacedPlantSection])
     
     useEffect(() => {
         if (props.mouseMove) {
@@ -110,11 +110,11 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
         setIsMouseDown(true);
         setIsMiddleMouseDown(e.button === 1);
 
-        if (unplacedBed) {
+        if (unplacedPlantSection) {
             setSkipNextPlantSectionsRotation(true);
-            let position: IPosition = { x: designPanelMousePosition.x - unplacedBed.width / 2, y: designPanelMousePosition.y - unplacedBed.height / 2 };
+            let position: IPosition = { x: designPanelMousePosition.x - unplacedPlantSection.width / 2, y: designPanelMousePosition.y - unplacedPlantSection.height / 2 };
 
-            dispatch(designActions.placePlantSectionAction({ id: unplacedBed.id, position }));
+            dispatch(designActions.placePlantSectionAction({ id: unplacedPlantSection.id, position }));
             setDesignPanelMousePosition({ x: 0, y: 0 });
         }
     }
@@ -124,7 +124,7 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
             updateLocal(e)
         }
 
-        if (unplacedBed) {
+        if (unplacedPlantSection) {
             setDesignPanelMousePosition({ x: ((e.clientX - worldPosition.x) / worldZoom), y: (((e.clientY - worldPosition.y) - toolbarHeight - tabBarHeight) / worldZoom) });
         }
     }
@@ -143,7 +143,7 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
         if (!plantSection.isPlaced) {
             position = { x: designPanelMousePosition.x - plantSection.width / 2, y: designPanelMousePosition.y - plantSection.height / 2 };
         }
-        return <PlantSection key={"seed-bed-" + i} {...plantSection} {...position} />
+        return <PlantSection key={"plant-section-" + i} {...plantSection} {...position} />
     })
 
 
@@ -179,7 +179,7 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
                 });
                 if (e.type === 'click' && e.button === 0 && selectedPlantSectionID !== -1 && !isContextMenuVisible) {  // Event is click & was right clicked & actually already is selected plant section (so we need toggle for any other) & context menu is not visible -> rotate plant sections depth  
                     dispatch(designActions.rotatePlantSectionsDepth(plantSectionsToRotateDepthIDs));
-                } else if (e.type === 'contextmenu' && e.button === 2) {
+                } else if (e.type === 'contextmenu' && e.button === 2 && plantSectionsToRotateDepthIDs.length > 1) { //TODO remove "&& plantSectionsToRotateDepthIDs.length > 1" - only for debugging purpose (to show context menu for element ispect if clicked only on one plant section)
                     e.preventDefault(); // Prevent the context menu from appearing
                     setContextMenuPosition({x: e.clientX, y: e.clientY - toolbarHeight - tabBarHeight}); // ContextMEnu is common ui component, so we need to correct y (by  - toolbarHeight - tabBarHeight) here
                     setContextMenuItems(plantSectionsToRotateDepthIDs.map(plantSectionID => ({name: plantSections[plantSectionID].name, value: plantSectionID})))
@@ -207,11 +207,15 @@ const DesignPanel: React.FC<IDesignPanelProps> = (props) => {
             left: ${worldPos.x}px;
             top: ${worldPos.y}px;
             cursor: ${cursor};
+            background-image:
+            repeating-linear-gradient(#cccccc5c 0 1px, transparent 1px 100%),
+            repeating-linear-gradient(90deg, #cccccc67 0 1px, transparent 1px 100%);
+            background-size: 50px 50px;
         `}>
             {<PlantSections sections={plantSections} mouseDesignPanelPosition={designPanelMousePosition} />}
             {!hideGUI && <Scale />}
             <MessageBar />
-            {selectedPlantSectionID !== -1 && <MemoFieldEditDialog />}
+            {!hideGUI && selectedPlantSectionID !== -1 && <FieldEditDialog />}
             {isContextMenuVisible && <ContextMenu ref={contextMenuRef} position={contextMenuPosition} name="object-selection-context-menu" items={contextMenuItems} onItemClickHandler={onDesignPanelContextMenuItemClicked} />}
             {showProjectDialog && <ProjectDialog state={projectDialogState} />}
         </div>

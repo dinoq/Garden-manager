@@ -38,7 +38,9 @@ const ContextMenu: React.ForwardRefRenderFunction<HTMLDivElement, IContextMenuPr
         `} onClick={onItemClickHandler} ref={ref}>
             <ColumnContainer>
                 {props.items.map((item: IOption) => {
-                    return <div key={props.name + "-option-" + item.value} data-value={item.value}>{item.name}</div>
+                    return <div css={css`
+                        cursor: pointer;
+                    `} key={props.name + "-option-" + item.value} data-value={item.value}>{item.name}</div>
                 })}
             </ColumnContainer>
         </div>

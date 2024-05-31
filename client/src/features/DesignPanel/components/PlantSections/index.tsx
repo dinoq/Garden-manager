@@ -3,15 +3,15 @@ import PlantSection from "../PlantSection";
 import { IPosition } from "../../../../helpers/types";
 import { IPlantSection } from "../../types";
 
-const plantSections: React.FunctionComponent<{ sections: IPlantSection[], mouseDesignPanelPosition: IPosition }> = ({ sections: beds, mouseDesignPanelPosition }) => {
+const plantSections: React.FunctionComponent<{ sections: IPlantSection[], mouseDesignPanelPosition: IPosition }> = ({ sections, mouseDesignPanelPosition }) => {
     return (
         <React.Fragment>
-            {beds.map((plantSection, i) => {
+            {sections.map((plantSection, i) => {
                 let position: IPosition = { x: plantSection.x, y: plantSection.y };
                 if (!plantSection.isPlaced) {
                     position = { x: mouseDesignPanelPosition.x - plantSection.width / 2, y: mouseDesignPanelPosition.y - plantSection.height / 2 };
                 }
-                return <PlantSection key={"seed-bed-" + i} {...plantSection} {...position} />
+                return <PlantSection key={"plant-section-" + i} {...plantSection} {...position} />
             })}
         </ React.Fragment>
     )
