@@ -20,9 +20,9 @@ interface IGUISlice {
 }
 const initialState: IGUISlice = {
     menuWidth: 300,
-    toolbarHeight: 0,//150,
+    toolbarHeight: 150,
     toolbarMinimized: false,
-    tabBarHeight: 0,//50,
+    tabBarHeight: 50,
     hideGUI: false,
     message: "...",
     ProjectDialog: {
