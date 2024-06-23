@@ -4,7 +4,7 @@ import { css, jsx } from '@emotion/react';
 import React, { useState } from "react";
 import { DEPTH } from '../../../../helpers/constants';
 import { cmToPX, zoomedFactory } from '../../../../helpers/functions';
-import { IPosition } from '../../../../helpers/types';
+import { IDimensions, IPosition } from '../../../../helpers/types';
 import { useAppDispatch } from '../../../../hooks/useAppDispatch';
 import { useAppSelector } from '../../../../hooks/useAppSelector';
 import { designActions } from '../../../../store/reducers/DesignSlice';
@@ -16,7 +16,7 @@ import Plant from '../Plant';
 import { IPlantSection, ROWDIRECTIONS } from '../../types';
 import { isPlantSectionSelectedSelector as isPlantSectionSelector, calendarSelector } from '../../../../store/reducers/DesignSlice/selectors';
 import { zoomSelector } from '../../../../store/reducers/ViewNavigationSlice/selectors';
-import { plantSectionZIndexSelector } from '../../selectors';
+import { inRowPlantShiftSelector, plantCountSelector, plantSectionZIndexSelector, rowPlantShiftSelector } from '../../selectors';
 
 export interface IPlantSectionProps extends IPlantSection {
 }
@@ -24,14 +24,17 @@ export interface IPlantSectionProps extends IPlantSection {
 const PlantSection: React.FC<IPlantSectionProps> = (props) => {
     const dispatch = useAppDispatch();
 
+    const [localSize, setLocalSize] = useState<IDimensions>({ width: 0, height: 0 });
+    
     const isSelected = useAppSelector(state => isPlantSectionSelector(state, props.id));
     const zoom = useAppSelector(zoomSelector);
     const calendar = useAppSelector(calendarSelector);
     const plantSectionZIndex = useAppSelector(state => plantSectionZIndexSelector(state, props.id))
+    const plantsCount = useAppSelector(state => plantCountSelector(state, props.id, localSize));
+    const inRowPlantShift = useAppSelector(state => inRowPlantShiftSelector(state, props.id, localSize));
+    const rowPlantShift = useAppSelector(state => rowPlantShiftSelector(state, props.id, localSize));
     const [showOnHoverIcon, setShowDetailIcon] = useState(false);
     const [localPosDiff, setLocalPosDiff] = useState<IPosition>({ x: 0, y: 0 })
-    const [localSize, setLocalSize] = useState({ width: 0, height: 0 });
-
 
     const zoomed = zoomedFactory(zoom);
     const resizable = true, draggable = true;
@@ -40,7 +43,6 @@ const PlantSection: React.FC<IPlantSectionProps> = (props) => {
     const height = cmToPX(zoomed((localSize.height > 0) ? localSize.height : props.height),zoom);
 
     let x = zoomed((props.x + localPosDiff.x));
-    console.log('x: ', x);
     let y = zoomed((props.y + localPosDiff.y));
 
     // HANDLERS
@@ -79,30 +81,13 @@ const PlantSection: React.FC<IPlantSectionProps> = (props) => {
         setShowDetailIcon(false);
     }
 
-    const plantSpacingMin = props.plantSpacingMin ? props.plantSpacingMin : props.plant.PlantSpacingMin;
-    const widthForCalculation = props.rowsDirection === ROWDIRECTIONS.LEFT_TO_RIGHT ? width : height;
-    let inRowCountDecimal = widthForCalculation / (cmToPX(zoomed(plantSpacingMin), zoom));
-    //console.log('inRowCountDecimal: ', inRowCountDecimal);
-    let inRowCount = Math.floor(inRowCountDecimal);
-    let inRowCountDecimalPart = inRowCountDecimal - inRowCount;
-    const inRowPlantShift = (zoomed(plantSpacingMin) * inRowCountDecimalPart) / 2;
-
-    const RowSpacingMin = props.rowSpacingMin ? props.rowSpacingMin : props.plant.RowSpacingMin;
-    const heightForCalculation = props.rowsDirection === ROWDIRECTIONS.LEFT_TO_RIGHT ? height : width;
-    let rowsCountDecimal = heightForCalculation / (cmToPX(zoomed(RowSpacingMin), zoom));
-    let rowsCount = Math.floor(rowsCountDecimal);
-    let rowCountDecimalPart = rowsCountDecimal - rowsCount;
-    const rowPlantShift = (zoomed(RowSpacingMin) * rowCountDecimalPart) / 2;
-
-    const plantCount = rowsCount * inRowCount;
-
     const direction = props.rowsDirection;
     const minimalWidth = (direction == ROWDIRECTIONS.LEFT_TO_RIGHT) ? props.plant.PlantSpacingMin : props.plant.RowSpacingMin;
     const minimalHeight = (direction == ROWDIRECTIONS.LEFT_TO_RIGHT) ? props.plant.RowSpacingMin : props.plant.PlantSpacingMin;
 
     let plants: Array<any> = [];
-    if (plantCount < 5000) {
-        for (let i = 0; i < plantCount; i++) {
+    if (plantsCount < 5000) {
+        for (let i = 0; i < plantsCount; i++) {
             plants.push(<Plant {...props} key={"plant-section-" + i} rowDirection={props.rowsDirection} />)
         }
     } else {
@@ -114,7 +99,7 @@ const PlantSection: React.FC<IPlantSectionProps> = (props) => {
         }
     }
 
-    const showAllPlants = plantCount < 500;
+    const showAllPlants = plantsCount < 500;
 
     if(!props.inGround.yearRoundPlanting){
         const showInActualMonth = props.inGround.from.month <= calendar.actualMonth && props.inGround.to.month >= calendar.actualMonth;
@@ -154,7 +139,7 @@ const PlantSection: React.FC<IPlantSectionProps> = (props) => {
                 position: absolute;
                 user-select: none;
             `}>
-                ({plantCount})
+                ({plantsCount})
             </div>
             {draggable && <DragPoint objectX={x} objectY={y} objectWidth={width} objectHeight={height} id={props.id} dragHandler={moveHandler} dragStartHandler={moveStartHandler} dragEndHandler={moveEndHandler} />}
             {resizable && <ResizePoints objectWidth={width} objectHeight={height} dragHandler={resizeHandler} dragStartHandler={resizeStartHandler} dragEndHandler={resizeEndHandler} minimalWidth={minimalWidth} minimalHeight={minimalHeight} />}
