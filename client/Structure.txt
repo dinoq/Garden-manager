@@ -1,0 +1,41 @@
+﻿src/
+  ├── assets/                     // Statické soubory jako obrázky, fonty, apod.
+  ├── components/                  // Společné komponenty pro aplikaci
+  │   ├── common/                  // Sdílené UI komponenty (např. tlačítka, ikony)
+  │   │   ├── CollapsibleButton.js  // Tlačítko pro sbalení Sidebaru (common, použitelné kdekoliv)
+  │   │   └── Button.js             // Obecné tlačítko pro různé účely
+  │   ├── Sidebar/                  // Komponenty specifické pro Sidebar
+  │   │   ├── Sidebar.js            // Hlavní komponenta Sidebaru
+  │   │   ├── SidebarButton.js      // Tlačítko pro sbalení Sidebaru
+  │   │   └── SidebarStyles.css     // Styl pro Sidebar
+  │   └── Header.js                 // Hlavní hlavička aplikace
+  ├── features/                     // Funkce aplikace (Redux slices, API volání)
+  │   ├── auth/                     // Autentifikace
+  │   │   ├── components/
+  │   │   │   └── LogoutButton.js   // Tlačítko pro odhlášení
+  │   │   ├── authSlice.js          // Redux slice pro autentifikaci
+  │   │   └── authAPI.js            // API volání pro autentifikaci
+  │   ├── settings/                 // Nastavení aplikace
+  │   │   ├── components/
+  │   │   │   └── SettingsForm.js   // Formulář pro změnu nastavení
+  │   │   ├── settingsSlice.js      // Redux slice pro nastavení
+  │   │   └── settingsAPI.js        // API volání pro nastavení
+  │   ├── todos/                    // Seznam úkolů
+  │   │   ├── components/
+  │   │   │   └── TodoList.js       // Komponenta pro zobrazení úkolů
+  │   │   ├── todosSlice.js         // Redux slice pro úkoly
+  │   │   └── todosAPI.js           // API volání pro úkoly
+  ├── store.js                      // Redux store
+  ├── App.js                        // Hlavní komponenta aplikace
+  ├── styles/                       // Obecné styly aplikace (např. global.css)
+  │   ├── global.css                // Globální CSS pro celou aplikaci
+  │   └── theme.css                 // Téma pro celkový vzhled aplikace
+  ├── tests/                        // Testy pro komponenty a logiku
+  │   ├── components/
+  │   │   ├── Sidebar.test.js       // Testy pro Sidebar
+  │   │   └── Header.test.js        // Testy pro Header
+  │   ├── features/
+  │   │   └── authSlice.test.js     // Testy pro authSlice
+  └── utils/                        // Pomocné funkce a utility
+      ├── api.js                    // Globální API logika
+      └── helpers.js                // Pomocné funkce pro různé části aplikace
